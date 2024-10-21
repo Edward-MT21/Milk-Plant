@@ -1,0 +1,32 @@
+version: '2.29.6'
+services:
+
+  ### MySQL database
+  db-milk-collection:
+    container_name: db-milk-collection
+    image: mysql:8.0.33
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: milk_collection_db
+      MYSQL_USER: uncledave
+      MYSQL_PASSWORD: Test123
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+
+  ### Postgres database
+  db-milk-collection-clon:
+    container_name: db-milk-collection-clon
+    image: postgres:15.2
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: milk_collection_clon_db
+      POSTGRES_USER: uncledave
+      POSTGRES_PASSWORD: Test123
+    ports:
+      - 5431:5431
+    expose:
+      - 5431
+    command: -p 5431
