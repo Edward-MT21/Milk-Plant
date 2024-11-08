@@ -1,7 +1,7 @@
 version: '2.29.6'
 services:
 
-  ### MySQL database
+  ### MySQL database for Milk Collection
   db-milk-collection:
     container_name: db-milk-collection
     image: mysql:8.0.33
@@ -16,13 +16,13 @@ services:
     expose:
       - 3306
 
-  ### Postgres database
-  db-milk-collection-clon:
-    container_name: db-milk-collection-clon
+  ### Postgres database for Orders
+  db-orders:
+    container_name: db-orders
     image: postgres:15.2
     restart: unless-stopped
     environment:
-      POSTGRES_DB: milk_collection_clon_db
+      POSTGRES_DB: orders_db
       POSTGRES_USER: uncledave
       POSTGRES_PASSWORD: Test123
     ports:
@@ -30,3 +30,19 @@ services:
     expose:
       - 5431
     command: -p 5431
+
+
+  ### Posgres database for Inventory
+  db-inventory:
+    container_name: db-inventory
+    image: postgres:15.2
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: inventory_db
+      POSTGRES_USER: uncledave
+      POSTGRES_PASSWORD: Test123
+    ports:
+      - 5432:5432
+    expose:
+      - 5432
+    command: -p 5432

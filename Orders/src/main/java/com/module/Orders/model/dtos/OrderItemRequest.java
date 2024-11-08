@@ -1,4 +1,4 @@
-package com.module.Inventory.model.dtos;
+package com.module.Orders.model.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

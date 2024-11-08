@@ -1,10 +1,10 @@
-package com.module.Orders;
+package com.module.API_Gateway;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class OrdersApplicationTests {
+class ApiGatewayApplicationTests {
 
 	@Test
 	void contextLoads() {
