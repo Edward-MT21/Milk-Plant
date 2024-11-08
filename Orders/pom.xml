@@ -10,7 +10,7 @@
 	</parent>
 
 	<groupId>com.module</groupId>
-	<artifactId>Milk-Collection-Clon</artifactId>
+	<artifactId>Orders</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Milk-Collection-Clon</name>
 	<description>Milk plant project, milk collection module clon</description>
@@ -65,6 +65,10 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
 	</dependencies>
 
