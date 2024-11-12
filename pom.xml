@@ -41,6 +41,7 @@
 		<module>Orders</module>
 		<module>Inventory</module>
 		<module>API-Gateway</module>
+		<module>Discovery-Server</module>
 	</modules>
 
 	<dependencies>
