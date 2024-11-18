@@ -42,6 +42,7 @@
 		<module>Inventory</module>
 		<module>API-Gateway</module>
 		<module>Discovery-Server</module>
+		<module>Notification-Service</module>
 	</modules>
 
 	<dependencies>
