@@ -16,8 +16,10 @@ public class SecurityConfig {
 
         http
                 .csrf(ServerHttpSecurity.CsrfSpec::disable)
-                .authorizeExchange( auth -> auth.anyExchange().authenticated())
-                //.and() Deprecated
+                .authorizeExchange(auth -> {
+                    auth.pathMatchers("/actuator/**").permitAll();
+                    auth.anyExchange().authenticated();
+                })
                 .oauth2Login(Customizer.withDefaults());
 
         return http.build();
