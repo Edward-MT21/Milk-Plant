@@ -10,11 +10,11 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class Person {
+public class Person extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idPerson;
+    private Long personId;
 
     private String names;
 

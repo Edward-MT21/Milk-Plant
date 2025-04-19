@@ -41,7 +41,7 @@ public class PersonService {
 
     private PersonResponse mapPersonResponse(Person person) {
         return PersonResponse.builder().
-                idPerson(person.getIdPerson()).
+                idPerson(person.getPersonId()).
                 names(person.getNames()).
                 lastNames(person.getLastNames()).
                 identificationNumber(person.getIdentificationNumber()).

@@ -1,6 +1,6 @@
 package com.module.Milk_Collection.config;
 
-
+/*
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
@@ -20,9 +20,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-@Configuration
-@EnableWebSecurity
-@EnableMethodSecurity
+//@Configuration
+//@EnableWebSecurity
+//@EnableMethodSecurity
 public class SecurityConfig {
 
     @Bean
@@ -63,3 +63,6 @@ public class SecurityConfig {
     }
 
 }
+
+
+ */
