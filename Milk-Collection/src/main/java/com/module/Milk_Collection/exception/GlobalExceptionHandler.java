@@ -21,6 +21,18 @@ import java.util.Map;
 @ControllerAdvice
 public class GlobalExceptionHandler  extends ResponseEntityExceptionHandler {
 
+
+    /**
+     * This method is invoked when a request contains invalid data. It's used to handle
+     * {@link MethodArgumentNotValidException} which is thrown by spring when a request
+     * contains invalid data.
+     *
+     * @param ex      the exception to handle
+     * @param headers the headers of the request
+     * @param status  the status of the response
+     * @param request the request
+     * @return a {@link ResponseEntity} with the validation errors
+     */
     @Override
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
             MethodArgumentNotValidException ex, HttpHeaders headers, HttpStatusCode status, WebRequest request) {

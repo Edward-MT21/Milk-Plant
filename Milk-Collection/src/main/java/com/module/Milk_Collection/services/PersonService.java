@@ -1,7 +1,7 @@
 package com.module.Milk_Collection.services;
 
-import com.module.Milk_Collection.model.dtos.PersonRequest;
-import com.module.Milk_Collection.model.dtos.PersonResponse;
+import com.module.Milk_Collection.model.dtos.PersonInDto;
+import com.module.Milk_Collection.model.dtos.PersonOutDto;
 import com.module.Milk_Collection.model.entities.Person;
 import com.module.Milk_Collection.repositories.PersonRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,14 +17,14 @@ public class PersonService {
 
     private final PersonRepository personRepository;
 
-    public void addPerson(PersonRequest personRequest) {
+    public void addPerson(PersonInDto personInDto) {
 
         var person = Person.builder().
-                names(personRequest.getNames()).
-                lastNames(personRequest.getLastNames()).
-                identificationNumber(personRequest.getIdentificationNumber()).
-                age(personRequest.getAge()).
-                gender(personRequest.getGender())
+                names(personInDto.getNames()).
+                lastNames(personInDto.getLastNames()).
+                identificationNumber(personInDto.getIdentificationNumber()).
+                age(personInDto.getAge()).
+                gender(personInDto.getGender())
                 .build();
 
         personRepository.save(person);
@@ -33,14 +33,14 @@ public class PersonService {
 
     }
 
-    public List<PersonResponse> getAllPersons() {
+    public List<PersonOutDto> getAllPersons() {
 
         var persons = personRepository.findAll();
         return persons.stream().map(this::mapPersonResponse).toList();
     }
 
-    private PersonResponse mapPersonResponse(Person person) {
-        return PersonResponse.builder().
+    private PersonOutDto mapPersonResponse(Person person) {
+        return PersonOutDto.builder().
                 idPerson(person.getPersonId()).
                 names(person.getNames()).
                 lastNames(person.getLastNames()).

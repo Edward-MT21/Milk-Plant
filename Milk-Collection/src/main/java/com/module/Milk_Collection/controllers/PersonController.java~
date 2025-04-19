@@ -3,7 +3,6 @@ package com.module.Milk_Collection.controllers;
 import com.module.Milk_Collection.model.dtos.PersonInDto;
 import com.module.Milk_Collection.model.dtos.PersonOutDto;
 import com.module.Milk_Collection.services.PersonService;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 //import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,7 +22,7 @@ public class PersonController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
    // @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void addPerson(@Valid @RequestBody PersonInDto personInDto) {
+    public void addPerson(@RequestBody PersonInDto personInDto) {
         personService.addPerson(personInDto);
     }
 

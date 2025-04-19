@@ -5,6 +5,8 @@ import com.module.Milk_Collection.model.dtos.MilkSupplierInDto;
 import com.module.Milk_Collection.model.dtos.MilkSupplierOutDto;
 import com.module.Milk_Collection.model.dtos.ResponseDto;
 import com.module.Milk_Collection.services.IMilkSupplierService;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -74,7 +76,7 @@ public class MilkSupplierController {
     }
 
     @DeleteMapping("/deleteMilkSupplierByPersonId")
-    public ResponseEntity<ResponseDto> deleteMilkSupplierByPersonId(@RequestParam Long personId) {
+    public ResponseEntity<ResponseDto> deleteMilkSupplierByPersonId(@Positive @RequestParam Long personId) {
         boolean isDeleted = iMilkSupplierService.deleteMilkSupplierByPersonId(personId);
         if(isDeleted) {
             return ResponseEntity
