@@ -1,5 +1,6 @@
 package com.module.Milk_Collection.model.dtos;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
@@ -25,6 +26,9 @@ public class PersonOutDto {
 
     private Integer age;
 
+    @Schema(
+            description = "Person gender", example = "FEMALE"
+    )
     private String gender;
 
 }
