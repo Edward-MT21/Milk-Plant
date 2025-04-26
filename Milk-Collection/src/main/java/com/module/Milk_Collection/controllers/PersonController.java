@@ -20,14 +20,34 @@ public class PersonController {
 
     private final PersonService personService;
 
-    @PostMapping
+    /**
+     * Creates a new person with the given data.
+     * @param personInDto the data transfer object containing the details of the person to be created
+     *                    including names, last names, identification number, age, and gender.
+     */
+    @PostMapping("/createPerson")
     @ResponseStatus(HttpStatus.CREATED)
    // @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public void addPerson(@Valid @RequestBody PersonInDto personInDto) {
-        personService.addPerson(personInDto);
+    public void createPerson(@Valid @RequestBody PersonInDto personInDto) {
+        personService.createPerson(personInDto);
     }
 
-    @GetMapping
+    /**
+     * Edits a person with the given data.
+     * @param personInDto the data transfer object containing the details of the person to be edited
+     *                    including names, last names, identification number, age, and gender.
+     */
+    @PostMapping("/editPerson")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void editPerson(@Valid @RequestBody PersonInDto personInDto) {
+        personService.editPerson(personInDto);
+    }
+
+    /**
+     * Returns a list of all persons in the database.
+     * @return a list of data transfer objects containing the details of each person
+     */
+    @GetMapping("/getAllPersons")
     @ResponseStatus(HttpStatus.OK)
     //@PreAuthorize("hasRole('ROLE_USER')")
     public List<PersonOutDto> getAllPersons() {

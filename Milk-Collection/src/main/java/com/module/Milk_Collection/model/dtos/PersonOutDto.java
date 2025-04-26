@@ -10,6 +10,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Schema(
+        name = "PersonOutDto",
+        description = "Schema to PersonOutDto information"
+)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,5 +34,8 @@ public class PersonOutDto {
             description = "Person gender", example = "FEMALE"
     )
     private String gender;
+
+    private String email;
+    private String mobileNumber;
 
 }

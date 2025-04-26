@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @Schema(
-        name = "ErrorResponse",
+        name = "ErrorResponseDto",
         description = "Schema to hold error response information"
 )
 public class ErrorResponseDto {

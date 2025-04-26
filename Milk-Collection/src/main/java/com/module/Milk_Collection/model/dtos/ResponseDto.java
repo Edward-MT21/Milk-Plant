@@ -5,7 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Schema(
-        name = "Response",
+        name = "ResponseDto",
         description = "Schema to hold successful response information"
 )
 @Data

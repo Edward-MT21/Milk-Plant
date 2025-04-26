@@ -1,5 +1,6 @@
 package com.module.Milk_Collection.model.dtos;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
@@ -9,6 +10,10 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+@Schema(
+        name = "PersonInDto",
+        description = "Schema to PersonInDto information"
+)
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

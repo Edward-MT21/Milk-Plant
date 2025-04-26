@@ -26,4 +26,8 @@ public class Person extends BaseEntity {
 
     private String gender;
 
+    private String email;
+
+    private String mobileNumber;
+
 }

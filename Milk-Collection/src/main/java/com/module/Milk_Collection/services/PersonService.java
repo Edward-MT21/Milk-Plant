@@ -17,14 +17,17 @@ public class PersonService {
 
     private final PersonRepository personRepository;
 
-    public void addPerson(PersonInDto personInDto) {
+
+    public void createPerson(PersonInDto personInDto) {
 
         var person = Person.builder().
                 names(personInDto.getNames()).
                 lastNames(personInDto.getLastNames()).
                 identificationNumber(personInDto.getIdentificationNumber()).
                 age(personInDto.getAge()).
-                gender(personInDto.getGender())
+                gender(personInDto.getGender()).
+                email(personInDto.getEmail()).
+                mobileNumber(personInDto.getMobileNumber())
                 .build();
 
         personRepository.save(person);
@@ -33,13 +36,26 @@ public class PersonService {
 
     }
 
-    public List<PersonOutDto> getAllPersons() {
-
-        var persons = personRepository.findAll();
-        return persons.stream().map(this::mapPersonResponse).toList();
+    public void editPerson( PersonInDto personInDto) {
+        personRepository.findById(personInDto.getIdPerson()).orElseThrow(() -> new RuntimeException("Person not found"));
+        Person person = Person.builder().
+                personId(personInDto.getIdPerson()).
+                names(personInDto.getNames()).
+                lastNames(personInDto.getLastNames()).
+                identificationNumber(personInDto.getIdentificationNumber()).
+                age(personInDto.getAge()).
+                gender(personInDto.getGender()).
+                email(personInDto.getEmail()).
+                mobileNumber(personInDto.getMobileNumber())
+                .build();
+        personRepository.save(person);
     }
 
-    private PersonOutDto mapPersonResponse(Person person) {
+    public List<PersonOutDto> getAllPersons() {
+        return personRepository.findAll().stream().map(this::mapPersonToPersonOutDto).toList();
+    }
+
+    private PersonOutDto mapPersonToPersonOutDto(Person person) {
         return PersonOutDto.builder().
                 idPerson(person.getPersonId()).
                 names(person.getNames()).
@@ -49,5 +65,7 @@ public class PersonService {
                 gender(person.getGender())
                 .build();
     }
+
+
 
 }

@@ -12,7 +12,6 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -40,7 +39,7 @@ public class MilkSupplierController {
 
     @Operation(
             summary = "Create Milk Supplier REST API",
-            description = "REST API to create new Milk Supplier inside EazyBank"
+            description = "REST API to create new Milk Supplier."
     )
     @ApiResponses({
             @ApiResponse(
