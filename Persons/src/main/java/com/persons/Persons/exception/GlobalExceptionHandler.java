@@ -1,6 +1,7 @@
-package com.module.Milk_Collection.exception;
+package com.persons.Persons.exception;
 
-import com.module.Milk_Collection.model.dtos.ErrorResponseDto;
+
+import com.persons.Persons.model.dtos.ErrorResponseDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -71,8 +72,8 @@ public class GlobalExceptionHandler  extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorResponseDTO, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(MilkSupplierAlreadyExistsException.class)
-    public ResponseEntity<ErrorResponseDto> handleCustomerAlreadyExistsException(MilkSupplierAlreadyExistsException exception,
+    @ExceptionHandler(PersonAlreadyExistsException.class)
+    public ResponseEntity<ErrorResponseDto> handleCustomerAlreadyExistsException(PersonAlreadyExistsException exception,
                                                                                  WebRequest webRequest){
         ErrorResponseDto errorResponseDTO = new ErrorResponseDto(
                 webRequest.getDescription(false),

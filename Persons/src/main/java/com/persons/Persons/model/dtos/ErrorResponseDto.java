@@ -1,10 +1,9 @@
-package com.module.Milk_Collection.model.dtos;
+package com.persons.Persons.model.dtos;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
-
 
 import java.time.LocalDateTime;
 

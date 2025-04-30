@@ -1,8 +1,8 @@
-package com.module.Milk_Collection.constants;
+package com.persons.Persons.constants;
 
-public final class AccountsConstants {
+public final class PersonConstants {
 
-    private AccountsConstants() {
+    private PersonConstants() {
         // restrict instantiation
     }
 

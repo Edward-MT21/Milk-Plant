@@ -1,4 +1,4 @@
-package com.module.Milk_Collection.exception;
+package com.persons.Persons.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

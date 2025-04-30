@@ -1,12 +1,12 @@
-package com.module.Milk_Collection.exception;
+package com.persons.Persons.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-public class MilkSupplierAlreadyExistsException extends RuntimeException {
+public class PersonAlreadyExistsException extends RuntimeException {
 
-    public MilkSupplierAlreadyExistsException(String message) {
+    public PersonAlreadyExistsException(String message) {
         super(message);
     }
 

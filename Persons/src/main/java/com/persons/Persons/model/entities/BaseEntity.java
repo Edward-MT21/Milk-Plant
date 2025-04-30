@@ -1,4 +1,4 @@
-package com.module.Milk_Collection.model.entities;
+package com.persons.Persons.model.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
