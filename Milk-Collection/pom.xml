@@ -22,6 +22,7 @@
 	<artifactId>Milk-Collection</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Milk-Collection</name>
+	<packaging>jar</packaging>
 	<description>Milk plant project, milk collection module</description>
 	<url/>
 	<licenses>
