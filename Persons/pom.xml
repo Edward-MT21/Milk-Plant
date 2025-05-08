@@ -12,6 +12,7 @@
 	<artifactId>Persons</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Persons</name>
+	<packaging>jar</packaging>
 	<description>Project spring boot for management persons</description>
 	<url/>
 	<licenses>
@@ -109,6 +110,12 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+
+					<image>
+						<!--<name>edwarddocker270/${project.artifactId}:s4</name>-->
+						<name>edwarddocker270/persons:s4</name>
+					</image>
+
 				</configuration>
 			</plugin>
 
