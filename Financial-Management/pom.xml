@@ -11,6 +11,7 @@
 	<groupId>com.module</groupId>
 	<artifactId>Financial-Management</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>Financial-Management</name>
 	<description>Demo project for Spring Boot</description>
 	<url/>
@@ -80,6 +81,16 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.5</version>
+				<configuration>
+					<to>
+						<image>edwarddocker270/financial-management:s4</image>
+					</to>
 				</configuration>
 			</plugin>
 		</plugins>
