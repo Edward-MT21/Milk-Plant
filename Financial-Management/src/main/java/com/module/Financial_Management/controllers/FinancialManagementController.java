@@ -1,5 +1,6 @@
 package com.module.Financial_Management.controllers;
 
+import com.module.Financial_Management.model.dtos.FinancialManagementContactsDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -21,6 +22,9 @@ public class FinancialManagementController {
     @Autowired
     private Environment environment;
 
+    @Autowired
+    private FinancialManagementContactsDto financialManagementContactsDto;
+
 
     @GetMapping("/getGreeting")
     public String getGreeting() {
@@ -35,6 +39,11 @@ public class FinancialManagementController {
     @GetMapping("/get-java-home")
     public ResponseEntity<String> getJavaHome() {
         return ResponseEntity.status(HttpStatus.OK).body(environment.getProperty("JAVA_HOME"));
+    }
+
+    @GetMapping("/get-financial-management-contacts")
+    public ResponseEntity<FinancialManagementContactsDto> getFinancialManagementContacts() {
+        return ResponseEntity.status(HttpStatus.OK).body(financialManagementContactsDto);
     }
 
 }
