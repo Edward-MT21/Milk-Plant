@@ -1,6 +1,8 @@
 package com.module.Financial_Management.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,6 +18,9 @@ public class FinancialManagementController {
     @Value("${build.version}")
     private String buildVersion;
 
+    @Autowired
+    private Environment environment;
+
 
     @GetMapping("/getGreeting")
     public String getGreeting() {
@@ -25,6 +30,11 @@ public class FinancialManagementController {
     @GetMapping("/getBuildVersion")
     public ResponseEntity<String> getBuildVersion() {
         return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
+    }
+
+    @GetMapping("/get-java-home")
+    public ResponseEntity<String> getJavaHome() {
+        return ResponseEntity.status(HttpStatus.OK).body(environment.getProperty("JAVA_HOME"));
     }
 
 }
