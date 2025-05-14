@@ -15,18 +15,14 @@ spring:
       ddl-auto: update
     show-sql: true
   config:
-    import:
-      - "application_qa.yml"
-      - "application_prod.yml"
-  profiles:
-    active:
-      - "prod"
+    activate:
+      on-profile: "prod"
 
 build:
   version: 1.0
 
 financial-management-contacts:
-  message: "Financial-Management"
+  message: "Financial-Management Production"
   contactDetails:
     name: "Edward Malte"
     email: "lGm4o@example.com"
