@@ -3,11 +3,14 @@ package com.persons.Persons.controllers;
 import com.persons.Persons.constants.PersonConstants;
 import com.persons.Persons.model.dtos.PersonInDto;
 import com.persons.Persons.model.dtos.PersonOutDto;
+import com.persons.Persons.model.dtos.PersonsContactsDto;
 import com.persons.Persons.model.dtos.ResponseDto;
 import com.persons.Persons.services.IPersonService;
 import com.persons.Persons.services.impl.PersonServiceImpl;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -22,6 +25,9 @@ import java.util.List;
 public class PersonController {
 
     PersonServiceImpl personServiceImpl;
+
+    @Autowired
+    private PersonsContactsDto personsContactsDto;
 
 //    public PersonController(IPersonService personServiceImpl) {
 //        this.personServiceImpl = (PersonServiceImpl) personServiceImpl;
@@ -71,4 +77,11 @@ public class PersonController {
                 .status(HttpStatus.OK)
                 .body(listPersonOutDto);
     }
+
+    @GetMapping("/getPersonsContacts")
+    public ResponseEntity<PersonsContactsDto> getPersonsContacts() {
+        return ResponseEntity.status(HttpStatus.OK).body(personsContactsDto);
+    };
+
+
 }

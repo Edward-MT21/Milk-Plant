@@ -14,3 +14,22 @@ spring:
     hibernate:
       ddl-auto: update
     show-sql: true
+  config:
+    import:
+      - "application_qa.yml"
+      - "application_prod.yml"
+  profiles:
+    active:
+      - "prod"
+
+build:
+  version: 1.0
+
+milk-collection-contacts:
+  message: "Milk-Collection"
+  contactDetails:
+    name: "Edward Malte"
+    email: "lGm4o@example.com"
+  onCallSupport:
+    - 317888
+    - 317999

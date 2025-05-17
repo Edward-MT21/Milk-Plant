@@ -1,10 +1,7 @@
 package com.module.Milk_Collection.controllers;
 
 import com.module.Milk_Collection.constants.AccountsConstants;
-import com.module.Milk_Collection.model.dtos.ErrorResponseDto;
-import com.module.Milk_Collection.model.dtos.MilkSupplierInDto;
-import com.module.Milk_Collection.model.dtos.MilkSupplierOutDto;
-import com.module.Milk_Collection.model.dtos.ResponseDto;
+import com.module.Milk_Collection.model.dtos.*;
 import com.module.Milk_Collection.services.IMilkSupplierService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -14,6 +11,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,7 +31,21 @@ import org.springframework.web.bind.annotation.*;
 @Validated
 public class MilkSupplierController {
 
-    IMilkSupplierService iMilkSupplierService;
+    private final IMilkSupplierService iMilkSupplierService;
+
+    @Value("${build.version}")
+    private String buildVersion;
+
+    @Autowired
+    private Environment environment;
+
+    @Autowired
+    private MilkCollectionContactsDto milkCollectionContactsDto;
+
+    @Autowired
+    public MilkSupplierController(IMilkSupplierService iMilkSupplierService) {
+        this.iMilkSupplierService = iMilkSupplierService;
+    }
 
     @GetMapping("/getSomeData")
     public String getSomeData() {
@@ -218,5 +233,22 @@ public class MilkSupplierController {
                     .body(new ResponseDto(AccountsConstants.STATUS_417, AccountsConstants.MESSAGE_417_DELETE));
         }
     }
+
+    @GetMapping("/getBuildVersion")
+    public ResponseEntity<String> getBuildVersion() {
+        return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
+    }
+
+    @GetMapping("/get-java-home")
+    public ResponseEntity<String> getJavaHome() {
+        return ResponseEntity.status(HttpStatus.OK).body(environment.getProperty("JAVA_HOME"));
+    }
+
+    @GetMapping("/getMilkCollectionContacts")
+    public ResponseEntity<MilkCollectionContactsDto> getMilkCollectionContacts() {
+        return ResponseEntity.status(HttpStatus.OK).body(milkCollectionContactsDto);
+    }
+
+
 
 }

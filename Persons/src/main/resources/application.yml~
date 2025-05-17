@@ -21,7 +21,7 @@ spring:
 build:
   version: 1.0
 
-persons-contacts:
+milk-collection-contacts:
   message: "Persons"
   contactDetails:
     name: "Edward Malte"
