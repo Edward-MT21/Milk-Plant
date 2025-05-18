@@ -4,9 +4,11 @@ spring:
     profiles:
         active: native
     cloud:
-      server:
-        native:
-          search-locations: "classpath:/config"
+      config:
+        server:
+          native:
+            #search-locations: "classpath:/config"
+            search-locations: "file:///C://Users//Cyborg//Documents//Courses//Utils//spring-cloud-config//config"
 
 server:
     port: 8071
