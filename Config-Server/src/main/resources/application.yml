@@ -16,7 +16,7 @@ spring:
             timeout: 5
             clone-on-start: true
             force-pull: true
-    rabbitmq: #RabbitMQ default configurations
+    rabbitmq: #RabbitMQ default configurations (need with spring config monitor)
       host: "localhost"
       port: 5672
       username: "guest"
@@ -26,3 +26,9 @@ encrypt:
     key: "EAMT51101825110182"
 server:
     port: 8071
+
+management:
+    endpoints:
+      web:
+        exposure:
+          include: "*"
