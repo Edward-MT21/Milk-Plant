@@ -1,0 +1,67 @@
+services:
+    config-server-s:
+        image: "edwarddocker270/config-server:s6"
+        container_name: milk-collection-ms
+        ports:
+            - "8071:8071"
+        deploy:
+            resources:
+                limits:
+                    memory: 500M
+        networks:
+            - milk-plant-network
+            -
+    milk-collection-s:
+        image: "edwarddocker270/milk-collection:s6"
+        container_name: milk-collection-ms
+        ports:
+            - "8080:8080"
+        deploy:
+            resources:
+                limits:
+                    memory: 500M
+        networks:
+            - milk-plant-network
+        environment:
+            SPRING_CONFIG_IMPORT: "configserver:http://config-server-s:8071/"
+            SPRING_PROFILES_ACTIVE: default
+            SPRING_APPPLICATION_NAME: "Milk-Collection"
+
+
+    persons-s:
+        image: "edwarddocker270/persons:s6"
+        container_name: persons-ms
+        ports:
+            - "9090:9090"
+        deploy:
+            resources:
+                limits:
+                    memory: 700M
+        networks:
+            - milk-plant-network
+        environment:
+            SPRING_CONFIG_IMPORT: "configserver:http://config-server-s:8071/"
+            SPRING_PROFILES_ACTIVE: default
+            SPRING_APPPLICATION_NAME: "Persons"
+
+    financial-management-s:
+        image: "edwarddocker270/financial-management:s6"
+        container_name: financial-management-ms
+        ports:
+            - "7070:7070"
+        deploy:
+            resources:
+                limits:
+                    memory: 500M
+        networks:
+            - milk-plant-network
+        environment:
+            SPRING_CONFIG_IMPORT: "configserver:http://config-server-s:8071/"
+            SPRING_PROFILES_ACTIVE: default
+            SPRING_APPPLICATION_NAME: "Financial-Management"
+
+networks:
+    milk-plant-network:
+        driver: "bridge"
+
+
