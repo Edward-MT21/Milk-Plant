@@ -1,4 +1,19 @@
 services:
+    rabbit:
+        image: rabbitmq:3.13-management
+        hostname: rabbitmq
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+        healthcheck:
+            test: rabbitmq-diagnostics check_port_connectivity
+            interval: 10s
+            timeout: 5s
+            retries: 10
+            start_period: 5s
+        networks:
+            - milk-plant-network
+
     config-server-s:
         image: "edwarddocker270/config-server:s6"
         container_name: milk-collection-ms
@@ -10,7 +25,16 @@ services:
                     memory: 500M
         networks:
             - milk-plant-network
-            -
+        healthcheck:
+            test: "curl --fail --silent localhost:8071/actuator/health/readiness | grep UP || exit 1"
+            interval: 10s
+            timeout: 5s
+            retries: 10
+            start_period: 10s
+        depends_on:
+            rabbit:
+                condition: service_healthy
+
     milk-collection-s:
         image: "edwarddocker270/milk-collection:s6"
         container_name: milk-collection-ms
@@ -26,7 +50,9 @@ services:
             SPRING_CONFIG_IMPORT: "configserver:http://config-server-s:8071/"
             SPRING_PROFILES_ACTIVE: default
             SPRING_APPPLICATION_NAME: "Milk-Collection"
-
+        depends_on:
+            config-server-s:
+                condition: service_healthy
 
     persons-s:
         image: "edwarddocker270/persons:s6"
@@ -43,6 +69,9 @@ services:
             SPRING_CONFIG_IMPORT: "configserver:http://config-server-s:8071/"
             SPRING_PROFILES_ACTIVE: default
             SPRING_APPPLICATION_NAME: "Persons"
+        depends_on:
+            config-server-s:
+                condition: service_healthy
 
     financial-management-s:
         image: "edwarddocker270/financial-management:s6"
@@ -59,6 +88,9 @@ services:
             SPRING_CONFIG_IMPORT: "configserver:http://config-server-s:8071/"
             SPRING_PROFILES_ACTIVE: default
             SPRING_APPPLICATION_NAME: "Financial-Management"
+        depends_on:
+            config-server-s:
+                condition: service_healthy
 
 networks:
     milk-plant-network:
