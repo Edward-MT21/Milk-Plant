@@ -11,8 +11,9 @@ services:
             timeout: 5s
             retries: 10
             start_period: 5s
-        networks:
-            - milk-plant-network
+        extends:
+            file: common-config.yml
+            service: network-deploy-service
 
     config-server-s:
         image: "edwarddocker270/config-server:s6"
@@ -23,14 +24,9 @@ services:
             resources:
                 limits:
                     memory: 500M
-        networks:
-            - milk-plant-network
-        healthcheck:
-            test: "curl --fail --silent localhost:8071/actuator/health/readiness | grep UP || exit 1"
-            interval: 10s
-            timeout: 5s
-            retries: 10
-            start_period: 10s
+        extends:
+            file: common-config.yml
+            service: microservice-base-config
         depends_on:
             rabbit:
                 condition: service_healthy
@@ -40,15 +36,10 @@ services:
         container_name: milk-collection-ms
         ports:
             - "8080:8080"
-        deploy:
-            resources:
-                limits:
-                    memory: 500M
-        networks:
-            - milk-plant-network
+        extends:
+            file: common-config.yml
+            service: microservice-configserver-config
         environment:
-            SPRING_CONFIG_IMPORT: "configserver:http://config-server-s:8071/"
-            SPRING_PROFILES_ACTIVE: default
             SPRING_APPPLICATION_NAME: "Milk-Collection"
         depends_on:
             config-server-s:
@@ -59,15 +50,10 @@ services:
         container_name: persons-ms
         ports:
             - "9090:9090"
-        deploy:
-            resources:
-                limits:
-                    memory: 700M
-        networks:
-            - milk-plant-network
+        extends:
+            file: common-config.yml
+            service: microservice-configserver-config
         environment:
-            SPRING_CONFIG_IMPORT: "configserver:http://config-server-s:8071/"
-            SPRING_PROFILES_ACTIVE: default
             SPRING_APPPLICATION_NAME: "Persons"
         depends_on:
             config-server-s:
@@ -78,15 +64,10 @@ services:
         container_name: financial-management-ms
         ports:
             - "7070:7070"
-        deploy:
-            resources:
-                limits:
-                    memory: 500M
-        networks:
-            - milk-plant-network
+        extends:
+            file: common-config.yml
+            service: microservice-configserver-config
         environment:
-            SPRING_CONFIG_IMPORT: "configserver:http://config-server-s:8071/"
-            SPRING_PROFILES_ACTIVE: default
             SPRING_APPPLICATION_NAME: "Financial-Management"
         depends_on:
             config-server-s:
