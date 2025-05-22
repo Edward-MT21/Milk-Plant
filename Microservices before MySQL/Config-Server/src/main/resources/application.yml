@@ -1,0 +1,43 @@
+spring:
+    application:
+        name: "Config-Server"
+    profiles:
+        ##active: native
+        active: git
+    cloud:
+      config:
+        server:
+          ##native:
+            #search-locations: "classpath:/config"
+            ##search-locations: "file:///C://Users//Cyborg//Documents//Courses//Utils//spring-cloud-config//config"
+          git:
+            uri: "https://github.com/Edward-MT21/Milk-Plant-Config.git"
+            default-label: main
+            timeout: 5
+            clone-on-start: true
+            force-pull: true
+    rabbitmq: #RabbitMQ default configurations (need with spring config monitor)
+      host: "localhost"
+      port: 5672
+      username: "guest"
+      password: "guest"
+
+encrypt:
+    key: "EAMT51101825110182"
+server:
+    port: 8071
+
+management:
+    endpoints:
+      web:
+        exposure:
+          include: "*"
+    health:
+      readiness-state:
+        enabled: true
+      liveness-state:
+        enabled: true
+    endpoint:
+      health:
+        probes:
+          enabled: true
