@@ -17,19 +17,21 @@ services:
 
     config-server-s:
         image: "edwarddocker270/config-server:s6"
-        container_name: milk-collection-ms
+        container_name: config-server-ms
         ports:
             - "8071:8071"
-        deploy:
-            resources:
-                limits:
-                    memory: 500M
         extends:
             file: common-config.yml
             service: microservice-base-config
         depends_on:
             rabbit:
                 condition: service_healthy
+        healthcheck:
+            test: "curl --fail --silent localhost:8071/actuator/health/readiness | grep UP || exit 1"
+            interval: 10s
+            timeout: 5s
+            retries: 10
+            start_period: 10s
 
     milk-collection-s:
         image: "edwarddocker270/milk-collection:s6"
