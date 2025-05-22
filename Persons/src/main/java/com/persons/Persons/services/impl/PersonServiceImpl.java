@@ -29,15 +29,14 @@ public class PersonServiceImpl implements IPersonService {
 
     @Override
     public void createPerson(PersonInDto personInDto) {
-        var person = Person.builder().
-                names(personInDto.getNames()).
-                lastNames(personInDto.getLastNames()).
-                identificationNumber(personInDto.getIdentificationNumber()).
-                age(personInDto.getAge()).
-                gender(personInDto.getGender()).
-                email(personInDto.getEmail()).
-                mobileNumber(personInDto.getMobileNumber())
-                .build();
+        Person person = new Person();
+        person.setNames(personInDto.getNames());
+        person.setLastNames(personInDto.getLastNames());
+        person.setIdentificationNumber(personInDto.getIdentificationNumber());
+        person.setAge(personInDto.getAge());
+        person.setGender(personInDto.getGender());
+        person.setEmail(personInDto.getEmail());
+        person.setMobileNumber(personInDto.getMobileNumber());
 
         iPersonRepository.save(person);
 
@@ -50,7 +49,7 @@ public class PersonServiceImpl implements IPersonService {
      */
     public void editPerson( PersonInDto personInDto) {
         iPersonRepository.findById(personInDto.getIdPerson()).orElseThrow(() -> new RuntimeException("Person not found"));
-        Person person = Person.builder().
+        var person = Person.builder().
                 personId(personInDto.getIdPerson()).
                 names(personInDto.getNames()).
                 lastNames(personInDto.getLastNames()).
