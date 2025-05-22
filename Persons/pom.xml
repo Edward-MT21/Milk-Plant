@@ -134,7 +134,7 @@
 
 					<image>
 						<!--<name>edwarddocker270/${project.artifactId}:s4</name>-->
-						<name>edwarddocker270/persons:s6</name>
+						<name>edwarddocker270/persons:s7</name>
 					</image>
 
 				</configuration>
