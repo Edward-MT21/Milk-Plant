@@ -31,7 +31,7 @@ services:
             service: microservice-db-config
 
     config-server-s:
-        image: "edwarddocker270/config-server:s6"
+        image: "edwarddocker270/config-server:s7"
         container_name: config-server-ms
         ports:
             - "8071:8071"
@@ -46,7 +46,7 @@ services:
             start_period: 10s
 
     milk-collection-s:
-        image: "edwarddocker270/milk-collection:s6"
+        image: "edwarddocker270/milk-collection:s7"
         container_name: milk-collection-ms
         ports:
             - "8080:8080"
@@ -63,7 +63,7 @@ services:
                 condition: service_healthy
 
     persons-s:
-        image: "edwarddocker270/persons:s6"
+        image: "edwarddocker270/persons:s7"
         container_name: persons-ms
         ports:
             - "9090:9090"
@@ -72,7 +72,7 @@ services:
             service: microservice-configserver-config
         environment:
             SPRING_APPPLICATION_NAME: "Persons"
-            SPRING_DATASOURCE_URL: "jdbc:mysql://persons-db:3307/persons-db"
+            SPRING_DATASOURCE_URL: "jdbc:mysql://persons-db:3306/persons-db"
         depends_on:
             persons-db:
                 condition: service_healthy
@@ -80,7 +80,7 @@ services:
                 condition: service_healthy
 
     financial-management-s:
-        image: "edwarddocker270/financial-management:s6"
+        image: "edwarddocker270/financial-management:s7"
         container_name: financial-management-ms
         ports:
             - "7070:7070"
@@ -89,7 +89,7 @@ services:
             service: microservice-configserver-config
         environment:
             SPRING_APPPLICATION_NAME: "Financial-Management"
-            SPRING_DATASOURCE_URL: "jdbc:mysql://financial-management-db:3308/financial-management-db"
+            SPRING_DATASOURCE_URL: "jdbc:mysql://financial-management-db:3306/financial-management-db"
         depends_on:
             financial-management-db:
                 condition: service_healthy
