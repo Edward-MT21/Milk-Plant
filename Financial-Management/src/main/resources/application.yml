@@ -24,6 +24,8 @@ management:
         include: "*"
   endpoint:
     access: unrestricted
+    shutdown:
+      enabled: true
   info:
     env:
       enabled: true

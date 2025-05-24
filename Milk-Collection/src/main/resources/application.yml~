@@ -1,12 +1,12 @@
 server:
-  port: 9090
+  port: 8080
 spring:
   application:
-    name: "Persons"
+    name: "Milk-Collection"
   profiles:
     active: "qa"
   datasource:
-    url: jdbc:mysql://localhost:3307/persons-db
+    url: jdbc:mysql://localhost:3306/milk-collection-db
     username: root
     password: root
   jpa:
@@ -15,6 +15,7 @@ spring:
     init:
       mode: always
   config:
+    # import: "optional:configserver:http..."
     import: "optional:configserver:http://localhost:8071/"
 
 management:
@@ -30,6 +31,10 @@ management:
     env:
       enabled: true
 
+endpoints: ## No necessary
+  shutdown:
+    enabled: true
+
 eureka:
   instance:
     preferIpAddress: true
@@ -41,6 +46,6 @@ eureka:
 
 info:
   app:
-    name: "Persons"
-    description: "Persons microservice"
+    name: "Milk-Collection"
+    description: "Milk Collection microservice"
     version: "1.0.0"
