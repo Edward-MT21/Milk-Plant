@@ -31,7 +31,7 @@ services:
             service: microservice-db-config
 
     config-server-s:
-        image: "edwarddocker270/config-server:s7"
+        image: "edwarddocker270/config-server:s8"
         container_name: config-server-ms
         ports:
             - "8071:8071"
@@ -45,8 +45,28 @@ services:
             retries: 10
             start_period: 10s
 
+    eureka-server-s:
+        image: "edwarddocker270/eureka-server:s8"
+        container_name: eureka-server-ms
+        ports:
+            - "8070:8070"
+        extends:
+            file: common-config.yml
+            service: microservice-base-config
+        healthcheck:
+            test: "curl --fail --silent localhost:8070/actuator/health/readiness | grep UP || exit 1"
+            interval: 10s
+            timeout: 5s
+            retries: 10
+            start_period: 10s
+        depends_on:
+            config-server-s:
+                condition: service_healthy
+        environment:
+            SPRING_APPPLICATION_NAME: "Eureka-Server"
+
     milk-collection-s:
-        image: "edwarddocker270/milk-collection:s7"
+        image: "edwarddocker270/milk-collection:s8"
         container_name: milk-collection-ms
         ports:
             - "8080:8080"
@@ -61,9 +81,11 @@ services:
                 condition: service_healthy
             config-server-s:
                 condition: service_healthy
+            eureka-server-s:
+                condition: service_healthy
 
     persons-s:
-        image: "edwarddocker270/persons:s7"
+        image: "edwarddocker270/persons:s8"
         container_name: persons-ms
         ports:
             - "9090:9090"
@@ -78,9 +100,11 @@ services:
                 condition: service_healthy
             config-server-s:
                 condition: service_healthy
+            eureka-server-s:
+                condition: service_healthy
 
     financial-management-s:
-        image: "edwarddocker270/financial-management:s7"
+        image: "edwarddocker270/financial-management:s8"
         container_name: financial-management-ms
         ports:
             - "7070:7070"
@@ -94,6 +118,8 @@ services:
             financial-management-db:
                 condition: service_healthy
             config-server-s:
+                condition: service_healthy
+            eureka-server-s:
                 condition: service_healthy
 
 networks:
