@@ -138,9 +138,20 @@
 
 					<image>
 						<!--<name>edwarddocker270/${project.artifactId}:s4</name>-->
-						<name>edwarddocker270/persons:s7</name>
+						<name>edwarddocker270/persons:s8</name>
 					</image>
 
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>com.google.cloud.tools</groupId>
+				<artifactId>jib-maven-plugin</artifactId>
+				<version>3.4.5</version>
+				<configuration>
+					<to>
+						<image>edwarddocker270/persons:s8</image>
+					</to>
 				</configuration>
 			</plugin>
 
