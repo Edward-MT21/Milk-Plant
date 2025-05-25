@@ -3,12 +3,17 @@ package com.module.Milk_Collection.services.impl;
 import com.module.Milk_Collection.exception.MilkSupplierAlreadyExistsException;
 import com.module.Milk_Collection.exception.ResourceNotFoundException;
 import com.module.Milk_Collection.mapper.MilkSupplierMapper;
+import com.module.Milk_Collection.model.dtos.MilkSupplierDetailsDto;
 import com.module.Milk_Collection.model.dtos.MilkSupplierInDto;
 import com.module.Milk_Collection.model.dtos.MilkSupplierOutDto;
+import com.module.Milk_Collection.model.dtos.PersonOutDto;
 import com.module.Milk_Collection.model.entities.MilkSupplier;
 import com.module.Milk_Collection.repositories.IMilkSupplierRepository;
 import com.module.Milk_Collection.services.IMilkSupplierService;
+import com.module.Milk_Collection.services.client.IFinancialManagementFeingClient;
+import com.module.Milk_Collection.services.client.IPersonsFeingClient;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,6 +23,8 @@ import java.util.Optional;
 public class MilkSupplierServiceImpl implements IMilkSupplierService {
 
     IMilkSupplierRepository iMilkSupplierRepository;
+    IPersonsFeingClient iPersonsFeingClient;
+    IFinancialManagementFeingClient iFinancialManagementFeingClient;
 
     @Override
     public void createMilkSupplier(MilkSupplierInDto milkSupplierInDto) {
@@ -76,6 +83,21 @@ public class MilkSupplierServiceImpl implements IMilkSupplierService {
         iMilkSupplierRepository.deleteByPersonId(personId);
         return true;
     }
+
+    @Override
+    public MilkSupplierDetailsDto fetchMilkSupplierDetailsById(Long milkSupplierId) {
+
+        MilkSupplier milkSupplier = iMilkSupplierRepository.findById(milkSupplierId).orElseThrow(
+                () -> new ResourceNotFoundException("MilkSupplier", "milkSupplierId", milkSupplierId.toString())
+        );
+
+        ResponseEntity<PersonOutDto> personOutDtoResponseEntity = iPersonsFeingClient.fetchPersonById(milkSupplier.getPersonId());
+        String greetingFinancialManagement = iFinancialManagementFeingClient.getGreeting();
+
+        return MilkSupplierMapper.mapToMilkSupplierDetailsDto(milkSupplier, personOutDtoResponseEntity, greetingFinancialManagement);
+    }
+
+
 
 
 }

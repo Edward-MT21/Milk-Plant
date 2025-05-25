@@ -81,7 +81,13 @@ public class PersonController {
     @GetMapping("/getPersonsContacts")
     public ResponseEntity<PersonsContactsDto> getPersonsContacts() {
         return ResponseEntity.status(HttpStatus.OK).body(personsContactsDto);
-    };
+    }
+
+    @GetMapping("/fetchPersonById")
+    public ResponseEntity<PersonOutDto> fetchPersonById(@RequestParam Long personId) {
+        PersonOutDto personOutDto = personServiceImpl.fetchPersonById(personId);
+        return ResponseEntity.status(HttpStatus.OK).body(personOutDto);
+    }
 
 
 }

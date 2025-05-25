@@ -249,6 +249,11 @@ public class MilkSupplierController {
         return ResponseEntity.status(HttpStatus.OK).body(milkCollectionContactsDto);
     }
 
+    @GetMapping("/fetchMilkSupplierDetailsById")
+    public ResponseEntity<MilkSupplierDetailsDto> fetchMilkSupplierDetailsById(@RequestParam Long milkSupplierId) {
+        MilkSupplierDetailsDto milkSupplierDetailsDto = iMilkSupplierService.fetchMilkSupplierDetailsById(milkSupplierId);
+        return ResponseEntity.status(HttpStatus.OK).body(milkSupplierDetailsDto);
+    }
 
 
 }

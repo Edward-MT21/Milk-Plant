@@ -239,9 +239,21 @@ public class MilkSupplierController {
         return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
     }
 
+    @GetMapping("/get-java-home")
+    public ResponseEntity<String> getJavaHome() {
+        return ResponseEntity.status(HttpStatus.OK).body(environment.getProperty("JAVA_HOME"));
+    }
+
     @GetMapping("/getMilkCollectionContacts")
     public ResponseEntity<MilkCollectionContactsDto> getMilkCollectionContacts() {
         return ResponseEntity.status(HttpStatus.OK).body(milkCollectionContactsDto);
     }
+
+    @GetMapping("/fetchMilkSupplierDetailsById")
+    public ResponseEntity<MilkSupplierDetailsDto> fetchMilkSupplierDetailsById(@RequestParam Long milkSupplierId) {
+        MilkSupplierOutDto milkSupplierOutDto = iMilkSupplierService.fetchMilkSupplierById(milkSupplierId);
+        return ResponseEntity.status(HttpStatus.OK).body(milkSupplierOutDto);
+    }
+
 
 }

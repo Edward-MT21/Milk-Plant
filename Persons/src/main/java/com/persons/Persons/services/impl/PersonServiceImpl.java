@@ -1,5 +1,6 @@
 package com.persons.Persons.services.impl;
 
+import com.persons.Persons.exception.ResourceNotFoundException;
 import com.persons.Persons.model.dtos.PersonInDto;
 import com.persons.Persons.model.dtos.PersonOutDto;
 import com.persons.Persons.model.entities.Person;
@@ -81,5 +82,13 @@ public class PersonServiceImpl implements IPersonService {
                 email(person.getEmail()).
                 mobileNumber(person.getMobileNumber())
                 .build();
+    }
+
+    public PersonOutDto fetchPersonById(Long personId) {
+        Person person = iPersonRepository.findById(personId).orElseThrow(
+                () -> new ResourceNotFoundException("Person", "personId", personId.toString())
+        );
+
+        return mapPersonToPersonOutDto(person);
     }
 }

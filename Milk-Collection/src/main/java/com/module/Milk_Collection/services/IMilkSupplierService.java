@@ -1,5 +1,6 @@
 package com.module.Milk_Collection.services;
 
+import com.module.Milk_Collection.model.dtos.MilkSupplierDetailsDto;
 import com.module.Milk_Collection.model.dtos.MilkSupplierInDto;
 import com.module.Milk_Collection.model.dtos.MilkSupplierOutDto;
 
@@ -22,5 +23,7 @@ public interface IMilkSupplierService {
     boolean deleteMilkSupplierById(Long milkSupplierId);
 
     boolean deleteMilkSupplierByPersonId(Long personId);
+
+    MilkSupplierDetailsDto fetchMilkSupplierDetailsById(Long milkSupplierId);
 
 }
