@@ -52,7 +52,7 @@ services:
             - "8070:8070"
         extends:
             file: common-config.yml
-            service: microservice-base-config
+            service: microservice-configserver-config
         healthcheck:
             test: "curl --fail --silent localhost:8070/actuator/health/readiness | grep UP || exit 1"
             interval: 10s
@@ -72,7 +72,7 @@ services:
             - "8080:8080"
         extends:
             file: common-config.yml
-            service: microservice-configserver-config
+            service: microservice-eureka-config
         environment:
             SPRING_APPPLICATION_NAME: "Milk-Collection"
             SPRING_DATASOURCE_URL: "jdbc:mysql://milk-collection-db:3306/milk-collection-db"
@@ -91,7 +91,7 @@ services:
             - "9090:9090"
         extends:
             file: common-config.yml
-            service: microservice-configserver-config
+            service: microservice-eureka-config
         environment:
             SPRING_APPPLICATION_NAME: "Persons"
             SPRING_DATASOURCE_URL: "jdbc:mysql://persons-db:3306/persons-db"
@@ -110,7 +110,7 @@ services:
             - "7070:7070"
         extends:
             file: common-config.yml
-            service: microservice-configserver-config
+            service: microservice-eureka-config
         environment:
             SPRING_APPPLICATION_NAME: "Financial-Management"
             SPRING_DATASOURCE_URL: "jdbc:mysql://financial-management-db:3306/financial-management-db"
