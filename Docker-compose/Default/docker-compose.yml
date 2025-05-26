@@ -103,6 +103,25 @@ services:
             eureka-server-s:
                 condition: service_healthy
 
+    persons-s1:
+        image: "edwarddocker270/persons:s8"
+        container_name: persons-ms1
+        ports:
+            - "9091:9090"
+        extends:
+            file: common-config.yml
+            service: microservice-eureka-config
+        environment:
+            SPRING_APPPLICATION_NAME: "Persons"
+            SPRING_DATASOURCE_URL: "jdbc:mysql://persons-db:3306/persons-db"
+        depends_on:
+            persons-db:
+                condition: service_healthy
+            config-server-s:
+                condition: service_healthy
+            eureka-server-s:
+                condition: service_healthy
+
     financial-management-s:
         image: "edwarddocker270/financial-management:s8"
         container_name: financial-management-ms
