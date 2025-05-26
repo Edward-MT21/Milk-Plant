@@ -74,7 +74,7 @@
 				<version>3.4.5</version>
 				<configuration>
 					<to>
-						<image>edwarddocker270/config-server:s8</image>
+						<image>edwarddocker270/config-server:s9</image>
 					</to>
 				</configuration>
 			</plugin>
