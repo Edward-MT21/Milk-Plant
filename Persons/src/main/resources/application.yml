@@ -23,11 +23,18 @@ management:
       exposure:
         include: "*"
   endpoint:
-    access: unrestricted
     shutdown:
       enabled: true
+    health:
+      probes:
+        enabled: true
   info:
     env:
+      enabled: true
+  health:
+    readiness-state:
+      enabled: true
+    liveness-state:
       enabled: true
 
 eureka:
