@@ -25,7 +25,9 @@ public class MilkSupplierMapper {
 
         MilkSupplierDetailsDto milkSupplierDetailsDto = new MilkSupplierDetailsDto();
         milkSupplierDetailsDto.setMilkSupplierId(milkSupplier.getMilkSupplierId());
-        milkSupplierDetailsDto.setPersonOutDto(personOutDtoResponseEntity.getBody());
+        if(personOutDtoResponseEntity != null) {
+            milkSupplierDetailsDto.setPersonOutDto(personOutDtoResponseEntity.getBody());
+        }
         milkSupplierDetailsDto.setGreetingFinancialManagement(greetingFinancialManagement);
 
         return milkSupplierDetailsDto;

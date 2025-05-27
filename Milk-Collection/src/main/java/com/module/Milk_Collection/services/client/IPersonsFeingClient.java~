@@ -8,10 +8,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "Financial-Management", fallback = FinancialManagementFallback.class)
-public interface IFinancialManagementFeingClient {
+@FeignClient(name = "Persons")
+public interface IPersonsFeingClient {
 
-    @GetMapping(value = "/FinancialManagementController/getGreeting", produces = "application/json")
-    public String getGreeting(@RequestHeader("milk-plant-correlation-id") String correlationId);
+    @GetMapping(value = "/PersonController/fetchPersonById", produces = "application/json")
+    public ResponseEntity<PersonOutDto> fetchPersonById(
+            @RequestHeader("milk-plant-correlation-id") String correlationId, @RequestParam Long personId);
 
 }

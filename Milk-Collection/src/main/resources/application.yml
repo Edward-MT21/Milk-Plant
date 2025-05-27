@@ -18,6 +18,11 @@ spring:
     # import: "optional:configserver:http..."
     import: "optional:configserver:http://localhost:8071/"
 
+  cloud:
+    openfeign:
+      circuitbreaker:
+        enabled: true
+
 management:
   endpoints:
     web:
@@ -58,3 +63,11 @@ logging:
     com:
       module:
         Milk_Collection: DEBUG
+
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      slidingWindowSize: 10
+      permittedNumberOfCallsInHalfOpenState: 2
+      failureRateThreshold: 50
+      waitDurationInOpenState: 10000
