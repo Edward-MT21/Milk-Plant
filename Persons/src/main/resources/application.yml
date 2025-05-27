@@ -44,3 +44,9 @@ info:
     name: "Persons"
     description: "Persons microservice"
     version: "1.0.0"
+
+logging:
+  level:
+    com:
+      persons:
+        Persons: DEBUG

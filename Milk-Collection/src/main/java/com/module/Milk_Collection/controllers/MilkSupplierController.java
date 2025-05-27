@@ -12,6 +12,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
@@ -30,6 +32,8 @@ import org.springframework.web.bind.annotation.*;
 @AllArgsConstructor
 @Validated
 public class MilkSupplierController {
+
+    private static final Logger logger = LoggerFactory.getLogger(MilkSupplierController.class);
 
     private final IMilkSupplierService iMilkSupplierService;
 
@@ -250,8 +254,12 @@ public class MilkSupplierController {
     }
 
     @GetMapping("/fetchMilkSupplierDetailsById")
-    public ResponseEntity<MilkSupplierDetailsDto> fetchMilkSupplierDetailsById(@RequestParam Long milkSupplierId) {
-        MilkSupplierDetailsDto milkSupplierDetailsDto = iMilkSupplierService.fetchMilkSupplierDetailsById(milkSupplierId);
+    public ResponseEntity<MilkSupplierDetailsDto> fetchMilkSupplierDetailsById(
+            @RequestHeader("milk-plant-correlation-id") String correlationId,
+            @RequestParam Long milkSupplierId) {
+        logger.debug("milk-plant-correlation-id found in MilkSupplierController fetchMilkSupplierDetailsById : {}",
+                correlationId);
+        MilkSupplierDetailsDto milkSupplierDetailsDto = iMilkSupplierService.fetchMilkSupplierDetailsById(milkSupplierId, correlationId);
         return ResponseEntity.status(HttpStatus.OK).body(milkSupplierDetailsDto);
     }
 

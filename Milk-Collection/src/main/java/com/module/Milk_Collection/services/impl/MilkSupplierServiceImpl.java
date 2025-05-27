@@ -85,14 +85,14 @@ public class MilkSupplierServiceImpl implements IMilkSupplierService {
     }
 
     @Override
-    public MilkSupplierDetailsDto fetchMilkSupplierDetailsById(Long milkSupplierId) {
+    public MilkSupplierDetailsDto fetchMilkSupplierDetailsById(Long milkSupplierId, String correlationId) {
 
         MilkSupplier milkSupplier = iMilkSupplierRepository.findById(milkSupplierId).orElseThrow(
                 () -> new ResourceNotFoundException("MilkSupplier", "milkSupplierId", milkSupplierId.toString())
         );
 
-        ResponseEntity<PersonOutDto> personOutDtoResponseEntity = iPersonsFeingClient.fetchPersonById(milkSupplier.getPersonId());
-        String greetingFinancialManagement = iFinancialManagementFeingClient.getGreeting();
+        ResponseEntity<PersonOutDto> personOutDtoResponseEntity = iPersonsFeingClient.fetchPersonById(correlationId, milkSupplier.getPersonId());
+        String greetingFinancialManagement = iFinancialManagementFeingClient.getGreeting(correlationId);
 
         return MilkSupplierMapper.mapToMilkSupplierDetailsDto(milkSupplier, personOutDtoResponseEntity, greetingFinancialManagement);
     }

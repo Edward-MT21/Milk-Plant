@@ -31,10 +31,6 @@ management:
     env:
       enabled: true
 
-endpoints: ## No necessary
-  shutdown:
-    enabled: true
-
 eureka:
   instance:
     preferIpAddress: true

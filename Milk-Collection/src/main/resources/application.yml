@@ -45,3 +45,9 @@ info:
     name: "Milk-Collection"
     description: "Milk Collection microservice"
     version: "1.0.0"
+
+logging:
+  level:
+    com:
+      module:
+        Milk_Collection: DEBUG

@@ -5,12 +5,13 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @FeignClient(name = "Financial-Management")
 public interface IFinancialManagementFeingClient {
 
     @GetMapping(value = "/FinancialManagementController/getGreeting", produces = "application/json")
-    public String getGreeting();
+    public String getGreeting(@RequestHeader("milk-plant-correlation-id") String correlationId);
 
 }

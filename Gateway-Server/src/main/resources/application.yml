@@ -27,3 +27,9 @@ info:
     name: "Gateway-Server"
     description: "Gateway Server microservice"
     version: "1.0.0"
+
+logging:
+  level:
+    com:
+      module:
+        Gateway_Server: DEBUG

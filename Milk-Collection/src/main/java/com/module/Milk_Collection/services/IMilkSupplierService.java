@@ -24,6 +24,6 @@ public interface IMilkSupplierService {
 
     boolean deleteMilkSupplierByPersonId(Long personId);
 
-    MilkSupplierDetailsDto fetchMilkSupplierDetailsById(Long milkSupplierId);
+    MilkSupplierDetailsDto fetchMilkSupplierDetailsById(Long milkSupplierId, String correlationId);
 
 }

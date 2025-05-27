@@ -9,6 +9,8 @@ import com.persons.Persons.services.IPersonService;
 import com.persons.Persons.services.impl.PersonServiceImpl;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
@@ -23,6 +25,8 @@ import java.util.List;
 @AllArgsConstructor
 @Validated
 public class PersonController {
+
+    private static final Logger logger = LoggerFactory.getLogger(PersonController.class);
 
     PersonServiceImpl personServiceImpl;
 
@@ -84,7 +88,10 @@ public class PersonController {
     }
 
     @GetMapping("/fetchPersonById")
-    public ResponseEntity<PersonOutDto> fetchPersonById(@RequestParam Long personId) {
+    public ResponseEntity<PersonOutDto> fetchPersonById(
+            @RequestHeader("milk-plant-correlation-id") String correlationId, @RequestParam Long personId) {
+        logger.debug("milk-plant-correlation-id found in PersonController fetchPersonById : {}",
+                correlationId);
         PersonOutDto personOutDto = personServiceImpl.fetchPersonById(personId);
         return ResponseEntity.status(HttpStatus.OK).body(personOutDto);
     }
