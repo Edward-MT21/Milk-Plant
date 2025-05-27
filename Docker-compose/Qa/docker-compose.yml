@@ -31,7 +31,7 @@ services:
             service: microservice-db-config
 
     config-server-s:
-        image: "edwarddocker270/config-server:s8"
+        image: "edwarddocker270/config-server:s9"
         container_name: config-server-ms
         ports:
             - "8071:8071"
@@ -46,7 +46,7 @@ services:
             start_period: 10s
 
     eureka-server-s:
-        image: "edwarddocker270/eureka-server:s8"
+        image: "edwarddocker270/eureka-server:s9"
         container_name: eureka-server-ms
         ports:
             - "8070:8070"
@@ -66,10 +66,16 @@ services:
             SPRING_APPPLICATION_NAME: "Eureka-Server"
 
     milk-collection-s:
-        image: "edwarddocker270/milk-collection:s8"
+        image: "edwarddocker270/milk-collection:s9"
         container_name: milk-collection-ms
         ports:
             - "8080:8080"
+        healthcheck:
+            test: "curl --fail --silent localhost:8080/actuator/health/readiness | grep UP || exit 1"
+            interval: 10s
+            timeout: 5s
+            retries: 10
+            start_period: 10s
         extends:
             file: common-config.yml
             service: microservice-eureka-config
@@ -85,10 +91,16 @@ services:
                 condition: service_healthy
 
     persons-s:
-        image: "edwarddocker270/persons:s8"
+        image: "edwarddocker270/persons:s9"
         container_name: persons-ms
         ports:
             - "9090:9090"
+        healthcheck:
+            test: "curl --fail --silent localhost:9090/actuator/health/readiness | grep UP || exit 1"
+            interval: 10s
+            timeout: 5s
+            retries: 10
+            start_period: 10s
         extends:
             file: common-config.yml
             service: microservice-eureka-config
@@ -104,10 +116,16 @@ services:
                 condition: service_healthy
 
     financial-management-s:
-        image: "edwarddocker270/financial-management:s8"
+        image: "edwarddocker270/financial-management:s9"
         container_name: financial-management-ms
         ports:
             - "7070:7070"
+        healthcheck:
+            test: "curl --fail --silent localhost:7070/actuator/health/readiness | grep UP || exit 1"
+            interval: 10s
+            timeout: 5s
+            retries: 10
+            start_period: 10s
         extends:
             file: common-config.yml
             service: microservice-eureka-config
@@ -120,6 +138,24 @@ services:
             config-server-s:
                 condition: service_healthy
             eureka-server-s:
+                condition: service_healthy
+
+    gateway-server-s:
+        image: "edwarddocker270/gateway-server:s9"
+        container_name: gateway-server-ms
+        ports:
+            - "8072:8072"
+        extends:
+            file: common-config.yml
+            service: microservice-eureka-config
+        environment:
+            SPRING_APPPLICATION_NAME: "Gateway-Server"
+        depends_on:
+            milk-collection-s:
+                condition: service_healthy
+            persons-s:
+                condition: service_healthy
+            financial-management-s:
                 condition: service_healthy
 
 networks:
