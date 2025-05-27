@@ -21,7 +21,9 @@ public class GatewayServerApplication {
 				.route(p -> p
 						.path("/milk-plant/milk-collection/**")
 						.filters( f -> f.rewritePath("/milk-plant/milk-collection/(?<segment>.*)","/${segment}")
-								.addResponseHeader("X-Response-Time-LDT", LocalDateTime.now().toString()))
+								.addResponseHeader("X-Response-Time-LDT", LocalDateTime.now().toString())
+								.circuitBreaker(config -> config.setName("milkCollectionCircuitBreaker")
+										.setFallbackUri("forward:/contactSupport")))
 						.uri("lb://MILK-COLLECTION"))
 				.route(p -> p
 						.path("/milk-plant/persons/**")
