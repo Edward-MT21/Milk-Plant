@@ -84,6 +84,7 @@ public class PersonController {
 
     @GetMapping("/getPersonsContacts")
     public ResponseEntity<PersonsContactsDto> getPersonsContacts() {
+        logger.debug("Invoking getPersonsContacts");
         return ResponseEntity.status(HttpStatus.OK).body(personsContactsDto);
     }
 
