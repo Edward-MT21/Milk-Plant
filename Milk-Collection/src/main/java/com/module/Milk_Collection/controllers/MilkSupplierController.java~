@@ -24,8 +24,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.concurrent.TimeoutException;
-
 @Tag(
         name = "CRUD REST APIs for MilkSupplier",
         description = "CRUD REST APIs to CREATE, UPDATE, FETCH AND DELETE fromMilkSupplier details"
@@ -243,10 +241,9 @@ public class MilkSupplierController {
 
     @Retry(name = "retryGetBuildVersion", fallbackMethod = "getBuildVersionFallback")
     @GetMapping("/getBuildVersion")
-    public ResponseEntity<String> getBuildVersion() throws TimeoutException {
+    public ResponseEntity<String> getBuildVersion() {
         logger.debug("Into getBuildVersion");
-        //throw new NullPointerException();
-        throw new TimeoutException();
+        throw new NullPointerException();
         //return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
     }
 
