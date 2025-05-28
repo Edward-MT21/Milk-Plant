@@ -3,6 +3,7 @@ package com.module.Milk_Collection.controllers;
 import com.module.Milk_Collection.constants.AccountsConstants;
 import com.module.Milk_Collection.model.dtos.*;
 import com.module.Milk_Collection.services.IMilkSupplierService;
+import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import io.github.resilience4j.retry.annotation.Retry;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -255,9 +256,14 @@ public class MilkSupplierController {
         return ResponseEntity.status(HttpStatus.OK).body("0.0");
     }
 
+    @RateLimiter(name = "rateLimiterGetJavaHome", fallbackMethod = "getJavaHomeFallback")
     @GetMapping("/get-java-home")
     public ResponseEntity<String> getJavaHome() {
         return ResponseEntity.status(HttpStatus.OK).body(environment.getProperty("JAVA_HOME"));
+    }
+
+    public ResponseEntity<String> getJavaHomeFallback(Throwable throwable) {
+        return ResponseEntity.status(HttpStatus.OK).body("Java 17");
     }
 
     @GetMapping("/getMilkCollectionContacts")
