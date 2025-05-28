@@ -149,7 +149,7 @@
 				<version>3.4.5</version>
 				<configuration>
 					<to>
-						<image>edwarddocker270/milk-collection:s9</image>
+						<image>edwarddocker270/milk-collection:s10</image>
 					</to>
 				</configuration>
 			</plugin>
