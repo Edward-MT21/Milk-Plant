@@ -150,7 +150,7 @@
 				<version>3.4.5</version>
 				<configuration>
 					<to>
-						<image>edwarddocker270/persons:s10</image>
+						<image>edwarddocker270/persons:s11</image>
 					</to>
 				</configuration>
 			</plugin>
