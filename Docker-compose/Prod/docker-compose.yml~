@@ -346,9 +346,9 @@ services:
         image: "edwarddocker270/financial-management:s11"
         container_name: financial-management-ms
         ports:
-            - "8280:8280"
+            - "7070:7070"
         healthcheck:
-            test: "curl --fail --silent localhost:8280/actuator/health/readiness | grep UP || exit 1"
+            test: "curl --fail --silent localhost:7070/actuator/health/readiness | grep UP || exit 1"
             interval: 10s
             timeout: 5s
             retries: 10

@@ -34,3 +34,6 @@ build/
 
 ### Grafana ###
 files/
+
+
+Docker-compose/Prod/.data/
