@@ -8,12 +8,12 @@
 		<version>3.4.5</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.module</groupId>
-	<artifactId>Financial-Management</artifactId>
+	<groupId>com.persons</groupId>
+	<artifactId>Persons</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<name>Persons</name>
 	<packaging>jar</packaging>
-	<name>Financial-Management</name>
-	<description>Demo project for Spring Boot</description>
+	<description>Project spring boot for management persons</description>
 	<url/>
 	<licenses>
 		<license/>
@@ -34,11 +34,7 @@
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-jpa</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-web</artifactId>
+			<artifactId>spring-boot-starter</artifactId>
 		</dependency>
 
 		<dependency>
@@ -57,6 +53,24 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.8.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-validation</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-config</artifactId>
 		</dependency>
@@ -67,10 +81,6 @@
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>io.micrometer</groupId>
-			<artifactId>micrometer-registry-prometheus</artifactId>
 		</dependency>
 
 	</dependencies>
@@ -89,6 +99,7 @@
 
 	<build>
 		<plugins>
+			<!--
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
@@ -113,16 +124,37 @@
 					</excludes>
 				</configuration>
 			</plugin>
+			-->
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+						</exclude>
+					</excludes>
+
+					<image>
+						<!--<name>edwarddocker270/${project.artifactId}:s4</name>-->
+						<name>edwarddocker270/persons:s8</name>
+					</image>
+
+				</configuration>
+			</plugin>
+
 			<plugin>
 				<groupId>com.google.cloud.tools</groupId>
 				<artifactId>jib-maven-plugin</artifactId>
 				<version>3.4.5</version>
 				<configuration>
 					<to>
-						<image>edwarddocker270/financial-management:s11</image>
+						<image>edwarddocker270/persons:s11</image>
 					</to>
 				</configuration>
 			</plugin>
+
 		</plugins>
 	</build>
 

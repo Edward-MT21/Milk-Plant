@@ -3,28 +3,33 @@ global:
   evaluation_interval: 5s # Evaluate rules every 5 seconds.
 
 scrape_configs:
-  - job_name: 'accounts'
+  - job_name: 'Milk-Collection'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: [ 'accounts:8080' ]
-  - job_name: 'loans'
+      - targets: [ 'milk-collection-s:8080' ]
+
+  - job_name: 'Persons'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: [ 'loans:8090' ]
-  - job_name: 'cards'
+      - targets: [ 'persons-s:8180' ]
+
+  - job_name: 'Financial-Management'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: [ 'cards:9000' ]
-  - job_name: 'gatewayserver'
+      - targets: [ 'financial-management-s:8280' ]
+
+  - job_name: 'Gateway-Server'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: [ 'gatewayserver:8072' ]
-  - job_name: 'eurekaserver'
+      - targets: [ 'gateway-server-s:8072' ]
+
+  - job_name: 'Eureka-Server'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: [ 'eurekaserver:8070' ]
-  - job_name: 'configserver'
+      - targets: [ 'eureka-server-s:8070' ]
+
+  - job_name: 'Config-Server'
     metrics_path: '/actuator/prometheus'
     static_configs:
-      - targets: [ 'configserver:8071' ]
+      - targets: [ 'config-server-s:8071' ]
   
