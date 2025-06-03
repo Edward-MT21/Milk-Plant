@@ -262,7 +262,7 @@ public class MilkSupplierController {
         return ResponseEntity.status(HttpStatus.OK).body(environment.getProperty("JAVA_HOME"));
     }
 
-    public ResponseEntity<String> getJavaHomeFallback() {
+    public ResponseEntity<String> getJavaHomeFallback(Throwable throwable) {
         return ResponseEntity.status(HttpStatus.OK).body("Java 17");
     }
 

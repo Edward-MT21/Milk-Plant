@@ -91,9 +91,9 @@ public class PersonController {
     @GetMapping("/fetchPersonById")
     public ResponseEntity<PersonOutDto> fetchPersonById(
             @RequestHeader("milk-plant-correlation-id") String correlationId, @RequestParam Long personId) {
-        logger.debug("milk-plant-correlation-id found in PersonController fetchPersonById : {}",
-                correlationId);
+        logger.debug("fetchPersonById start");
         PersonOutDto personOutDto = personServiceImpl.fetchPersonById(personId);
+        logger.debug("fetchPersonById end");
         return ResponseEntity.status(HttpStatus.OK).body(personOutDto);
     }
 

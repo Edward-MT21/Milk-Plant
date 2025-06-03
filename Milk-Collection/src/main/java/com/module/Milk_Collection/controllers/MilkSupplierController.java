@@ -275,9 +275,9 @@ public class MilkSupplierController {
     public ResponseEntity<MilkSupplierDetailsDto> fetchMilkSupplierDetailsById(
             @RequestHeader("milk-plant-correlation-id") String correlationId,
             @RequestParam Long milkSupplierId) {
-        logger.debug("milk-plant-correlation-id found in MilkSupplierController fetchMilkSupplierDetailsById : {}",
-                correlationId);
+        logger.debug("fetchMilkSupplierDetailsById start");
         MilkSupplierDetailsDto milkSupplierDetailsDto = iMilkSupplierService.fetchMilkSupplierDetailsById(milkSupplierId, correlationId);
+        logger.debug("fetchMilkSupplierDetailsById end");
         return ResponseEntity.status(HttpStatus.OK).body(milkSupplierDetailsDto);
     }
 
