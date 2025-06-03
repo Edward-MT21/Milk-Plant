@@ -32,7 +32,7 @@ public class FinancialManagementController {
 
     @GetMapping("/getGreeting")
     public String getGreeting(@RequestHeader("milk-plant-correlation-id") String correlationId) {
-        logger.debug("fetchPersonById start and end");
+        logger.debug("getGreeting start and end");
         return "Hello World since getGreeting FinancialManagement.";
     }
 

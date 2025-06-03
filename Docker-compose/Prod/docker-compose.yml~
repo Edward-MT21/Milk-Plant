@@ -267,10 +267,12 @@ services:
             service: microservice-base-config
         healthcheck:
             test: "curl --fail --silent localhost:8071/actuator/health/readiness | grep UP || exit 1"
-            interval: 10s
+            interval: 20s
             timeout: 5s
-            retries: 10
+            retries: 20
             start_period: 10s
+        environment:
+            OTEL_SERVICE_NAME: "config-server-s"
 
     eureka-server-s:
         image: "edwarddocker270/eureka-server:s11"
@@ -282,15 +284,16 @@ services:
             service: microservice-configserver-config
         healthcheck:
             test: "curl --fail --silent localhost:8070/actuator/health/readiness | grep UP || exit 1"
-            interval: 10s
+            interval: 20s
             timeout: 5s
-            retries: 10
+            retries: 20
             start_period: 10s
         depends_on:
             config-server-s:
                 condition: service_healthy
         environment:
             SPRING_APPPLICATION_NAME: "Eureka-Server"
+            OTEL_SERVICE_NAME: "eureka-server-s"
 
     milk-collection-s:
         image: "edwarddocker270/milk-collection:s11"
@@ -309,6 +312,7 @@ services:
         environment:
             SPRING_APPPLICATION_NAME: "Milk-Collection"
             SPRING_DATASOURCE_URL: "jdbc:mysql://milk-collection-db:3306/milk-collection-db"
+            OTEL_SERVICE_NAME: "milk-collection-s"
         depends_on:
             milk-collection-db:
                 condition: service_healthy
@@ -334,6 +338,7 @@ services:
         environment:
             SPRING_APPPLICATION_NAME: "Persons"
             SPRING_DATASOURCE_URL: "jdbc:mysql://persons-db:3306/persons-db"
+            OTEL_SERVICE_NAME: "persons-s"
         depends_on:
             persons-db:
                 condition: service_healthy
@@ -346,9 +351,9 @@ services:
         image: "edwarddocker270/financial-management:s11"
         container_name: financial-management-ms
         ports:
-            - "7070:7070"
+            - "8280:8280"
         healthcheck:
-            test: "curl --fail --silent localhost:7070/actuator/health/readiness | grep UP || exit 1"
+            test: "curl --fail --silent localhost:8280/actuator/health/readiness | grep UP || exit 1"
             interval: 10s
             timeout: 5s
             retries: 10
@@ -359,6 +364,7 @@ services:
         environment:
             SPRING_APPPLICATION_NAME: "Financial-Management"
             SPRING_DATASOURCE_URL: "jdbc:mysql://financial-management-db:3306/financial-management-db"
+            OTEL_SERVICE_NAME: "financial-management-s"
         depends_on:
             financial-management-db:
                 condition: service_healthy
@@ -381,6 +387,7 @@ services:
 #            SPRING_DATA_REDIS_HOST: redis
 #            SPRING_DATA_REDIS_PORT: 6379
 #            SPRING_DATA_REDIS_TIMEOUT: 1s
+            OTEL_SERVICE_NAME: "gateway-server-s"
         depends_on:
             milk-collection-s:
                 condition: service_healthy
