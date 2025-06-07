@@ -1,4 +1,16 @@
 services:
+    keycloak:
+        image: quay.io/keycloak/keycloak:26.0.7
+        container_name: keycloak
+        ports:
+            - "7080:8080"
+        environment:
+            KEYCLOAK_ADMIN: "admin"
+            KEYCLOAK_ADMIN_PASSWORD: "admin"
+        command: "start-dev"
+        extends:
+            file: common-config.yml
+            service: network-deploy-service
 
 #    redis:
 #        image: redis
@@ -258,7 +270,7 @@ services:
             service: microservice-db-config
 
     config-server-s:
-        image: "edwarddocker270/config-server:s11"
+        image: "edwarddocker270/config-server:s12"
         container_name: config-server-ms
         ports:
             - "8071:8071"
@@ -275,7 +287,7 @@ services:
             OTEL_SERVICE_NAME: "config-server-s"
 
     eureka-server-s:
-        image: "edwarddocker270/eureka-server:s11"
+        image: "edwarddocker270/eureka-server:s12"
         container_name: eureka-server-ms
         ports:
             - "8070:8070"
@@ -296,15 +308,15 @@ services:
             OTEL_SERVICE_NAME: "eureka-server-s"
 
     milk-collection-s:
-        image: "edwarddocker270/milk-collection:s11"
+        image: "edwarddocker270/milk-collection:s12"
         container_name: milk-collection-ms
-        ports:
-            - "8080:8080"
+        #ports:
+        #    - "8080:8080"
         healthcheck:
             test: "curl --fail --silent localhost:8080/actuator/health/readiness | grep UP || exit 1"
-            interval: 10s
+            interval: 20s
             timeout: 5s
-            retries: 10
+            retries: 20
             start_period: 10s
         extends:
             file: common-config.yml
@@ -322,15 +334,15 @@ services:
                 condition: service_healthy
 
     persons-s:
-        image: "edwarddocker270/persons:s11"
+        image: "edwarddocker270/persons:s12"
         container_name: persons-ms
-        ports:
-            - "8180:8180"
+        #ports:
+        #    - "8180:8180"
         healthcheck:
             test: "curl --fail --silent localhost:8180/actuator/health/readiness | grep UP || exit 1"
-            interval: 10s
+            interval: 20s
             timeout: 5s
-            retries: 10
+            retries: 20
             start_period: 10s
         extends:
             file: common-config.yml
@@ -348,15 +360,15 @@ services:
                 condition: service_healthy
 
     financial-management-s:
-        image: "edwarddocker270/financial-management:s11"
+        image: "edwarddocker270/financial-management:s12"
         container_name: financial-management-ms
-        ports:
-            - "8280:8280"
+        #ports:
+        #    - "8280:8280"
         healthcheck:
             test: "curl --fail --silent localhost:8280/actuator/health/readiness | grep UP || exit 1"
-            interval: 10s
+            interval: 20s
             timeout: 5s
-            retries: 10
+            retries: 20
             start_period: 10s
         extends:
             file: common-config.yml
@@ -374,7 +386,7 @@ services:
                 condition: service_healthy
 
     gateway-server-s:
-        image: "edwarddocker270/gateway-server:s11"
+        image: "edwarddocker270/gateway-server:s12"
         container_name: gateway-server-ms
         ports:
             - "8072:8072"

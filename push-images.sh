@@ -5,7 +5,7 @@ IMAGES=("config-server" "eureka-server" "milk-collection" "persons" "financial-m
 
 # Registro de Docker (modifica según tu necesidad)
 DOCKER_REGISTRY="docker.io/edwarddocker270"
-TAG="s11"
+TAG="s12"
 
 # Recorre cada imagen y la sube al registro
 for IMAGE in "${IMAGES[@]}"; do
