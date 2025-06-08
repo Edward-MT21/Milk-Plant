@@ -31,5 +31,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-Docker-compose/Prod/.data/

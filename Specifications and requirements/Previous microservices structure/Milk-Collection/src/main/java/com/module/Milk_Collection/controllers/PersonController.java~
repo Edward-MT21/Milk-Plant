@@ -1,0 +1,57 @@
+package com.module.Milk_Collection.controllers;
+
+import com.module.Milk_Collection.model.dtos.PersonInDto;
+import com.module.Milk_Collection.model.dtos.PersonOutDto;
+import com.module.Milk_Collection.services.PersonService;
+import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+//import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/PersonController")
+@RequiredArgsConstructor
+@Validated
+public class PersonController {
+
+    private final PersonService personService;
+
+    /**
+     * Creates a new person with the given data.
+     * @param personInDto the data transfer object containing the details of the person to be created
+     *                    including names, last names, identification number, age, and gender.
+     */
+    @PostMapping("/createPerson")
+    @ResponseStatus(HttpStatus.CREATED)
+   // @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public void createPerson(@Valid @RequestBody PersonInDto personInDto) {
+        personService.createPerson(personInDto);
+    }
+
+    /**
+     * Edits a person with the given data.
+     * @param personInDto the data transfer object containing the details of the person to be edited
+     *                    including names, last names, identification number, age, and gender.
+     */
+    @PostMapping("/createPerson")
+    @ResponseStatus(HttpStatus.CREATED)
+    public void editPerson(@Valid @RequestBody PersonInDto personInDto) {
+        personService.editPerson(personInDto);
+    }
+
+    /**
+     * Returns a list of all persons in the database.
+     * @return a list of data transfer objects containing the details of each person
+     */
+    @GetMapping("/getAllPersons")
+    @ResponseStatus(HttpStatus.OK)
+    //@PreAuthorize("hasRole('ROLE_USER')")
+    public List<PersonOutDto> getAllPersons() {
+        return personService.getAllPersons();
+    }
+
+}
