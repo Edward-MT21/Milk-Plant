@@ -3,16 +3,16 @@ package com.module.Milk_Collection.services.impl;
 import com.module.Milk_Collection.exception.MilkSupplierAlreadyExistsException;
 import com.module.Milk_Collection.exception.ResourceNotFoundException;
 import com.module.Milk_Collection.mapper.MilkSupplierMapper;
-import com.module.Milk_Collection.model.dtos.MilkSupplierDetailsDto;
-import com.module.Milk_Collection.model.dtos.MilkSupplierInDto;
-import com.module.Milk_Collection.model.dtos.MilkSupplierOutDto;
-import com.module.Milk_Collection.model.dtos.PersonOutDto;
+import com.module.Milk_Collection.model.dtos.*;
 import com.module.Milk_Collection.model.entities.MilkSupplier;
 import com.module.Milk_Collection.repositories.IMilkSupplierRepository;
 import com.module.Milk_Collection.services.IMilkSupplierService;
 import com.module.Milk_Collection.services.client.IFinancialManagementFeingClient;
 import com.module.Milk_Collection.services.client.IPersonsFeingClient;
 import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +22,12 @@ import java.util.Optional;
 @AllArgsConstructor
 public class MilkSupplierServiceImpl implements IMilkSupplierService {
 
+    private static final Logger log = LoggerFactory.getLogger(MilkSupplierServiceImpl.class);
+
     IMilkSupplierRepository iMilkSupplierRepository;
     IPersonsFeingClient iPersonsFeingClient;
     IFinancialManagementFeingClient iFinancialManagementFeingClient;
+    private final StreamBridge streamBridge;
 
     @Override
     public void createMilkSupplier(MilkSupplierInDto milkSupplierInDto) {
@@ -36,7 +39,15 @@ public class MilkSupplierServiceImpl implements IMilkSupplierService {
                         + milkSupplierInDto.getMilkSupplierId());
             }
         }
-        iMilkSupplierRepository.saveAndFlush(milkSupplier);
+        MilkSupplier savedMilkSupplier = iMilkSupplierRepository.saveAndFlush(milkSupplier);
+        sendCommunication(savedMilkSupplier);
+    }
+
+    private void sendCommunication(MilkSupplier milkSupplier) {
+        var milkCollectionMsgDto = new MilkCollectionMsgDto(milkSupplier.getMilkSupplierId(), milkSupplier.getPersonId());
+        log.info("Sending Communication request for the details: {}", milkCollectionMsgDto);
+        var result = streamBridge.send("sendCommunication-out-0", milkCollectionMsgDto);
+        log.info("Is the Communication request successfully triggered ? : {}", result);
     }
 
     @Override
