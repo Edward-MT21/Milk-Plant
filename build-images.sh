@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Directorios específicos donde se construirán las imágenes
-SERVICES=("Config-Server" "Eureka-Server" "Milk-Collection" "Persons" "Financial-Management" "Gateway-Server")  # Agrega aquí los nombres de los directorios
+SERVICES=("Config-Server" "Eureka-Server" "Milk-Collection" "Persons" "Financial-Management" "Gateway-Server" "Messages")  # Agrega aquí los nombres de los directorios
 
 # Recorre los directorios especificados
 for SERVICE in "${SERVICES[@]}"; do

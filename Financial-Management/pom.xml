@@ -126,7 +126,7 @@
 				<version>3.4.5</version>
 				<configuration>
 					<to>
-						<image>edwarddocker270/financial-management:s12</image>
+						<image>edwarddocker270/financial-management:s13</image>
 					</to>
 				</configuration>
 			</plugin>

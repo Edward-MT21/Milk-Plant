@@ -1,4 +1,21 @@
 services:
+
+    rabbit:
+        image: rabbitmq:4.0-management
+        hostname: rabbitmq
+        ports:
+            - "5672:5672"
+            - "15672:15672"
+        healthcheck:
+            test: rabbitmq-diagnostics check_port_connectivity
+            interval: 10s
+            timeout: 5s
+            retries: 10
+            start_period: 5s
+        extends:
+            file: common-config.yml
+            service: network-deploy-service
+
     keycloak:
         image: quay.io/keycloak/keycloak:26.0.7
         container_name: keycloak
@@ -270,7 +287,7 @@ services:
             service: microservice-db-config
 
     config-server-s:
-        image: "edwarddocker270/config-server:s12"
+        image: "edwarddocker270/config-server:s13"
         container_name: config-server-ms
         ports:
             - "8071:8071"
@@ -287,7 +304,7 @@ services:
             OTEL_SERVICE_NAME: "config-server-s"
 
     eureka-server-s:
-        image: "edwarddocker270/eureka-server:s12"
+        image: "edwarddocker270/eureka-server:s13"
         container_name: eureka-server-ms
         ports:
             - "8070:8070"
@@ -308,7 +325,7 @@ services:
             OTEL_SERVICE_NAME: "eureka-server-s"
 
     milk-collection-s:
-        image: "edwarddocker270/milk-collection:s12"
+        image: "edwarddocker270/milk-collection:s13"
         container_name: milk-collection-ms
         #ports:
         #    - "8080:8080"
@@ -325,6 +342,7 @@ services:
             SPRING_APPPLICATION_NAME: "Milk-Collection"
             SPRING_DATASOURCE_URL: "jdbc:mysql://milk-collection-db:3306/milk-collection-db"
             OTEL_SERVICE_NAME: "milk-collection-s"
+            SPRING_RABBITMQ_HOST: "rabbit"
         depends_on:
             milk-collection-db:
                 condition: service_healthy
@@ -332,9 +350,11 @@ services:
                 condition: service_healthy
             eureka-server-s:
                 condition: service_healthy
+            rabbit:
+                condition: service_healthy
 
     persons-s:
-        image: "edwarddocker270/persons:s12"
+        image: "edwarddocker270/persons:s13"
         container_name: persons-ms
         #ports:
         #    - "8180:8180"
@@ -360,7 +380,7 @@ services:
                 condition: service_healthy
 
     financial-management-s:
-        image: "edwarddocker270/financial-management:s12"
+        image: "edwarddocker270/financial-management:s13"
         container_name: financial-management-ms
         #ports:
         #    - "8280:8280"
@@ -386,7 +406,7 @@ services:
                 condition: service_healthy
 
     gateway-server-s:
-        image: "edwarddocker270/gateway-server:s12"
+        image: "edwarddocker270/gateway-server:s13"
         container_name: gateway-server-ms
         ports:
             - "8072:8072"
@@ -400,6 +420,7 @@ services:
 #            SPRING_DATA_REDIS_PORT: 6379
 #            SPRING_DATA_REDIS_TIMEOUT: 1s
             OTEL_SERVICE_NAME: "gateway-server-s"
+            SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: "http://keycloak:8080/realms/master/protocol/openid-connect/certs"
         depends_on:
             milk-collection-s:
                 condition: service_healthy
