@@ -108,6 +108,20 @@ public class MilkSupplierServiceImpl implements IMilkSupplierService {
         return MilkSupplierMapper.mapToMilkSupplierDetailsDto(milkSupplier, personOutDtoResponseEntity, greetingFinancialManagement);
     }
 
+    @Override
+    public boolean updateCommunicationStatus(Long milkSupplierId) {
+        boolean isUpdated = false;
+        if(milkSupplierId !=null ){
+            MilkSupplier milkSupplier = iMilkSupplierRepository.findById(milkSupplierId).orElseThrow(
+                    () -> new ResourceNotFoundException("milkSupplier", "milkSupplierId", milkSupplierId.toString())
+            );
+            milkSupplier.setCommunicationSw(true);
+            iMilkSupplierRepository.save(milkSupplier);
+            isUpdated = true;
+        }
+        return  isUpdated;
+    }
+
 
 
 

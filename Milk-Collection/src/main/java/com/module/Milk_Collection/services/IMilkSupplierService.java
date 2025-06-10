@@ -26,4 +26,6 @@ public interface IMilkSupplierService {
 
     MilkSupplierDetailsDto fetchMilkSupplierDetailsById(Long milkSupplierId, String correlationId);
 
+    boolean updateCommunicationStatus(Long milkSupplierId);
+
 }

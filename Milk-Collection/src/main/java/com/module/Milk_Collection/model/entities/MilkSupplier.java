@@ -21,6 +21,9 @@ public class MilkSupplier extends BaseEntity {
     @Column(name = "person_id")
     private Long personId;
 
+    @Column(name = "communication_sw")
+    private Boolean communicationSw;
+
 
 
 }
