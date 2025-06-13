@@ -1,20 +1,41 @@
 services:
 
-    rabbit:
-        image: rabbitmq:4.0-management
-        hostname: rabbitmq
+    kafka:
+        image: docker.io/bitnami/kafka:3.9
         ports:
-            - "5672:5672"
-            - "15672:15672"
-        healthcheck:
-            test: rabbitmq-diagnostics check_port_connectivity
-            interval: 10s
-            timeout: 5s
-            retries: 10
-            start_period: 5s
+            - "9092:9092"
+        volumes:
+            - "kafka_data:/bitnami"
+        environment:
+            # KRaft settings
+            - KAFKA_CFG_NODE_ID=0
+            - KAFKA_CFG_PROCESS_ROLES=controller,broker
+            - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kafka:9093
+            # Listeners
+            - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093
+            - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://:9092
+            - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT
+            - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
+            - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
         extends:
             file: common-config.yml
             service: network-deploy-service
+
+#    rabbit: # Remplaced by Kafka
+#        image: rabbitmq:4.0-management
+#        hostname: rabbitmq
+#        ports:
+#            - "5672:5672"
+#            - "15672:15672"
+#        healthcheck:
+#            test: rabbitmq-diagnostics check_port_connectivity
+#            interval: 10s
+#            timeout: 5s
+#            retries: 10
+#            start_period: 5s
+#        extends:
+#            file: common-config.yml
+#            service: network-deploy-service
 
     keycloak:
         image: quay.io/keycloak/keycloak:26.0.7
@@ -287,7 +308,7 @@ services:
             service: microservice-db-config
 
     config-server-s:
-        image: "edwarddocker270/config-server:s13"
+        image: "edwarddocker270/config-server:s14"
         container_name: config-server-ms
         ports:
             - "8071:8071"
@@ -304,7 +325,7 @@ services:
             OTEL_SERVICE_NAME: "config-server-s"
 
     eureka-server-s:
-        image: "edwarddocker270/eureka-server:s13"
+        image: "edwarddocker270/eureka-server:s14"
         container_name: eureka-server-ms
         ports:
             - "8070:8070"
@@ -325,7 +346,7 @@ services:
             OTEL_SERVICE_NAME: "eureka-server-s"
 
     milk-collection-s:
-        image: "edwarddocker270/milk-collection:s13"
+        image: "edwarddocker270/milk-collection:s14"
         container_name: milk-collection-ms
         #ports:
         #    - "8080:8080"
@@ -342,7 +363,8 @@ services:
             SPRING_APPPLICATION_NAME: "Milk-Collection"
             SPRING_DATASOURCE_URL: "jdbc:mysql://milk-collection-db:3306/milk-collection-db"
             OTEL_SERVICE_NAME: "milk-collection-s"
-            SPRING_RABBITMQ_HOST: "rabbit"
+            #SPRING_RABBITMQ_HOST: "rabbit"
+            SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: "kafka:9092"
         depends_on:
             milk-collection-db:
                 condition: service_healthy
@@ -350,11 +372,11 @@ services:
                 condition: service_healthy
             eureka-server-s:
                 condition: service_healthy
-            rabbit:
-                condition: service_healthy
+            #rabbit:
+            #    condition: service_healthy
 
     persons-s:
-        image: "edwarddocker270/persons:s13"
+        image: "edwarddocker270/persons:s14"
         container_name: persons-ms
         #ports:
         #    - "8180:8180"
@@ -380,7 +402,7 @@ services:
                 condition: service_healthy
 
     financial-management-s:
-        image: "edwarddocker270/financial-management:s13"
+        image: "edwarddocker270/financial-management:s14"
         container_name: financial-management-ms
         #ports:
         #    - "8280:8280"
@@ -405,8 +427,21 @@ services:
             eureka-server-s:
                 condition: service_healthy
 
+    messages:
+        image: "edwarddocker270/messages:s14"
+        container_name: messages-ms
+        #depends_on:
+        #    rabbit:
+        #        condition: service_healthy
+        environment:
+            #SPRING_RABBITMQ_HOST: "rabbit"
+            SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: "kafka:9092"
+        extends:
+            file: common-config.yml
+            service: network-deploy-service
+
     gateway-server-s:
-        image: "edwarddocker270/gateway-server:s13"
+        image: "edwarddocker270/gateway-server:s14"
         container_name: gateway-server-ms
         ports:
             - "8072:8072"

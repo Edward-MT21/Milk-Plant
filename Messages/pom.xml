@@ -97,7 +97,7 @@
 				<version>3.4.5</version>
 				<configuration>
 					<to>
-						<image>edwarddocker270/messages:s13</image>
+						<image>edwarddocker270/messages:s14</image>
 					</to>
 				</configuration>
 			</plugin>
