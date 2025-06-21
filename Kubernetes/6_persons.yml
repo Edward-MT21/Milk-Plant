@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: persons-deployment
+  labels:
+    app: persons
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: persons
+  template:
+    metadata:
+      labels:
+        app: persons
+    spec:
+      containers:
+        - name: persons
+          image: edwarddocker270/persons:s12
+          ports:
+            - containerPort: 8180
+          env:
+            - name: SPRING_APPLICATION_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: milk-plant-configmap
+                  key: PERSONS_APPLICATION_NAME
+            - name: SPRING_PROFILES_ACTIVE
+              valueFrom:
+                configMapKeyRef:
+                  name: milk-plant-configmap
+                  key: SPRING_PROFILES_ACTIVE
+            - name: SPRING_CONFIG_IMPORT
+              valueFrom:
+                configMapKeyRef:
+                  name: milk-plant-configmap
+                  key: SPRING_CONFIG_IMPORT
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              valueFrom:
+                configMapKeyRef:
+                  name: milk-plant-configmap
+                  key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: milk-plant-configmap
+                  key: PERSONS_SPRING_DATASOURCE_URL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: persons
+spec:
+  selector:
+    app: persons
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8180
+      targetPort: 8180

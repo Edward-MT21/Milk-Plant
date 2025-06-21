@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: config-server
-          image: edwarddocker270/config-server:s14
+          image: edwarddocker270/config-server:s12
           ports:
             - containerPort: 8071
 ---

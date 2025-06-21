@@ -4,7 +4,7 @@ metadata:
   name: milk-plant-configmap
 data:
   SPRING_PROFILES_ACTIVE: "prod"
-  SPRING_CONFIG_IMPORT: "config-server:http://config-server:8071/"
+  SPRING_CONFIG_IMPORT: "configserver:http://config-server:8071/"
   EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: "http://eureka-server:8070/eureka/"
   CONFIG_SERVER_APPLICATION_NAME: "Config-server"
   EUREKA_APPLICATION_NAME: "Eureka-Server"
@@ -15,3 +15,6 @@ data:
   KEYCLOAK_ADMIN: "admin"
   KEYCLOAK_ADMIN_PASSWORD: "admin"
   SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: "http://keycloak:7080/realms/master/protocol/openid-connect/certs"
+  MILK_COLLECTION_SPRING_DATASOURCE_URL: "jdbc:mysql://milk-collection-db-service:3306/milk-collection-db"
+  PERSONS_SPRING_DATASOURCE_URL: "jdbc:mysql://persons-db-service:3307/persons-db"
+  FINANCIAL_MANAGEMENT_SPRING_DATASOURCE_URL: "jdbc:mysql://financial-management-db-service:3308/financial-management-db"

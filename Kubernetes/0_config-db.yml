@@ -1,0 +1,181 @@
+# -----------------------------------------------------
+# Milk Collection DB
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: milk-collection-db-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 300Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: milk-collection-db-deployment
+  labels:
+    app: milk-collection-db-label
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: milk-collection-db-label
+  template:
+    metadata:
+      labels:
+        app: milk-collection-db-label
+    spec:
+      containers:
+        - name: milk-collection-db
+          image: mysql
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+            - name: MYSQL_DATABASE
+              value: milk-collection-db
+          volumeMounts:
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-storage
+          persistentVolumeClaim:
+            claimName: milk-collection-db-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: milk-collection-db-service
+spec:
+  selector:
+    app: milk-collection-db-label
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+  type: LoadBalancer
+
+# -----------------------------------------------------
+# Persons DB
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: persons-db-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 300Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: persons-db-deployment
+  labels:
+    app: persons-db-label
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: persons-db-label
+  template:
+    metadata:
+      labels:
+        app: persons-db-label
+    spec:
+      containers:
+        - name: persons-db
+          image: mysql
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+            - name: MYSQL_DATABASE
+              value: persons-db
+          volumeMounts:
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-storage
+          persistentVolumeClaim:
+            claimName: persons-db-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: persons-db-service
+spec:
+  selector:
+    app: persons-db-label
+  ports:
+    - protocol: TCP
+      port: 3307
+      targetPort: 3306
+  type: LoadBalancer
+
+# -----------------------------------------------------
+# Financial Management DB
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: financial-management-db-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 300Mi
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: financial-management-db-deployment
+  labels:
+    app: financial-management-db-label
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: financial-management-db-label
+  template:
+    metadata:
+      labels:
+        app: financial-management-db-label
+    spec:
+      containers:
+        - name: financial-management-db
+          image: mysql
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+            - name: MYSQL_DATABASE
+              value: financial-management-db
+          volumeMounts:
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-storage
+          persistentVolumeClaim:
+            claimName: financial-management-db-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: financial-management-db-service
+spec:
+  selector:
+    app: financial-management-db-label
+  ports:
+    - protocol: TCP
+      port: 3308
+      targetPort: 3306
+  type: LoadBalancer

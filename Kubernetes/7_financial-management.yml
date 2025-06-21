@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: financial-management-deployment
+  labels:
+    app: financial-management
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: financial-management
+  template:
+    metadata:
+      labels:
+        app: financial-management
+    spec:
+      containers:
+        - name: financial-management
+          image: edwarddocker270/financial-management:s12
+          ports:
+            - containerPort: 8280
+          env:
+            - name: SPRING_APPLICATION_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: milk-plant-configmap
+                  key: FINANCIAL_MANAGEMENT_APPLICATION_NAME
+            - name: SPRING_PROFILES_ACTIVE
+              valueFrom:
+                configMapKeyRef:
+                  name: milk-plant-configmap
+                  key: SPRING_PROFILES_ACTIVE
+            - name: SPRING_CONFIG_IMPORT
+              valueFrom:
+                configMapKeyRef:
+                  name: milk-plant-configmap
+                  key: SPRING_CONFIG_IMPORT
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              valueFrom:
+                configMapKeyRef:
+                  name: milk-plant-configmap
+                  key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: milk-plant-configmap
+                  key: FINANCIAL_MANAGEMENT_SPRING_DATASOURCE_URL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: financial-management
+spec:
+  selector:
+    app: financial-management
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8280
+      targetPort: 8280
