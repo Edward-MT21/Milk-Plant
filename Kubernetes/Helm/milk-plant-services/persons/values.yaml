@@ -4,7 +4,7 @@
 deploymentName: persons-deployment
 serviceName: persons
 appLabel: persons
-appName: persons
+appName: Persons
 
 replicaCount: 1
 
@@ -26,3 +26,17 @@ eureka_enabled: true
 resouceserver_enabled: false
 otel_enabled: true
 kafka_enabled: false
+db_enabled: true
+
+db:
+  pvcName: persons-db-pvc
+  pvcStorage: 300Mi
+  deploymentName: persons-db-deployment
+  deploymentLabel: persons-db-label
+  initialDataBase: persons-db
+  serviceName: persons-db-service
+  service:
+    type: LoadBalancer
+    port: 3307
+    targetPort: 3306
+  datasourceURL: "jdbc:mysql://persons-db-service:3307/persons-db"

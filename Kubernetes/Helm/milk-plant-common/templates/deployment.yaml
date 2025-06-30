@@ -85,5 +85,24 @@ spec:
               name: {{ .Values.global.configMapName }}
               key: SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS
         {{- end }}
-        
-{{- end -}}
+        {{- if .Values.db_enabled }}
+        - name: SPRING_DATASOURCE_URL
+          value: {{ .Values.db.datasourceURL }}
+        {{- end }}
+        - name: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: OTEL_EXPORTER_OTLP_TRACES_ENDPOINT
+        - name: OTEL_EXPORTER_OTLP_PROTOCOL
+          valueFrom:
+            configMapKeyRef:
+              name: {{ .Values.global.configMapName }}
+              key: OTEL_EXPORTER_OTLP_PROTOCOL
+        - name: OTEL_JAVAAGENT_DEBUG
+          value: "{{ .Values.global.otelJavaagentDebug }}"
+        - name: OTEL_TRACES_EXPORTER
+          value: otlp
+
+
+  {{- end -}}

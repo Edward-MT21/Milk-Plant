@@ -4,7 +4,7 @@
 deploymentName: messages-deployment
 serviceName: messages
 appLabel: messages
-appName: messages
+appName: Messages
 
 replicaCount: 1
 
@@ -26,3 +26,4 @@ eureka_enabled: false
 resouceserver_enabled: false
 otel_enabled: false
 kafka_enabled: true
+db_enabled: false

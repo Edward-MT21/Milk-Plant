@@ -1,0 +1,127 @@
+---
+# Source: prod-env/templates/configmap.yaml
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: milk-plant-prod-configmap
+data:
+  SPRING_PROFILES_ACTIVE: prod
+  SPRING_CONFIG_IMPORT: configserver:http://config-server:8071/
+  EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eureka-server:8070/eureka/
+  SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: http://keycloak.default.svc.cluster.local:80/realms/master/protocol/openid-connect/certs
+  JAVA_TOOL_OPTIONS: -javaagent:/app/libs/opentelemetry-javaagent-2.11.0.jar
+  OTEL_EXPORTER_OTLP_ENDPOINT: http://tempo-grafana-tempo-distributor:4318
+  OTEL_METRICS_EXPORTER: none
+  OTEL_LOGS_EXPORTER: none
+  SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: kafka-controller-0.kafka-controller-headless.default.svc.cluster.local:9092
+---
+# Source: prod-env/charts/config-server/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: config-server
+spec:
+  selector:
+    app: config-server
+  type: LoadBalancer
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8071
+      targetPort: 8071
+---
+# Source: prod-env/charts/eureka-server/templates/service.yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: eureka-server
+spec:
+  selector:
+    app: eureka-server
+  type: LoadBalancer
+  ports:
+    - name: http
+      protocol: TCP
+      port: 8070
+      targetPort: 8070
+---
+# Source: prod-env/charts/config-server/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: config-server-deployment
+  labels:
+    app: config-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: config-server
+  template:
+    metadata:
+      labels:
+        app: config-server
+    spec:
+      containers:
+        - name: config-server
+          image: "edwarddocker270/config-server:s12"
+          ports:
+            - containerPort: 8071
+              protocol: TCP
+          env:
+            - name: SPRING_APPLICATION_NAME
+              value: config-server
+            - name: JAVA_TOOL_OPTIONS
+              valueFrom:
+                configMapKeyRef:
+                  name: milk-plant-prod-configmap
+                  key: JAVA_TOOL_OPTIONS
+            - name: OTEL_EXPORTER_OTLP_ENDPOINT
+              valueFrom:
+                configMapKeyRef:
+                  name: milk-plant-prod-configmap
+                  key: OTEL_EXPORTER_OTLP_ENDPOINT
+            - name: OTEL_METRICS_EXPORTER
+              valueFrom:
+                configMapKeyRef:
+                  name: milk-plant-prod-configmap
+                  key: OTEL_METRICS_EXPORTER
+            - name: OTEL_LOGS_EXPORTER
+              valueFrom:
+                configMapKeyRef:
+                  name: milk-plant-prod-configmap
+                  key: OTEL_LOGS_EXPORTER
+            - name: OTEL_SERVICE_NAME
+              value: config-server
+---
+# Source: prod-env/charts/eureka-server/templates/deployment.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: eureka-server-deployment
+  labels:
+    app: eureka-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: eureka-server
+  template:
+    metadata:
+      labels:
+        app: eureka-server
+    spec:
+      containers:
+        - name: eureka-server
+          image: "edwarddocker270/eureka-server:s12"
+          ports:
+            - containerPort: 8070
+              protocol: TCP
+          env:
+            - name: SPRING_APPLICATION_NAME
+              value: Eureka-Server
+            - name: SPRING_CONFIG_IMPORT
+              valueFrom:
+                configMapKeyRef:
+                  name: milk-plant-prod-configmap
+                  key: SPRING_CONFIG_IMPORT

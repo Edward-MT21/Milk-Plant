@@ -4,7 +4,7 @@
 deploymentName: financial-management-deployment
 serviceName: financial-management
 appLabel: financial-management
-appName: financial-management
+appName: Financial-Management
 
 replicaCount: 1
 
@@ -26,3 +26,17 @@ eureka_enabled: true
 resouceserver_enabled: false
 otel_enabled: true
 kafka_enabled: false
+db_enabled: true
+
+db:
+  pvcName: financial-management-db-pvc
+  pvcStorage: 300Mi
+  deploymentName: financial-management-db-deployment
+  deploymentLabel: financial-management-db-label
+  initialDataBase: financial-management-db
+  serviceName: financial-management-db-service
+  service:
+    type: LoadBalancer
+    port: 3308
+    targetPort: 3306
+  datasourceURL: "jdbc:mysql://financial-management-db-service:3308/financial-management-db"

@@ -24,4 +24,4 @@ dependencies:
   repository: file://../../milk-plant-services/messages
   version: 0.1.0
 digest: sha256:9f2fc04379afc367a7ca410fb56dc3f9e9347eed99461312152646e3c8d00c07
-generated: "2025-06-23T11:17:22.1170132-05:00"
+generated: "2025-06-25T17:56:42.2273614-05:00"

@@ -4,7 +4,7 @@
 deploymentName: config-server-deployment
 serviceName: config-server
 appLabel: config-server
-appName: config-server
+appName: Config-Server
 
 replicaCount: 1
 
@@ -15,7 +15,7 @@ image:
 containerPort: 8071
 
 service:
-  type: ClusterIP
+  type: LoadBalancer
   port: 8071
   targetPort: 8071
 
@@ -26,3 +26,4 @@ eureka_enabled: false
 resouceserver_enabled: false
 otel_enabled: true
 kafka_enabled: false
+db_enabled: false

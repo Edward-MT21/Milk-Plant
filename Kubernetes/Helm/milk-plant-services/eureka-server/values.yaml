@@ -4,7 +4,7 @@
 deploymentName: eureka-server-deployment
 serviceName: eureka-server
 appLabel: eureka-server
-appName: eureka-server
+appName: Eureka-Server
 
 replicaCount: 1
 
@@ -15,7 +15,7 @@ image:
 containerPort: 8070
 
 service:
-  type: ClusterIP
+  type: LoadBalancer
   port: 8070
   targetPort: 8070
 
@@ -26,3 +26,4 @@ eureka_enabled: false
 resouceserver_enabled: false
 otel_enabled: true
 kafka_enabled: false
+db_enabled: false

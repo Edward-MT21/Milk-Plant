@@ -22,6 +22,8 @@ Bitnami charts for Helm are carefully engineered, actively maintained and are th
 
 This chart bootstraps a [Grafana Tempo](https://github.com/grafana/tempo) Deployment in a [Kubernetes](https://kubernetes.io) cluster using the [Helm](https://helm.sh) package manager.
 
+Bitnami charts can be used with [Kubeapps](https://kubeapps.dev/) for deployment and management of Helm Charts in clusters.
+
 ## Prerequisites
 
 - Kubernetes 1.23+
@@ -516,19 +518,6 @@ The [Bitnami grafana-tempo](https://github.com/bitnami/containers/tree/main/bitn
 | `metricsGenerator.pdb.minAvailable`                                  | Minimum number/percentage of pods that should remain scheduled                                                                                                                                                                                      | `""`             |
 | `metricsGenerator.pdb.maxUnavailable`                                | Maximum number/percentage of pods that may be made unavailable. Defaults to `1` if both `metricsGenerator.pdb.minAvailable` and `metricsGenerator.pdb.maxUnavailable` are empty.                                                                    | `""`             |
 | `metricsGenerator.enableServiceLinks`                                | Whether information about services should be injected into pod's environment variable                                                                                                                                                               | `true`           |
-
-### Metrics Generator Persistence Parameters
-
-| Name                                         | Description                                                                      | Value               |
-| -------------------------------------------- | -------------------------------------------------------------------------------- | ------------------- |
-| `metricsGenerator.persistence.enabled`       | Enable persistence in Metrics Generator instances                                | `false`             |
-| `metricsGenerator.persistence.existingClaim` | Name of an existing PVC to use                                                   | `""`                |
-| `metricsGenerator.persistence.storageClass`  | PVC Storage Class for Metrics Generator data volume                              | `""`                |
-| `metricsGenerator.persistence.subPath`       | The subdirectory of the volume to mount to                                       | `""`                |
-| `metricsGenerator.persistence.accessModes`   | PVC Access modes                                                                 | `["ReadWriteOnce"]` |
-| `metricsGenerator.persistence.size`          | PVC Storage Request for Metrics Generator data volume                            | `8Gi`               |
-| `metricsGenerator.persistence.annotations`   | Additional PVC annotations                                                       | `{}`                |
-| `metricsGenerator.persistence.selector`      | Selector to match an existing Persistent Volume for Metrics Generator's data PVC | `{}`                |
 
 ### Metrics Generator Traffic Exposure Parameters
 
@@ -1120,10 +1109,6 @@ Find more information about how to deal with common errors related to Bitnami's 
 
 ## Upgrading
 
-### To 4.0.0
-
-The `metrics-generator` component kind has switched from a 'Deployment' to a 'Statefulset'. More details at [Github issue](https://github.com/bitnami/charts/pull/31495).
-
 ### To 3.8.0
 
 This version introduces image verification for security purposes. To disable it, set `global.security.allowInsecureImages` to `true`. More details at [GitHub issue](https://github.com/bitnami/charts/issues/30850).
@@ -1156,7 +1141,7 @@ Additionally updates the Memcached subchart to its newest major `6.x.x`, which c
 
 ## License
 
-Copyright &copy; 2025 Broadcom. The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
+Copyright &copy; 2024 Broadcom. The term "Broadcom" refers to Broadcom Inc. and/or its subsidiaries.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

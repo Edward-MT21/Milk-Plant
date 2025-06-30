@@ -4,7 +4,7 @@
 deploymentName: milk-collection-deployment
 serviceName: milk-collection
 appLabel: milk-collection
-appName: milk-collection
+appName: Milk-Collection
 
 replicaCount: 1
 
@@ -15,7 +15,7 @@ image:
 containerPort: 8080
 
 service:
-  type: ClusterIP
+  type: LoadBalancer
   port: 8080
   targetPort: 8080
 
@@ -26,3 +26,17 @@ eureka_enabled: true
 resouceserver_enabled: false
 otel_enabled: true
 kafka_enabled: true
+db_enabled: true
+
+db:
+  pvcName: milk-collection-db-pvc
+  pvcStorage: 300Mi
+  deploymentName: milk-collection-db-deployment
+  deploymentLabel: milk-collection-db-label
+  initialDataBase: milk-collection-db
+  serviceName: milk-collection-db-service
+  service:
+    type: LoadBalancer
+    port: 3306
+    targetPort: 3306
+  datasourceURL: "jdbc:mysql://milk-collection-db-service:3306/milk-collection-db"

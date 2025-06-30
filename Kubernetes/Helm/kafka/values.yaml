@@ -2480,3 +2480,7 @@ provisioning:
   ##         containerPort: 1234
   ##
   initContainers: []
+
+
+extraConfig:
+  auto.create.topics.enable: "true"

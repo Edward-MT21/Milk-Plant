@@ -4,7 +4,7 @@
 deploymentName: gateway-server-deployment
 serviceName: gateway-server
 appLabel: gateway-server
-appName: gateway-server
+appName: Gateway-Server
 
 replicaCount: 1
 
@@ -26,3 +26,4 @@ eureka_enabled: true
 resouceserver_enabled: true
 otel_enabled: true
 kafka_enabled: false
+db_enabled: false

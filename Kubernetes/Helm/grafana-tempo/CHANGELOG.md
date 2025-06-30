@@ -1,80 +1,8 @@
 # Changelog
 
-## 4.0.10 (2025-06-18)
+## 3.8.2 (2025-01-14)
 
-* [bitnami/grafana-tempo] :zap: :arrow_up: Update dependency references ([#34542](https://github.com/bitnami/charts/pull/34542))
-
-## <small>4.0.9 (2025-06-13)</small>
-
-* [bitnami/grafana-tempo] :zap: :arrow_up: Update dependency references (#34436) ([24a658d](https://github.com/bitnami/charts/commit/24a658d3ade082b2a6e7772e8823fb8aaa6303df)), closes [#34436](https://github.com/bitnami/charts/issues/34436)
-
-## <small>4.0.8 (2025-06-10)</small>
-
-* [bitnami/grafana-tempo] :zap: :arrow_up: Update dependency references (#34308) ([ff62639](https://github.com/bitnami/charts/commit/ff626399162730aa80fbf3703f7a94eb0b16fdba)), closes [#34308](https://github.com/bitnami/charts/issues/34308)
-
-## <small>4.0.7 (2025-06-06)</small>
-
-* [bitnami/grafana-tempo] :zap: :arrow_up: Update dependency references (#34169) ([d94aab6](https://github.com/bitnami/charts/commit/d94aab68213ce4276c7599c69807f2ddd40d86db)), closes [#34169](https://github.com/bitnami/charts/issues/34169)
-
-## <small>4.0.6 (2025-05-13)</small>
-
-* [bitnami/grafana-tempo] :zap: :arrow_up: Update dependency references (#33653) ([6f8e833](https://github.com/bitnami/charts/commit/6f8e8339d8d9cce79ed6def8ec38d6da92ff4eef)), closes [#33653](https://github.com/bitnami/charts/issues/33653)
-* [bitnami/kubeapps] Deprecation followup (#33579) ([77e312c](https://github.com/bitnami/charts/commit/77e312c1772d4d7c4dc5d3ac0e80f4e452e3a062)), closes [#33579](https://github.com/bitnami/charts/issues/33579)
-
-## <small>4.0.5 (2025-05-07)</small>
-
-* [bitnami/grafana-tempo] Release 4.0.5 (#33475) ([dcd04cd](https://github.com/bitnami/charts/commit/dcd04cd70f312155d3462da589e31f5b397dec92)), closes [#33475](https://github.com/bitnami/charts/issues/33475)
-
-## <small>4.0.4 (2025-05-06)</small>
-
-* [bitnami/grafana-tempo] chore: :recycle: :arrow_up: Update common and remove k8s < 1.23 references ( ([8ff7408](https://github.com/bitnami/charts/commit/8ff7408e9951d6d188393420e62f740a0bd121ad)), closes [#33371](https://github.com/bitnami/charts/issues/33371)
-
-## <small>4.0.3 (2025-05-01)</small>
-
-* [bitnami/grafana-tempo] Release 4.0.3 (#33291) ([010e8c6](https://github.com/bitnami/charts/commit/010e8c6e33b5c0cb0c1cf429f17d8b05cae97c59)), closes [#33291](https://github.com/bitnami/charts/issues/33291)
-
-## <small>4.0.2 (2025-04-01)</small>
-
-* [bitnami/grafana-tempo] Release 4.0.2 (#32738) ([4f9b827](https://github.com/bitnami/charts/commit/4f9b827acb409ae1951a8a2e4c54324490c1edf1)), closes [#32738](https://github.com/bitnami/charts/issues/32738)
-
-## <small>4.0.1 (2025-03-25)</small>
-
-* [bitnami/*] Add tanzuCategory annotation (#32409) ([a8fba5c](https://github.com/bitnami/charts/commit/a8fba5cb01f6f4464ca7f69c50b0fbe97d837a95)), closes [#32409](https://github.com/bitnami/charts/issues/32409)
-* [bitnami/grafana-tempo] Release 4.0.1 (#32608) ([5f46177](https://github.com/bitnami/charts/commit/5f4617731516a19148070f1fe4eaae4cf048876b)), closes [#32608](https://github.com/bitnami/charts/issues/32608)
-
-## 4.0.0 (2025-03-10)
-
-* [bitnami/grafana-tempo] Add persistence options for Grafana Tempo metrics generator (#31495) ([54531ce](https://github.com/bitnami/charts/commit/54531ce059d1156a615749485e11e2f30143ea16)), closes [#31495](https://github.com/bitnami/charts/issues/31495)
-
-## <small>3.8.8 (2025-03-05)</small>
-
-* [bitnami/grafana-tempo] Release 3.8.8 (#32293) ([db224f4](https://github.com/bitnami/charts/commit/db224f45293da4a8d9ef81b3e1620272f4e83c8c)), closes [#32293](https://github.com/bitnami/charts/issues/32293)
-
-## <small>3.8.7 (2025-02-19)</small>
-
-* [bitnami/grafana-tempo] Release 3.8.7 (#32001) ([772bb0f](https://github.com/bitnami/charts/commit/772bb0fdf4b08bbb8c2a9f3957502848196c75c3)), closes [#32001](https://github.com/bitnami/charts/issues/32001)
-
-## <small>3.8.6 (2025-02-14)</small>
-
-* [bitnami/*] Use CDN url for the Bitnami Application Icons (#31881) ([d9bb11a](https://github.com/bitnami/charts/commit/d9bb11a9076b9bfdcc70ea022c25ef50e9713657)), closes [#31881](https://github.com/bitnami/charts/issues/31881)
-* [bitnami/grafana-tempo] Release 3.8.6 (#31936) ([3032c3c](https://github.com/bitnami/charts/commit/3032c3c4b84eb75e2b6e1e0370ef4635d5976aa8)), closes [#31936](https://github.com/bitnami/charts/issues/31936)
-
-## <small>3.8.5 (2025-02-04)</small>
-
-* [bitnami/grafana-tempo] Release 3.8.5 (#31757) ([1acfc9f](https://github.com/bitnami/charts/commit/1acfc9ffccc1f081c200dc8a0b9b37f477ce46da)), closes [#31757](https://github.com/bitnami/charts/issues/31757)
-* Update copyright year (#31682) ([e9f02f5](https://github.com/bitnami/charts/commit/e9f02f5007068751f7eb2270fece811e685c99b6)), closes [#31682](https://github.com/bitnami/charts/issues/31682)
-
-## <small>3.8.4 (2025-01-24)</small>
-
-* [bitnami/grafana-tempo] Release 3.8.4 (#31557) ([b291adb](https://github.com/bitnami/charts/commit/b291adb57d77f42c00903a6bdf0f6e3fd82842c6)), closes [#31557](https://github.com/bitnami/charts/issues/31557)
-
-## <small>3.8.3 (2025-01-17)</small>
-
-* [bitnami/grafana-tempo] Release 3.8.3 (#31423) ([e30df1e](https://github.com/bitnami/charts/commit/e30df1e7e90673f0e80a30dafff3e98271434401)), closes [#31423](https://github.com/bitnami/charts/issues/31423)
-
-## <small>3.8.2 (2025-01-14)</small>
-
-* [bitnami/grafana-tempo] Release 3.8.2 (#31353) ([34e557d](https://github.com/bitnami/charts/commit/34e557d61a81aab6a20a39494e9cc9df5d62841b)), closes [#31353](https://github.com/bitnami/charts/issues/31353)
+* [bitnami/grafana-tempo] Release 3.8.2 ([#31353](https://github.com/bitnami/charts/pull/31353))
 
 ## <small>3.8.1 (2025-01-12)</small>
 
