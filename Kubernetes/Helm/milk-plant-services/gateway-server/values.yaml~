@@ -10,7 +10,7 @@ replicaCount: 1
 
 image:
   repository: edwarddocker270/gateway-server
-  tag: s12
+  tag: s14
 
 containerPort: 8072
 
