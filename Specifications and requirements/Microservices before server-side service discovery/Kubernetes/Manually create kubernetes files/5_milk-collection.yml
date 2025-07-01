@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: milk-collection-deployment
+  labels:
+    app: milk-collection
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: milk-collection
+  template:
+    metadata:
+      labels:
+        app: milk-collection
+    spec:
+      containers:
+        - name: milk-collection
+          image: edwarddocker270/milk-collection:s12
+          ports:
+            - containerPort: 8080
+          env:
+            - name: SPRING_APPLICATION_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: milk-plant-configmap
+                  key: MILK_COLLECTION_APPLICATION_NAME
+            - name: SPRING_PROFILES_ACTIVE
+              valueFrom:
+                configMapKeyRef:
+                  name: milk-plant-configmap
+                  key: SPRING_PROFILES_ACTIVE
+            - name: SPRING_CONFIG_IMPORT
+              valueFrom:
+                configMapKeyRef:
+                  name: milk-plant-configmap
+                  key: SPRING_CONFIG_IMPORT
+            - name: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+              valueFrom:
+                configMapKeyRef:
+                  name: milk-plant-configmap
+                  key: EUREKA_CLIENT_SERVICEURL_DEFAULTZONE
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: milk-plant-configmap
+                  key: MILK_COLLECTION_SPRING_DATASOURCE_URL
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: milk-collection
+spec:
+  selector:
+    app: milk-collection
+  type: LoadBalancer
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080

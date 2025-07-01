@@ -1,0 +1,35 @@
+global:
+  scrape_interval:     5s # Set the scrape interval to every 5 seconds.
+  evaluation_interval: 5s # Evaluate rules every 5 seconds.
+
+scrape_configs:
+  - job_name: 'Milk-Collection'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'milk-collection-s:8080' ]
+
+  - job_name: 'Persons'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'persons-s:8180' ]
+
+  - job_name: 'Financial-Management'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'financial-management-s:8280' ]
+
+  - job_name: 'Gateway-Server'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'gateway-server-s:8072' ]
+
+  - job_name: 'Eureka-Server'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'eureka-server-s:8070' ]
+
+  - job_name: 'Config-Server'
+    metrics_path: '/actuator/prometheus'
+    static_configs:
+      - targets: [ 'config-server-s:8071' ]
+  

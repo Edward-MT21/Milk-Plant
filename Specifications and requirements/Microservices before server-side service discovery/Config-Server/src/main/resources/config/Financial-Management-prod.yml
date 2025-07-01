@@ -1,0 +1,11 @@
+build:
+  version: 1.0
+
+financial-management-contacts:
+  message: "Financial-Management Production"
+  contactDetails:
+    name: "Edward Malte"
+    email: "lGm4o@example.com"
+  onCallSupport:
+    - 317888
+    - 317999

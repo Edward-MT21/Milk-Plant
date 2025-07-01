@@ -1,0 +1,64 @@
+{{- define "common.db" -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.db.pvcName }}
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: {{ .Values.db.pvcStorage }}
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.db.deploymentName }}
+  labels:
+    app: {{ .Values.db.deploymentLabel }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: {{ .Values.db.deploymentLabel }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.db.deploymentLabel }}
+    spec:
+      containers:
+        - name: {{ .Values.db.deploymentLabel }} # It is not mandatory that it be the same as the {{ .Values.deploymentLabel }}
+          image: mysql
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: root
+            - name: MYSQL_DATABASE
+              value: {{ .Values.db.initialDataBase }}
+          volumeMounts:
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-storage
+          persistentVolumeClaim:
+            claimName: {{ .Values.db.pvcName }}
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.db.serviceName }}
+spec:
+  selector:
+    app: {{ .Values.db.deploymentLabel }}
+  ports:
+    - protocol: TCP
+      port: {{ .Values.db.service.port }}
+      targetPort: {{ .Values.db.service.targetPort }}
+  type: {{ .Values.db.service.type }}
+
+{{- end -}}
