@@ -31,10 +31,6 @@ dependencies:
   - name: config-server
     version: 0.1.0
     repository: file://../../milk-plant-services/config-server
-    
-  - name: eureka-server
-    version: 0.1.0
-    repository: file://../../milk-plant-services/eureka-server
   
   - name: milk-collection
     version: 0.1.0

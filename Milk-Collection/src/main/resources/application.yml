@@ -34,12 +34,9 @@ spring:
         binder:
           brokers:
             - localhost:9092
-  #rabbitmq:
-    #host: localhost
-    #port: 5672
-    #username: guest
-    #password: guest
-    #connection-timeout: 10s
+    kubernetes:
+      discovery:
+        all-namespaces: true
 
 management:
   endpoints:
@@ -63,15 +60,6 @@ management:
   metrics:
     tags:
       application: ${spring.application.name}
-
-eureka:
-  instance:
-    preferIpAddress: true
-  client:
-    fetchRegistry: true
-    registerWithEureka: true
-    serviceUrl:
-      defaultZone: http://localhost:8070/eureka/
 
 info:
   app:

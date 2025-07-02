@@ -1,6 +1,0 @@
-dependencies:
-- name: milk-plant-common
-  repository: file://../../milk-plant-common
-  version: 0.1.0
-digest: sha256:2c15b4e661dc7a1bf8a89b59e37c7ff9f0163593ab07ab9496c4afd2dc3166d3
-generated: "2025-06-23T10:30:30.4653434-05:00"

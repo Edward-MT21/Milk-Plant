@@ -16,6 +16,12 @@ spring:
       mode: always
   config:
     import: "optional:configserver:http://localhost:8071/"
+  cloud:
+    kubernetes:
+      discovery:
+        enabled: true
+        all-namespaces: true
+        discovery-server-url: http://spring-cloud-kubernetes-discoveryserver.default.svc.cluster.local
 
 management:
   endpoints:
@@ -60,3 +66,5 @@ logging:
     com:
       persons:
         Persons: DEBUG
+  pattern:
+    level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"

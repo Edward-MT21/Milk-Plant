@@ -65,9 +65,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
+		<!--		<dependency>-->
+		<!--			<groupId>org.springframework.cloud</groupId>-->
+		<!--			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>-->
+		<!--		</dependency>-->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+			<artifactId>spring-cloud-starter-kubernetes-discoveryclient</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>io.micrometer</groupId>
@@ -126,7 +130,7 @@
 				<version>3.4.5</version>
 				<configuration>
 					<to>
-						<image>edwarddocker270/financial-management:s14</image>
+						<image>edwarddocker270/financial-management:s17</image>
 					</to>
 				</configuration>
 			</plugin>

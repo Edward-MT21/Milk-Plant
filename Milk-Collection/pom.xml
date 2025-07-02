@@ -3,14 +3,6 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<!--<parent>
-		<groupId>com.project</groupId>
-		<artifactId>Milk-Plant</artifactId>
-		<version>1.0.1-SNAPSHOT</version>
-		< <relativePath/> --> <!-- lookup parent from repository
-	</parent>
-	-->
-
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
@@ -103,9 +95,13 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.cloud</groupId>-->
+<!--			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>-->
+<!--		</dependency>-->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+			<artifactId>spring-cloud-starter-kubernetes-discoveryclient</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
@@ -174,7 +170,7 @@
 				<version>3.4.5</version>
 				<configuration>
 					<to>
-						<image>edwarddocker270/milk-collection:s14</image>
+						<image>edwarddocker270/milk-collection:s17</image>
 					</to>
 				</configuration>
 			</plugin>

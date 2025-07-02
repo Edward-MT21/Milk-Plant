@@ -18,7 +18,11 @@ spring:
         binder:
           brokers:
             - localhost:9092
-  #rabbitmq:
+    kubernetes:
+      discovery:
+        all-namespaces: true
+
+    #rabbitmq:
     #host: localhost
     #port: 5672
     #username: guest

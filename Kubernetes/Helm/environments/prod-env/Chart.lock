@@ -5,9 +5,6 @@ dependencies:
 - name: config-server
   repository: file://../../milk-plant-services/config-server
   version: 0.1.0
-- name: eureka-server
-  repository: file://../../milk-plant-services/eureka-server
-  version: 0.1.0
 - name: milk-collection
   repository: file://../../milk-plant-services/milk-collection
   version: 0.1.0
@@ -23,5 +20,5 @@ dependencies:
 - name: messages
   repository: file://../../milk-plant-services/messages
   version: 0.1.0
-digest: sha256:9f2fc04379afc367a7ca410fb56dc3f9e9347eed99461312152646e3c8d00c07
-generated: "2025-06-25T17:56:42.2273614-05:00"
+digest: sha256:dd222cc4625609e9eb33a7c74b198c07b4a44778a98e34c9047738e15152a47e
+generated: "2025-07-01T17:12:03.8148068-05:00"

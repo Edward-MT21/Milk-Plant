@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient(name = "Persons", fallback = PersonsFallback.class)
+@FeignClient(name = "Persons", url= "http://persons:8180", fallback = PersonsFallback.class)
 public interface IPersonsFeingClient {
 
     @GetMapping(value = "/PersonController/fetchPersonById", produces = "application/json")

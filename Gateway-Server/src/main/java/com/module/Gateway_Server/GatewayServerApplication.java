@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.circuitbreaker.resilience4j.ReactiveResilience4JCircuitBreakerFactory;
 import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigBuilder;
 import org.springframework.cloud.client.circuitbreaker.Customizer;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.cloud.gateway.filter.ratelimit.RedisRateLimiter;
 import org.springframework.cloud.gateway.route.RouteLocator;
@@ -19,6 +20,7 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 
 @SpringBootApplication
+@EnableDiscoveryClient
 public class GatewayServerApplication {
 
 	public static void main(String[] args) {
@@ -34,7 +36,7 @@ public class GatewayServerApplication {
 								.addResponseHeader("X-Response-Time-LDT", LocalDateTime.now().toString())
 								.circuitBreaker(config -> config.setName("milkCollectionCircuitBreaker")
 										.setFallbackUri("forward:/contactSupport")))
-						.uri("lb://MILK-COLLECTION"))
+						.uri("http://milk-collection:8080"))
 				.route(p -> p
 						.path("/milk-plant/persons/**")
 						.filters( f -> f.rewritePath("/milk-plant/persons/(?<segment>.*)","/${segment}")
@@ -42,14 +44,14 @@ public class GatewayServerApplication {
 								.retry(retryConfig -> retryConfig.setRetries(3)
 										.setMethods(HttpMethod.GET)
 										.setBackoff(Duration.ofMillis(100),Duration.ofMillis(1000),2,true)))
-						.uri("lb://PERSONS"))
+						.uri("http://persons:8180"))
 				.route(p -> p
 						.path("/milk-plant/financial-management/**")
 						.filters( f -> f.rewritePath("/milk-plant/financial-management/(?<segment>.*)","/${segment}")
 								.addResponseHeader("X-Response-Time-LDT", LocalDateTime.now().toString())
 								.requestRateLimiter(config -> config.setRateLimiter(redisRateLimiter())
 										.setKeyResolver(userKeyResolver())))
-						.uri("lb://FINANCIAL-MANAGEMENT")).build();
+						.uri("http://financial-management:8280")).build();
 	}
 
 	@Bean

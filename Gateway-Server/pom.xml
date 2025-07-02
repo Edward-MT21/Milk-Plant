@@ -44,9 +44,13 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-gateway-server-webflux</artifactId>
 		</dependency>
+		<!--		<dependency>-->
+		<!--			<groupId>org.springframework.cloud</groupId>-->
+		<!--			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>-->
+		<!--		</dependency>-->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+			<artifactId>spring-cloud-starter-kubernetes-discoveryclient</artifactId>
 		</dependency>
 
 		<dependency>
@@ -123,7 +127,7 @@
 				<version>3.4.5</version>
 				<configuration>
 					<to>
-						<image>edwarddocker270/gateway-server:s14</image>
+						<image>edwarddocker270/gateway-server:s17</image>
 					</to>
 				</configuration>
 			</plugin>
