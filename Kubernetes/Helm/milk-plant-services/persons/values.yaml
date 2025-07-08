@@ -36,7 +36,7 @@ db:
   initialDataBase: persons-db
   serviceName: persons-db-service
   service:
-    type: LoadBalancer
+    type: ClusterIP
     port: 3307
     targetPort: 3306
   datasourceURL: "jdbc:mysql://persons-db-service:3307/persons-db"

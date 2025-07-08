@@ -683,7 +683,7 @@ persistence:
   existingClaim: ""
   accessMode: ReadWriteOnce
   accessModes: []
-  size: 10Gi
+  size: 1Gi #Before 10Gi
 ## @section RBAC parameters
 
 ## @param serviceAccount.create Specifies whether a ServiceAccount should be created

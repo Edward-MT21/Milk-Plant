@@ -3,7 +3,8 @@ global:
   activeProfile: prod
   configServerURL: configserver:http://config-server:8071/
   discoveryServerURL: "http://spring-cloud-kubernetes-discoveryserver:80/"
-  keyCloakURL: http://keycloack-keycloak.default.svc.cluster.local:80/realms/master/protocol/openid-connect/certs
+  #keyCloakURL: http://keycloack-keycloak.default.svc.cluster.local:80/realms/master/protocol/openid-connect/certs
+  keyCloakURL: http://34.46.119.37/realms/master/protocol/openid-connect/certs
   openTelemetryJavaAgent: "-javaagent:/app/libs/opentelemetry-javaagent-2.11.0.jar"
   otelExporterEndPoint: http://tempo-grafana-tempo-distributor:4318
   otelMetricsExporter: none

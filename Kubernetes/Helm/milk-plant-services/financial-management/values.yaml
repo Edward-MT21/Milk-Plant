@@ -36,7 +36,7 @@ db:
   initialDataBase: financial-management-db
   serviceName: financial-management-db-service
   service:
-    type: LoadBalancer
+    type: ClusterIP
     port: 3308
     targetPort: 3306
   datasourceURL: "jdbc:mysql://financial-management-db-service:3308/financial-management-db"
