@@ -3,19 +3,28 @@ spring:
     name: "Gateway-Server"
   config:
     import: "optional:configserver:http://localhost:8071/"
+#  cloud:
+#    gateway:
+#      httpClient:
+#        connect-timeout: 1000
+#        response-timeout: 10s
+#    kubernetes:
+#      discovery:
+#        all-namespaces: true
+#        enabled: true
+#    discovery:
+#      client:
+#        health-indicator:
+#          enabled: false
   cloud:
     gateway:
+      discovery:
+        locator:
+          enabled: false
+          lowerCaseServiceId: true
       httpClient:
         connect-timeout: 1000
         response-timeout: 10s
-    kubernetes:
-      discovery:
-        all-namespaces: true
-        enabled: true
-    discovery:
-      client:
-        health-indicator:
-          enabled: false
   data:
     redis:
       connect-timeout: 2s

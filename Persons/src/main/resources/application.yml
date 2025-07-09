@@ -16,10 +16,10 @@ spring:
       mode: always
   config:
     import: "optional:configserver:http://localhost:8071/"
-  cloud:
-    kubernetes:
-      discovery:
-        all-namespaces: true
+#  cloud:
+#    kubernetes:
+#      discovery:
+#        all-namespaces: true
 
 management:
   endpoints:

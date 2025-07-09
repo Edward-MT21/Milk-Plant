@@ -36,7 +36,8 @@ public class GatewayServerApplication {
 								.addResponseHeader("X-Response-Time-LDT", LocalDateTime.now().toString())
 								.circuitBreaker(config -> config.setName("milkCollectionCircuitBreaker")
 										.setFallbackUri("forward:/contactSupport")))
-						.uri("http://milk-collection:8080"))
+						//.uri("http://milk-collection:8080"))
+						.uri("lb://milk-collection:8080"))
 				.route(p -> p
 						.path("/milk-plant/persons/**")
 						.filters( f -> f.rewritePath("/milk-plant/persons/(?<segment>.*)","/${segment}")
@@ -44,14 +45,16 @@ public class GatewayServerApplication {
 								.retry(retryConfig -> retryConfig.setRetries(3)
 										.setMethods(HttpMethod.GET)
 										.setBackoff(Duration.ofMillis(100),Duration.ofMillis(1000),2,true)))
-						.uri("http://persons:8180"))
+						//.uri("http://persons:8180"))
+						.uri("lb://persons:8180"))
 				.route(p -> p
 						.path("/milk-plant/financial-management/**")
 						.filters( f -> f.rewritePath("/milk-plant/financial-management/(?<segment>.*)","/${segment}")
 								.addResponseHeader("X-Response-Time-LDT", LocalDateTime.now().toString())
 								.requestRateLimiter(config -> config.setRateLimiter(redisRateLimiter())
 										.setKeyResolver(userKeyResolver())))
-						.uri("http://financial-management:8280")).build();
+						//.uri("http://financial-management:8280")).build();
+						.uri("lb://financial-management:8280")).build();
 	}
 
 	@Bean

@@ -41,7 +41,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @EntityScan("com.eazybytes.accounts.model")*/
 @EnableConfigurationProperties(value = {MilkCollectionContactsDto.class})
 @EnableFeignClients
-@EnableDiscoveryClient
+//@EnableDiscoveryClient
 public class MilkCollectionApplication {
 
 	public static void main(String[] args) {

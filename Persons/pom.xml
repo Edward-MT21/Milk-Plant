@@ -3,10 +3,10 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<parent>
-		<groupId>org.springframework.boot</groupId>
-		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.4.5</version>
-		<relativePath/> <!-- lookup parent from repository -->
+		<groupId>com.milk-plant-bom</groupId>
+		<artifactId>Milk-Plant-BOM</artifactId>
+		<version>0.0.1-SNAPSHOT</version>
+		<relativePath>../Milk-Plant-BOM/pom.xml</relativePath>
 	</parent>
 	<groupId>com.persons</groupId>
 	<artifactId>Persons</artifactId>
@@ -28,9 +28,7 @@
 		<url/>
 	</scm>
 	<properties>
-		<java.version>17</java.version>
-		<spring-cloud.version>2024.0.1</spring-cloud.version>
-		<otelVersion>2.11.0</otelVersion>
+		<name.lc>persons</name.lc>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -79,14 +77,14 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
-		<!--		<dependency>-->
-		<!--			<groupId>org.springframework.cloud</groupId>-->
-		<!--			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>-->
-		<!--		</dependency>-->
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-cloud-starter-kubernetes-discoveryclient</artifactId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
 		</dependency>
+<!--		<dependency>-->
+<!--			<groupId>org.springframework.cloud</groupId>-->
+<!--			<artifactId>spring-cloud-starter-kubernetes-discoveryclient</artifactId>-->
+<!--		</dependency>-->
 		<dependency>
 			<groupId>io.micrometer</groupId>
 			<artifactId>micrometer-registry-prometheus</artifactId>
@@ -94,7 +92,7 @@
 		<dependency>
 			<groupId>io.opentelemetry.javaagent</groupId>
 			<artifactId>opentelemetry-javaagent</artifactId>
-			<version>${otelVersion}</version>
+			<version>${otel.version}</version>
 			<scope>runtime</scope>
 		</dependency>
 
@@ -162,10 +160,10 @@
 			<plugin>
 				<groupId>com.google.cloud.tools</groupId>
 				<artifactId>jib-maven-plugin</artifactId>
-				<version>3.4.5</version>
+				<version>${jib.version}</version>
 				<configuration>
 					<to>
-						<image>edwarddocker270/persons:s17</image>
+						<image>edwarddocker270/${name.lc}:${image.tag}</image>
 					</to>
 				</configuration>
 			</plugin>
