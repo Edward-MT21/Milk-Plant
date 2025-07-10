@@ -1,7 +1,7 @@
 package com.persons.Persons.exception;
 
 
-import com.persons.Persons.model.dtos.ErrorResponseDto;
+import com.module.Common.dtos.ErrorResponseDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;

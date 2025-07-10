@@ -24,6 +24,9 @@
 		<jib.version>3.4.5</jib.version>
 		<image.tag>s20</image.tag>
 	</properties>
+	<modules>
+		<module>Common</module>
+	</modules>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -79,10 +82,25 @@
 
 	<build>
 		<plugins>
+<!--			<plugin>-->
+<!--				<groupId>org.springframework.boot</groupId>-->
+<!--				<artifactId>spring-boot-maven-plugin</artifactId>-->
+<!--			</plugin>-->
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${spring-boot.version}</version>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.13.0</version>
+				<configuration>
+					<release>21</release>
+				</configuration>
+			</plugin>
+
+
 		</plugins>
 	</build>
 

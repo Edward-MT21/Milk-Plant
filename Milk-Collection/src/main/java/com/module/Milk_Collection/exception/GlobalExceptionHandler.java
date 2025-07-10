@@ -1,6 +1,6 @@
 package com.module.Milk_Collection.exception;
 
-import com.module.Milk_Collection.model.dtos.ErrorResponseDto;
+import com.module.Common.dtos.ErrorResponseDto;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
