@@ -1,11 +1,11 @@
 #!/bin/bash
 
 # Lista de imágenes Docker a subir
-IMAGES=("config-server" "milk-collection" "persons" "financial-management" "gateway-server" "messages")
+IMAGES=("config-server" "eureka-server" "milk-collection" "persons" "financial-management" "gateway-server" "messages")
 
 # Registro de Docker (modifica según tu necesidad)
 DOCKER_REGISTRY="docker.io/edwarddocker270"
-TAG="s17"
+TAG="s20"
 
 # Recorre cada imagen y la sube al registro
 for IMAGE in "${IMAGES[@]}"; do

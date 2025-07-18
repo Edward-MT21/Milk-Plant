@@ -308,7 +308,7 @@ services:
             service: microservice-db-config
 
     config-server-s:
-        image: "edwarddocker270/config-server:s14"
+        image: "edwarddocker270/config-server:s20"
         container_name: config-server-ms
         ports:
             - "8071:8071"
@@ -325,7 +325,7 @@ services:
             OTEL_SERVICE_NAME: "config-server-s"
 
     eureka-server-s:
-        image: "edwarddocker270/eureka-server:s14"
+        image: "edwarddocker270/eureka-server:s20"
         container_name: eureka-server-ms
         ports:
             - "8070:8070"
@@ -346,7 +346,7 @@ services:
             OTEL_SERVICE_NAME: "eureka-server-s"
 
     milk-collection-s:
-        image: "edwarddocker270/milk-collection:s14"
+        image: "edwarddocker270/milk-collection:s20"
         container_name: milk-collection-ms
         #ports:
         #    - "8080:8080"
@@ -376,7 +376,7 @@ services:
             #    condition: service_healthy
 
     persons-s:
-        image: "edwarddocker270/persons:s14"
+        image: "edwarddocker270/persons:s20"
         container_name: persons-ms
         #ports:
         #    - "8180:8180"
@@ -402,7 +402,7 @@ services:
                 condition: service_healthy
 
     financial-management-s:
-        image: "edwarddocker270/financial-management:s14"
+        image: "edwarddocker270/financial-management:s20"
         container_name: financial-management-ms
         #ports:
         #    - "8280:8280"
@@ -428,7 +428,7 @@ services:
                 condition: service_healthy
 
     messages:
-        image: "edwarddocker270/messages:s14"
+        image: "edwarddocker270/messages:s20"
         container_name: messages-ms
         #depends_on:
         #    rabbit:
@@ -441,7 +441,7 @@ services:
             service: network-deploy-service
 
     gateway-server-s:
-        image: "edwarddocker270/gateway-server:s14"
+        image: "edwarddocker270/gateway-server:s20"
         container_name: gateway-server-ms
         ports:
             - "8072:8072"
