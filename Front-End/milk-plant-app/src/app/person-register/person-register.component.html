@@ -1,0 +1,55 @@
+<h2>📄 Registro de Persona</h2>
+
+<!-- Mensajes de feedback -->
+<div class="feedback-messages">
+  <div class="success-message" *ngIf="successMessage">
+    ✅ {{ successMessage }}
+  </div>
+  <div class="error-message" *ngIf="errorMessage">
+    ❌ {{ errorMessage }}
+  </div>
+  <div class="loading-message" *ngIf="isLoading">
+    ⏳ Guardando datos...
+  </div>
+</div>
+
+<form>
+  <label>Nombre:</label>
+  <input [(ngModel)]="names" name="names" />
+
+  <label>Apellido:</label>
+  <input [(ngModel)]="lastNames" name="lastNames" />
+
+  <label>Número de Identificación:</label>
+  <input [(ngModel)]="identificationNumber" name="identificationNumber" />
+
+  <label>Edad:</label>
+  <input [(ngModel)]="age" name="age" type="number" />
+
+  <label>Género:</label>
+  <input [(ngModel)]="gender" name="gender" />
+
+  <label>Email:</label>
+  <input [(ngModel)]="email" name="email" type="email" />
+
+  <label>Teléfono:</label>
+  <input [(ngModel)]="mobileNumber" name="mobileNumber" />
+
+  <div class="actions">
+    <button 
+      type="button" 
+      class="guardar-btn" 
+      (click)="guardar()" 
+      [disabled]="isLoading">
+      <span *ngIf="!isLoading">Guardar</span>
+      <span *ngIf="isLoading">Guardando...</span>
+    </button>
+    <button 
+      type="button" 
+      class="cancelar-btn" 
+      (click)="cancelar()" 
+      [disabled]="isLoading">
+      Cancelar
+    </button>
+  </div>
+</form>

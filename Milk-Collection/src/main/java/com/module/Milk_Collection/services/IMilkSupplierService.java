@@ -4,6 +4,8 @@ import com.module.Milk_Collection.model.dtos.MilkSupplierDetailsDto;
 import com.module.Milk_Collection.model.dtos.MilkSupplierInDto;
 import com.module.Milk_Collection.model.dtos.MilkSupplierOutDto;
 
+import java.util.List;
+
 public interface IMilkSupplierService {
 
     /**
@@ -27,5 +29,7 @@ public interface IMilkSupplierService {
     MilkSupplierDetailsDto fetchMilkSupplierDetailsById(Long milkSupplierId, String correlationId);
 
     boolean updateCommunicationStatus(Long milkSupplierId);
+
+    List<MilkSupplierDetailsDto> fetchAllMilkSupplierDetails();
 
 }

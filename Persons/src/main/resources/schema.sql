@@ -7,8 +7,8 @@ CREATE TABLE IF NOT EXISTS persons (
     gender VARCHAR(20) CHECK (gender IN ('MASCULINO', 'FEMENINO', 'OTRO')),  -- Género ('M', 'F' o 'O' para otro)
     email VARCHAR(100) UNIQUE NOT NULL,  -- Correo electrónico (único),
     mobile_number VARCHAR(100) UNIQUE NOT NULL,  -- Correo electrónico (único)
-    `created_at` date NOT NULL,
+    `created_at` timestamp NOT NULL,
     `created_by` varchar(20) NOT NULL,
-    `updated_at` date DEFAULT NULL,
+    `updated_at` timestamp DEFAULT NULL,
     `updated_by` varchar(20) DEFAULT NULL
 );

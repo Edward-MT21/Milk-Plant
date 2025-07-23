@@ -26,6 +26,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.module.Common.dtos.ErrorResponseDto;
 
+import java.util.List;
 import java.util.concurrent.TimeoutException;
 
 @Tag(
@@ -275,11 +276,19 @@ public class MilkSupplierController {
     @GetMapping("/fetchMilkSupplierDetailsById")
     public ResponseEntity<MilkSupplierDetailsDto> fetchMilkSupplierDetailsById(
             @RequestHeader("milk-plant-correlation-id") String correlationId,
-            @RequestParam Long milkSupplierId) {
+            @RequestParam("milkSupplierId") Long milkSupplierId) {
         logger.debug("fetchMilkSupplierDetailsById start");
         MilkSupplierDetailsDto milkSupplierDetailsDto = iMilkSupplierService.fetchMilkSupplierDetailsById(milkSupplierId, correlationId);
         logger.debug("fetchMilkSupplierDetailsById end");
         return ResponseEntity.status(HttpStatus.OK).body(milkSupplierDetailsDto);
+    }
+
+    @GetMapping("/fetchAllMilkSupplierDetails")
+    public ResponseEntity<List<MilkSupplierDetailsDto>> fetchAllMilkSupplierDetails() {
+
+        List<MilkSupplierDetailsDto> listMilkSupplierDetailsDto= iMilkSupplierService.fetchAllMilkSupplierDetails();
+
+        return ResponseEntity.status(HttpStatus.OK).body(listMilkSupplierDetailsDto);
     }
 
 

@@ -1,0 +1,441 @@
+/* Contenedor principal */
+.suppliers-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Título principal */
+.suppliers-title {
+  color: #2c3e50;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-bottom: 3px solid #e67e22;
+  padding-bottom: 12px;
+}
+
+/* Wrapper de la tabla para scroll horizontal */
+.table-wrapper {
+  overflow-x: auto;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e8ecef;
+}
+
+/* Estilos de la tabla */
+.suppliers-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  font-size: 0.95rem;
+}
+
+/* Encabezados de la tabla */
+.suppliers-table thead {
+  background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+  color: white;
+}
+
+.suppliers-table th {
+  padding: 16px 20px;
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: none;
+  position: relative;
+}
+
+.suppliers-table th:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 25%;
+  height: 50%;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Celdas del cuerpo de la tabla */
+.suppliers-table td {
+  padding: 14px 20px;
+  border: none;
+  border-bottom: 1px solid #f1f3f4;
+  color: #2c3e50;
+  font-weight: 500;
+}
+
+/* Filas del cuerpo */
+.suppliers-table tbody tr {
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.suppliers-table tbody tr:hover {
+  background: linear-gradient(90deg, #fef9e7 0%, #fcf3cf 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.suppliers-table tbody tr:nth-child(even) {
+  background: #fafbfc;
+}
+
+.suppliers-table tbody tr:nth-child(even):hover {
+  background: linear-gradient(90deg, #fef9e7 0%, #fcf3cf 100%);
+}
+
+/* Estilos específicos para las columnas */
+.suppliers-table td:first-child {
+  font-weight: 600;
+  color: #e67e22;
+}
+
+.suppliers-table td:nth-child(2),
+.suppliers-table td:nth-child(3) {
+  font-weight: 600;
+  color: #27ae60;
+}
+
+.suppliers-table td:nth-child(4) {
+  font-weight: 600;
+  color: #8e44ad;
+}
+
+/* Botón de detalles mejorado */
+.detail-btn {
+  background: linear-gradient(135deg, #17a2b8 0%, #138496 100%);
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.85rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 4px rgba(23, 162, 184, 0.3);
+}
+
+.detail-btn:hover {
+  background: linear-gradient(135deg, #138496 0%, #117a8b 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 8px rgba(23, 162, 184, 0.4);
+}
+
+.detail-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(23, 162, 184, 0.3);
+}
+
+/* Modal mejorado */
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  backdrop-filter: blur(3px);
+}
+
+.modal {
+  background: white;
+  padding: 30px;
+  border-radius: 15px;
+  width: 400px;
+  max-width: 90vw;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.modal h3 {
+  color: #e67e22;
+  margin-bottom: 20px;
+  font-size: 1.4rem;
+  border-bottom: 2px solid #f39c12;
+  padding-bottom: 10px;
+}
+
+.modal ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.modal li {
+  margin-bottom: 12px;
+  padding: 8px 0;
+  border-bottom: 1px solid #f8f9fa;
+  font-size: 0.95rem;
+}
+
+.modal li:last-child {
+  border-bottom: none;
+}
+
+.modal li strong {
+  color: #2c3e50;
+  display: inline-block;
+  min-width: 120px;
+}
+
+.modal button {
+  background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+  width: 100%;
+}
+
+.modal button:hover {
+  background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+  transform: translateY(-1px);
+}
+
+/* Sección del botón agregar proveedor */
+.add-supplier-section {
+  margin-bottom: 20px;
+  text-align: right;
+}
+
+.add-supplier-btn {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 3px 6px rgba(40, 167, 69, 0.3);
+}
+
+.add-supplier-btn:hover {
+  background: linear-gradient(135deg, #218838 0%, #1e7e34 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 5px 12px rgba(40, 167, 69, 0.4);
+}
+
+.add-supplier-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 3px 6px rgba(40, 167, 69, 0.3);
+}
+
+/* Modal de agregar proveedor */
+.add-supplier-modal {
+  width: 500px;
+  max-width: 95vw;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 600;
+  color: #2c3e50;
+  font-size: 0.95rem;
+}
+
+.person-select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2px solid #e8ecef;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  background: white;
+  transition: border-color 0.3s ease;
+}
+
+.person-select:focus {
+  outline: none;
+  border-color: #e67e22;
+  box-shadow: 0 0 0 3px rgba(230, 126, 34, 0.1);
+}
+
+/* Detalles de la persona */
+.person-details {
+  margin-top: 20px;
+  padding: 15px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  border-left: 4px solid #e67e22;
+}
+
+.person-details h4 {
+  margin: 0 0 15px 0;
+  color: #e67e22;
+  font-size: 1.1rem;
+}
+
+.details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.detail-item {
+  padding: 8px 0;
+  border-bottom: 1px solid #e8ecef;
+  font-size: 0.9rem;
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-item strong {
+  color: #2c3e50;
+  display: block;
+  margin-bottom: 4px;
+}
+
+/* Botones del modal */
+.modal-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+  margin-top: 25px;
+}
+
+.add-btn {
+  background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  min-width: 100px;
+}
+
+.add-btn:hover:not(:disabled) {
+  background: linear-gradient(135deg, #218838 0%, #1e7e34 100%);
+  transform: translateY(-1px);
+}
+
+.add-btn:disabled {
+  background: #6c757d;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.cancel-btn {
+  background: linear-gradient(135deg, #6c757d 0%, #5a6268 100%);
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  min-width: 100px;
+}
+
+.cancel-btn:hover {
+  background: linear-gradient(135deg, #5a6268 0%, #495057 100%);
+  transform: translateY(-1px);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .suppliers-container {
+    padding: 15px;
+  }
+  
+  .suppliers-title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .suppliers-table th,
+  .suppliers-table td {
+    padding: 12px 15px;
+    font-size: 0.85rem;
+  }
+  
+  .suppliers-table th {
+    font-size: 0.8rem;
+  }
+  
+  .detail-btn {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+  }
+  
+  .add-supplier-section {
+    text-align: center;
+    margin-bottom: 15px;
+  }
+  
+  .add-supplier-btn {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+  
+  .add-supplier-modal {
+    width: 95vw;
+  }
+  
+  .details-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 480px) {
+  .suppliers-table th,
+  .suppliers-table td {
+    padding: 10px 12px;
+    font-size: 0.8rem;
+  }
+  
+  .suppliers-title {
+    font-size: 1.3rem;
+  }
+  
+  .modal {
+    width: 95vw;
+    padding: 20px;
+  }
+  
+  .modal-actions {
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .add-btn,
+  .cancel-btn {
+    width: 100%;
+    min-width: auto;
+  }
+}

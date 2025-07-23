@@ -1,0 +1,185 @@
+<div class="milk-collection-container">
+    <div class="header-actions">
+        <h2 class="collection-title">🧺 Recolección de Leche</h2>
+        <button class="new-collection-btn" (click)="openNewCollectionModal()">
+            <i class="fas fa-plus"></i> Nueva Recolección
+        </button>
+    </div>
+    
+    <!-- Date Picker -->
+    <div class="date-filter">
+      <div class="form-group">
+        <label for="collection-date">Seleccionar Fecha:</label>
+        <input 
+          type="date" 
+          id="collection-date" 
+          [(ngModel)]="selectedDate" 
+          (change)="onDateChange($event)"
+          class="form-control date-input"
+        >
+      </div>
+      <div class="day-description">
+        <i class="far fa-calendar-alt"></i> {{ dayDescription }}
+      </div>
+    </div>
+
+    <!-- Loading state -->
+    <div *ngIf="loading && collections.length === 0" class="loading-message">
+        <i class="fas fa-spinner fa-spin"></i> Cargando recolecciones...
+    </div>
+
+    <!-- Error message -->
+    <div *ngIf="error" class="error-message">
+        <i class="fas fa-exclamation-circle"></i> {{ error }}
+    </div>
+
+    <div class="table-wrapper">
+        <table class="collection-table" *ngIf="!loading || collections.length > 0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Proveedor</th>
+                    <th>Identificación</th>
+                    <th>Litros</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let c of collections">
+                    <td>RC-{{ c.milkCollectionId.toString().padStart(3, '0') }}</td>
+                    <td>
+                        {{ c.milkSupplierDetailsDto.personOutDto.names }} 
+                        {{ c.milkSupplierDetailsDto.personOutDto.lastNames }}
+                    </td>
+                    <td>{{ c.milkSupplierDetailsDto.personOutDto.identificationNumber }}</td>
+                    <td class="liters-cell">{{ c.litersMilk }} L</td>
+                    <td class="actions-cell">
+                        <button class="update-btn" (click)="openModal(c)">
+                            <i class="fas fa-edit"></i> Actualizar
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    
+    <ng-template #sinDatos>
+        <p class="no-data">No se encontraron registros de leche recolectada ☹️</p>
+    </ng-template>
+</div>
+
+
+<div class="modal-backdrop" *ngIf="selectedCollection">
+    <div class="modal">
+        <h3>Registrar Recolección</h3>
+        <div class="modal-content">
+            <p><strong>Proveedor:</strong> 
+                {{ selectedCollection.milkSupplierDetailsDto.personOutDto.names }}
+                {{ selectedCollection.milkSupplierDetailsDto.personOutDto.lastNames }}
+            </p>
+            <p><strong>ID:</strong> RC-{{ selectedCollection.milkCollectionId.toString().padStart(3, '0') }}</p>
+            
+            <div class="form-group">
+                <label for="litros">Litros de leche:</label>
+                <input 
+                    id="litros" 
+                    [(ngModel)]="newLiters" 
+                    type="number" 
+                    min="0.1" 
+                    step="0.1" 
+                    class="form-control" 
+                    required
+                    [class.is-invalid]="newLiters <= 0"
+                />
+                <div *ngIf="newLiters <= 0" class="invalid-feedback">
+                    Por favor ingrese una cantidad válida mayor a 0
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn btn-primary" (click)="submitCollection()" [disabled]="!newLiters || newLiters <= 0 || loading">
+                    <i class="fas fa-save"></i>
+                    <span *ngIf="!loading">Guardar cambios</span>
+                    <span *ngIf="loading">Guardando...</span>
+                </button>
+                <button class="btn btn-secondary" (click)="closeModal()">
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- New Collection Modal -->
+<div class="modal-backdrop" *ngIf="showNewCollectionModal">
+    <div class="modal">
+        <h3>Nueva Recolección</h3>
+        <div class="modal-content">
+            <div class="form-group">
+                <label for="collection-date">Fecha:</label>
+                <input 
+                    type="date" 
+                    id="collection-date" 
+                    [(ngModel)]="newCollection.date" 
+                    class="form-control"
+                    [disabled]="true"
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="supplier-select">Proveedor:</label>
+                <select 
+                    id="supplier-select" 
+                    class="form-control" 
+                    [(ngModel)]="newCollection.supplierId"
+                    (change)="onSupplierSelect()"
+                >
+                    <option [ngValue]="null" disabled>Seleccione un proveedor</option>
+                    <option 
+                        *ngFor="let supplier of suppliers" 
+                        [ngValue]="supplier.id"
+                    >
+                        {{ supplier.name }}
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="new-liters">Litros de leche:</label>
+                <input 
+                    id="new-liters" 
+                    type="number" 
+                    min="0.1" 
+                    step="0.1" 
+                    class="form-control" 
+                    [(ngModel)]="newCollection.litersMilk"
+                    [disabled]="!newCollection.supplierId"
+                    [class.is-invalid]="newCollection.litersMilk <= 0"
+                >
+                <div *ngIf="newCollection.litersMilk <= 0" class="invalid-feedback">
+                    Por favor ingrese una cantidad válida mayor a 0
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button 
+                    class="btn btn-primary" 
+                    (click)="submitNewCollection()" 
+                    [disabled]="!newCollection.supplierId || newCollection.litersMilk <= 0 || loading"
+                >
+                    <i class="fas fa-save"></i>
+                    <span *ngIf="!loading">Guardar</span>
+                    <span *ngIf="loading">Guardando...</span>
+                </button>
+                <button 
+                    class="btn btn-secondary" 
+                    (click)="closeNewCollectionModal()"
+                    [disabled]="loading"
+                >
+                    <i class="fas fa-times"></i> Cancelar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+  

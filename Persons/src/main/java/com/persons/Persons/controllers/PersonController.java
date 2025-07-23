@@ -24,6 +24,7 @@ import java.util.List;
 @RequestMapping("/PersonController")
 @AllArgsConstructor
 @Validated
+@CrossOrigin(origins = "http://localhost:4200")
 public class PersonController {
 
     private static final Logger logger = LoggerFactory.getLogger(PersonController.class);
@@ -90,7 +91,7 @@ public class PersonController {
 
     @GetMapping("/fetchPersonById")
     public ResponseEntity<PersonOutDto> fetchPersonById(
-            @RequestHeader("milk-plant-correlation-id") String correlationId, @RequestParam Long personId) {
+            @RequestHeader("milk-plant-correlation-id") String correlationId, @RequestParam("personId") Long personId) {
         logger.debug("fetchPersonById start");
         PersonOutDto personOutDto = personServiceImpl.fetchPersonById(personId);
         logger.debug("fetchPersonById end");

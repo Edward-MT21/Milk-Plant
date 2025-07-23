@@ -16,6 +16,7 @@ import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -103,7 +104,8 @@ public class MilkSupplierServiceImpl implements IMilkSupplierService {
         );
 
         ResponseEntity<PersonOutDto> personOutDtoResponseEntity = iPersonsFeingClient.fetchPersonById(correlationId, milkSupplier.getPersonId());
-        String greetingFinancialManagement = iFinancialManagementFeingClient.getGreeting(correlationId);
+        //String greetingFinancialManagement = iFinancialManagementFeingClient.getGreeting(correlationId);
+        String greetingFinancialManagement = "Hello from Financial Management Test";
 
         return MilkSupplierMapper.mapToMilkSupplierDetailsDto(milkSupplier, personOutDtoResponseEntity, greetingFinancialManagement);
     }
@@ -120,6 +122,11 @@ public class MilkSupplierServiceImpl implements IMilkSupplierService {
             isUpdated = true;
         }
         return  isUpdated;
+    }
+
+    @Override
+    public List<MilkSupplierDetailsDto> fetchAllMilkSupplierDetails() {
+        return iMilkSupplierRepository.findAll().stream().map(milkSupplier -> fetchMilkSupplierDetailsById(milkSupplier.getMilkSupplierId(), "0")).toList();
     }
 
 
