@@ -32,7 +32,7 @@ export class MilkSupplierComponent implements OnInit {
   loadMilkSuppliers() {
     this.loading = true;
     this.error = null;
-    this.milkCollectionService.fetchAllMilkSuppliers()
+    this.milkCollectionService.fetchAllMilkSupplierDetails()
       .pipe(
         catchError(error => {
           console.error('Error loading milk suppliers:', error);

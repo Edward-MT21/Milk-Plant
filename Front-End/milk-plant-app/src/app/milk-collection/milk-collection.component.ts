@@ -112,7 +112,7 @@ export class MilkCollectionComponent implements OnInit {
 
   extractSuppliers() {
     this.loading = true;
-    this.milkService.fetchAllMilkSuppliers().pipe(
+    this.milkService.fetchAllMilkSupplierDetails().pipe(
       finalize(() => {
         this.loading = false;
       })

@@ -79,7 +79,7 @@ export class MilkCollectionService {
     return this.http.post(this.createMilkSupplierUrl, payload);
   }
 
-  fetchAllMilkSuppliers(): Observable<MilkSupplierDetails[]> {
+  fetchAllMilkSupplierDetails(): Observable<MilkSupplierDetails[]> {
     return this.http.get<MilkSupplierDetails[]>(this.fetchAllMilkSupplierDetailsUrl);
   }
 
