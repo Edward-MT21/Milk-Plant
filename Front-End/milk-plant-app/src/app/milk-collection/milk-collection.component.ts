@@ -11,7 +11,7 @@ import { FormsModule } from '@angular/forms';
   standalone: true,
   imports: [CommonModule, FormsModule],
   templateUrl: './milk-collection.component.html',
-  styleUrl: './milk-collection.component.css'
+  styleUrls: ['./milk-collection.component.scss']
 })
 export class MilkCollectionComponent implements OnInit {
 
@@ -32,6 +32,8 @@ export class MilkCollectionComponent implements OnInit {
   };
   suppliers: {id: number, name: string}[] = [];
   newLiters: number = 0;
+
+  thereErrorMessage: boolean = false;
 
   
     ngOnInit(): void {
@@ -133,6 +135,9 @@ export class MilkCollectionComponent implements OnInit {
   submitNewCollection() {
     if (this.newCollection.supplierId && this.newCollection.litersMilk > 0) {
       this.loading = true;
+      this.error = null; // Clear previous errors
+      this.thereErrorMessage = false;
+      
       this.milkService.createMilkCollection(
         this.newCollection.supplierId,
         this.newCollection.litersMilk
@@ -141,13 +146,20 @@ export class MilkCollectionComponent implements OnInit {
           this.loading = false;
         })
       ).subscribe({
-        next: () => {
+        next: (response: any) => {
           this.loadMilkCollections();
           this.closeNewCollectionModal();
+          // Show success message if available
+          if (response && response.statusMsg) {
+            this.error = response.statusMsg; // Show success message
+            this.thereErrorMessage = false; // This is a success message, not an error
+          }
         },
         error: (error) => {
+          this.thereErrorMessage = true;
           console.error('Error al guardar la recolección:', error);
-          this.error = 'Error al guardar la recolección. Por favor, intente nuevamente.';
+          // Use the error message from the response if available, otherwise use a default message
+          this.error = error.error?.errorMessage || 'Error al guardar la recolección. Por favor, intente nuevamente.';
         }
       });
     }
