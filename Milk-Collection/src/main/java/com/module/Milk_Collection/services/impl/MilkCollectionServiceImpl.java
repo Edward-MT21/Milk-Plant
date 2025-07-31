@@ -5,16 +5,19 @@ import com.module.Milk_Collection.mapper.MilkCollectionMapper;
 import com.module.Milk_Collection.model.dtos.MilkCollectionDetailsDto;
 import com.module.Milk_Collection.model.dtos.MilkCollectionDto;
 import com.module.Milk_Collection.model.dtos.MilkSupplierDetailsDto;
+import com.module.Milk_Collection.model.dtos.ResponseDto;
 import com.module.Milk_Collection.model.entities.MilkCollection;
 import com.module.Milk_Collection.repositories.IMilkCollectionRepository;
 import com.module.Milk_Collection.repositories.IMilkSupplierRepository;
 import com.module.Milk_Collection.services.IMilkCollectionService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.module.Milk_Collection.mapper.MilkSupplierMapper;
 
 import java.time.*;
 import java.util.List;
+import java.util.Optional;
 
 import static java.util.stream.Collectors.toList;
 
@@ -54,6 +57,18 @@ public class MilkCollectionServiceImpl implements IMilkCollectionService {
     @Override
     public void createMilkCollection(MilkCollectionDto milkCollectionDto) {
         MilkCollection milkCollection = MilkCollectionMapper.mapToMilkCollection(milkCollectionDto);
+
+        LocalDate fechaActual = LocalDate.now();
+        LocalDateTime startOfDay = fechaActual.atStartOfDay();
+        LocalDateTime endOfDay = fechaActual.atTime(LocalTime.MAX);
+
+        Optional<MilkCollection> existing = iMilkCollectionRepository
+                .findByMilkSupplierIdAndCreatedAtBetween(milkCollectionDto.getMilkSupplierId(), startOfDay, endOfDay);
+
+        if (existing.isPresent()) {
+            throw new IllegalArgumentException("Ya existe un registro para este proveedor y fecha.");
+        }
+
         iMilkCollectionRepository.saveAndFlush(milkCollection);
     }
 

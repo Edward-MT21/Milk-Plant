@@ -6,13 +6,11 @@ import com.persons.Persons.model.dtos.PersonOutDto;
 import com.persons.Persons.model.dtos.PersonsContactsDto;
 import com.persons.Persons.model.dtos.ResponseDto;
 import com.persons.Persons.services.IPersonService;
-import com.persons.Persons.services.impl.PersonServiceImpl;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -29,14 +27,11 @@ public class PersonController {
 
     private static final Logger logger = LoggerFactory.getLogger(PersonController.class);
 
-    PersonServiceImpl personServiceImpl;
+    IPersonService iPersonService;
 
     @Autowired
     private PersonsContactsDto personsContactsDto;
 
-//    public PersonController(IPersonService personServiceImpl) {
-//        this.personServiceImpl = (PersonServiceImpl) personServiceImpl;
-//    }
 
     @GetMapping("/getGreeting")
     public String getGreeting() {
@@ -50,7 +45,7 @@ public class PersonController {
     @PostMapping("/createPerson")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<ResponseDto> createPerson(@Valid @RequestBody PersonInDto personInDto) {
-        personServiceImpl.createPerson(personInDto);
+        iPersonService.createPerson(personInDto);
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new ResponseDto(PersonConstants.STATUS_201, PersonConstants.MESSAGE_201));
@@ -64,7 +59,7 @@ public class PersonController {
     @PostMapping("/editPerson")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ResponseDto> editPerson(@Valid @RequestBody PersonInDto personInDto) {
-        personServiceImpl.editPerson(personInDto);
+        iPersonService.editPerson(personInDto);
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponseDto(PersonConstants.STATUS_200, PersonConstants.MESSAGE_200));
@@ -77,7 +72,7 @@ public class PersonController {
     @GetMapping("/getAllPersons")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<PersonOutDto>> getAllPersons() {
-        List<PersonOutDto> listPersonOutDto = personServiceImpl.getAllPersons();
+        List<PersonOutDto> listPersonOutDto = iPersonService.getAllPersons();
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(listPersonOutDto);
@@ -93,7 +88,7 @@ public class PersonController {
     public ResponseEntity<PersonOutDto> fetchPersonById(
             @RequestHeader("milk-plant-correlation-id") String correlationId, @RequestParam("personId") Long personId) {
         logger.debug("fetchPersonById start");
-        PersonOutDto personOutDto = personServiceImpl.fetchPersonById(personId);
+        PersonOutDto personOutDto = iPersonService.fetchPersonById(personId);
         logger.debug("fetchPersonById end");
         return ResponseEntity.status(HttpStatus.OK).body(personOutDto);
     }

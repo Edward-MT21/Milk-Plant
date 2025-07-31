@@ -28,11 +28,6 @@
         <i class="fas fa-spinner fa-spin"></i> Cargando recolecciones...
     </div>
 
-    <!-- Error message -->
-    <div *ngIf="error" class="error-message">
-        <i class="fas fa-exclamation-circle"></i> {{ error }}
-    </div>
-
     <div class="table-wrapper">
         <table class="collection-table" *ngIf="!loading || collections.length > 0">
             <thead>
@@ -159,6 +154,10 @@
                 <div *ngIf="newCollection.litersMilk <= 0" class="invalid-feedback">
                     Por favor ingrese una cantidad válida mayor a 0
                 </div>
+            </div>
+
+            <div *ngIf="error" class="message" [ngClass]="{'error': thereErrorMessage, 'success': !thereErrorMessage}">
+                {{ error }}
             </div>
 
             <div class="modal-actions">
