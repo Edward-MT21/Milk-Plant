@@ -3,6 +3,7 @@ package com.module.Milk_Collection.controllers;
 import com.module.Milk_Collection.constants.AccountsConstants;
 import com.module.Milk_Collection.model.dtos.MilkCollectionDetailsDto;
 import com.module.Milk_Collection.model.dtos.MilkCollectionDto;
+import com.module.Milk_Collection.model.dtos.MilkSupplierCollectionDTO;
 import com.module.Milk_Collection.model.dtos.ResponseDto;
 import com.module.Milk_Collection.services.IMilkCollectionService;
 import lombok.AllArgsConstructor;
@@ -54,4 +55,12 @@ public class MilkCollectionController {
                 .status(HttpStatus.CREATED)
                 .body(new ResponseDto(AccountsConstants.STATUS_201, AccountsConstants.MESSAGE_201));
     }
+
+    @GetMapping("/fetch-milk-supplier-collection-by-date-range")
+    public ResponseEntity<List<MilkSupplierCollectionDTO>> fetchMilkSupplierCollectionByDateRange(@RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+                                                                                                  @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+        return ResponseEntity.ok(iMilkCollectionService.fetchMilkSupplierCollectionByDateRange(startDate, endDate));
+    }
+
+
 }

@@ -40,8 +40,19 @@ export interface MilkCollectionDetails {
   milkCollectionId: number;
   milkSupplierDetailsDto: MilkSupplierDetails;
   litersMilk: number;
+  createdAt: string; // Fecha de la recolección (ISO string)
 }
 
+export interface MilkCollectionRecordDTO {
+  createdAt: string; // ISO string
+  litersMilk: number;
+}
+
+export interface MilkSupplierCollectionDTO {
+  milkSupplierId: number;
+  personOutDto: PersonOutDto;
+  collections: MilkCollectionRecordDTO[];
+}
 
 @Injectable({
   providedIn: 'root'
@@ -56,6 +67,7 @@ export class MilkCollectionService {
   private milkSupplierUrl = 'http://localhost:8080/MilkSupplierController';
   private createMilkSupplierUrl = `${this.milkSupplierUrl}/createMilkSupplier`;
   private fetchAllMilkSupplierDetailsUrl = `${this.milkSupplierUrl}/fetchAllMilkSupplierDetails`;
+  private fetchMilkSupplierCollectionByDateRangeUrl = `${this.baseUrl}/MilkCollectionController/fetch-milk-supplier-collection-by-date-range`;
 
   constructor(private http: HttpClient) {}
 
@@ -116,4 +128,18 @@ export class MilkCollectionService {
     const url = `${this.baseUrl}/MilkCollectionController/fetch-milk-collection-details-by-date?date=${date}`;
     return this.http.get<MilkCollectionDetails[]>(url);
   }
+
+
+  /**
+   * Obtiene las colecciones de proveedores en un rango de fechas
+   */
+  fetchAllMilkCollectionDetailsByDateRange(startDate: string, endDate: string): Observable<MilkSupplierCollectionDTO[]> {
+    const params = { startDate, endDate };
+    return this.http.get<MilkSupplierCollectionDTO[]>(this.fetchMilkSupplierCollectionByDateRangeUrl, { params });
+  }
+
+  
+  
+  // ...otros métodos...
+
 }

@@ -1,3 +1,23 @@
+/* Contenedor principal */
+.person-register-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Título principal */
+.person-register-title {
+  color: #2c3e50;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-bottom: 3px solid #e67e22;
+  padding-bottom: 12px;
+}
+
 /* Mensajes de feedback */
 .feedback-messages {
   max-width: 400px;

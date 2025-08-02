@@ -2,6 +2,7 @@ package com.module.Milk_Collection.services;
 
 import com.module.Milk_Collection.model.dtos.MilkCollectionDetailsDto;
 import com.module.Milk_Collection.model.dtos.MilkCollectionDto;
+import com.module.Milk_Collection.model.dtos.MilkSupplierCollectionDTO;
 import com.module.Milk_Collection.model.dtos.ResponseDto;
 import org.springframework.http.ResponseEntity;
 
@@ -19,4 +20,6 @@ public interface IMilkCollectionService {
     void createMilkCollection(MilkCollectionDto milkCollectionDto);
 
     void updateMilkCollection(MilkCollectionDto milkCollectionDto);
+
+    List<MilkSupplierCollectionDTO> fetchMilkSupplierCollectionByDateRange(LocalDate startDate, LocalDate endDate);
 }

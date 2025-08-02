@@ -1,0 +1,48 @@
+<div class="milk-collection-form-container">
+
+  <h2 class="title-icon">🗂️ Planilla de recolección</h2>
+
+  <div class="month-selector-row">
+
+    <div class="form-group">
+      <label class="month-label">
+        Seleccionar Mes/Año:
+      </label>
+      <input class="form-control date-input" type="month" [value]="monthYearLabel" (change)="onMonthChange($event)" />
+    </div>
+    <div class="day-description">
+      <i class="far fa-calendar-alt"></i> {{ monthYearText }}
+    </div>
+
+  </div>
+
+  <h3>{{ quincena === 1 ? 'Primera' : 'Segunda' }} Quincena</h3>
+
+  <table class="milk-table">
+    <thead>
+      <tr>
+        <th>ID Proveedor</th>
+        <th>Proveedor</th>
+        <th *ngFor="let day of days">{{ day }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of supplierRows">
+        <td>{{ row.milkSupplierId }}</td>
+        <td>{{ row.names }} {{ row.lastNames }}</td>
+        <td *ngFor="let day of days">{{ row.litersByDay[day] }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="display: flex; justify-content: center; align-items: center; margin-top: 1rem; gap: 1.5rem;">
+    <button (click)="prevQuincena()" title="Quincena anterior" style="font-size: 1.5rem; border: none; background: none; cursor: pointer;">
+      ◀️
+    </button>
+    <span style="font-weight: bold;">{{ quincena === 1 ? 'Primera' : 'Segunda' }} Quincena</span>
+    <button (click)="nextQuincena()" title="Quincena siguiente" style="font-size: 1.5rem; border: none; background: none; cursor: pointer;">
+      ▶️
+    </button>
+  </div>
+
+</div>

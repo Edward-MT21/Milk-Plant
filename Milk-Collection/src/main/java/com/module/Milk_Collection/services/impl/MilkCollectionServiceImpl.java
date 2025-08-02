@@ -2,10 +2,7 @@ package com.module.Milk_Collection.services.impl;
 
 import com.module.Milk_Collection.exception.ResourceNotFoundException;
 import com.module.Milk_Collection.mapper.MilkCollectionMapper;
-import com.module.Milk_Collection.model.dtos.MilkCollectionDetailsDto;
-import com.module.Milk_Collection.model.dtos.MilkCollectionDto;
-import com.module.Milk_Collection.model.dtos.MilkSupplierDetailsDto;
-import com.module.Milk_Collection.model.dtos.ResponseDto;
+import com.module.Milk_Collection.model.dtos.*;
 import com.module.Milk_Collection.model.entities.MilkCollection;
 import com.module.Milk_Collection.repositories.IMilkCollectionRepository;
 import com.module.Milk_Collection.repositories.IMilkSupplierRepository;
@@ -16,8 +13,11 @@ import org.springframework.stereotype.Service;
 import com.module.Milk_Collection.mapper.MilkSupplierMapper;
 
 import java.time.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.toList;
 
@@ -94,4 +94,41 @@ public class MilkCollectionServiceImpl implements IMilkCollectionService {
                 .map(this::getMilkCollectionDetailsDto)
                 .toList();
     }
+
+    @Override
+    public List<MilkSupplierCollectionDTO> fetchMilkSupplierCollectionByDateRange(LocalDate startDate, LocalDate endDate) {
+        LocalDateTime start = startDate.atStartOfDay();
+        LocalDateTime end = endDate.atTime(LocalTime.MAX);
+
+        List<MilkCollection> collections = iMilkCollectionRepository.findAllByCreatedAtBetween(start, end);
+
+        // Agrupar por milkSupplierId
+        Map<Long, List<MilkCollection>> grouped = collections.stream()
+                .collect(Collectors.groupingBy(MilkCollection::getMilkSupplierId));
+
+        List<MilkSupplierCollectionDTO> result = new ArrayList<>();
+
+        for (Map.Entry<Long, List<MilkCollection>> entry : grouped.entrySet()) {
+            Long milkSupplierId = entry.getKey();
+            List<MilkCollection> milkCollections = entry.getValue();
+
+            List<MilkCollectionRecordDTO> recordDTOs = milkCollections.stream().map(mc -> {
+                MilkCollectionRecordDTO dto = new MilkCollectionRecordDTO();
+                dto.setCreatedAt(mc.getCreatedAt());
+                dto.setLitersMilk(mc.getLitersMilk());
+                return dto;
+            }).collect(Collectors.toList());
+
+            MilkSupplierDetailsDto milkSupplierDetailsDto = milkSupplierServiceImpl.fetchMilkSupplierDetailsById(milkSupplierId, "0");
+            result.add(MilkSupplierCollectionDTO.builder()
+                    .milkSupplierId(milkSupplierId)
+                    .personOutDto(milkSupplierDetailsDto.getPersonOutDto())
+                    .collections(recordDTOs)
+                    .build());
+        }
+
+        return result;
+
+    }
+
 }

@@ -1,0 +1,215 @@
+/* Contenedor principal */
+.milk-collection-form-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.milk-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  font-size: 0.95rem;
+  min-width: 800px;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  border: 1px solid #e8ecef;
+  margin: 1.5rem 0;
+  overflow: hidden;
+}
+
+.milk-table thead {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.milk-table th {
+  padding: 16px 20px;
+  text-align: center;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border: none;
+  position: relative;
+  white-space: nowrap;
+}
+
+.milk-table th:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  right: 0;
+  top: 25%;
+  height: 50%;
+  width: 1px;
+  background: rgba(255, 255, 255, 0.2);
+}
+
+.milk-table td {
+  padding: 14px 20px;
+  border: none;
+  border-bottom: 1px solid #f1f3f4;
+  color: #2c3e50;
+  font-weight: 500;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.milk-table tbody tr {
+  transition: all 0.3s ease;
+}
+
+.milk-table tbody tr:hover {
+  background: linear-gradient(90deg, #f8f9ff 0%, #e8f4fd 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.milk-table tbody tr:nth-child(even) {
+  background: #fafbfc;
+}
+
+.milk-table tbody tr:nth-child(even):hover {
+  background: linear-gradient(90deg, #f8f9ff 0%, #e8f4fd 100%);
+}
+
+.milk-table td:first-child {
+  font-weight: 600;
+  color: #3498db;
+  white-space: nowrap;
+}
+
+.milk-table td:nth-child(2) {
+  min-width: 200px;
+}
+
+.milk-table td:nth-child(3) {
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .milk-table th,
+  .milk-table td {
+    padding: 12px 15px;
+    font-size: 0.85rem;
+  }
+  .milk-table th {
+    font-size: 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .milk-table th,
+  .milk-table td {
+    padding: 10px 12px;
+    font-size: 0.8rem;
+  }
+}
+
+.month-year-text {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #2c3e50;
+  padding: 0.5rem 1.2rem;
+  background-color: #e9f7fe;
+  border-radius: 8px;
+  border: 1px solid #bbdefb;
+  box-shadow: 0 1px 4px rgba(80,80,180,0.04);
+  margin-left: 6px;
+}
+
+.month-selector-row {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+  padding: 1rem;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.month-selector-row .form-group {
+  margin: 0;
+}
+
+.month-selector-row label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #2c3e50;
+}
+
+.month-selector-row .date-input {
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: border-color 0.3s ease;
+}
+
+.month-selector-row .date-input:focus {
+  border-color: #3498db;
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(52, 152, 219, 0.2);
+}
+
+.title-icon {
+  color: #2c3e50;
+  font-size: 2rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+  text-align: center;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-bottom: 3px solid #3498db;
+  padding-bottom: 12px;
+}
+
+.form-group {
+  margin: 1.5rem 0;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 500;
+  color: #495057;
+}
+
+.form-control {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  font-size: 1rem;
+  transition: all 0.2s;
+  box-sizing: border-box;
+}
+
+.form-control:focus {
+  outline: none;
+  border-color: #3498db;
+  box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.2);
+}
+
+.day-description {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.1rem;
+  font-weight: 500;
+  color: #2c3e50;
+  padding: 0.5rem 1rem;
+  background-color: #e9f7fe;
+  border-radius: 6px;
+  margin-top: 1.5rem;
+}
+
+.day-description i {
+  color: #3498db;
+}
+

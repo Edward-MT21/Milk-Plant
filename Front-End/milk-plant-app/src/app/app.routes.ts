@@ -20,6 +20,11 @@ export const routes: Routes = [
         path: 'milk-supplier',
         loadComponent: () =>
           import('./milk-supplier/milk-supplier.component').then(m => m.MilkSupplierComponent)
+      },
+      {
+        path: 'milk-collection-form',
+        loadComponent: () =>
+          import('./milk-collection/milk-collection-form/milk-collection-form.component').then(m => m.MilkCollectionFormComponent)
       }
       
 ];
