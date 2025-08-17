@@ -1,1 +1,19 @@
-<p>financial-management works!</p>
+<div class="dashboard-container">
+  <h1>Gestión Financiera</h1>
+  
+  <div class="cards-container">
+    <!-- Tarjeta de Pagos a Proveedores -->
+    <mat-card class="dashboard-card" (click)="navigateToPayments()">
+      <mat-card-header>
+        <div mat-card-avatar class="payment-icon">
+          <mat-icon>payments</mat-icon>
+        </div>
+        <mat-card-title>Pagos a Proveedores</mat-card-title>
+        <mat-card-subtitle>Gestión de pagos a proveedores de leche</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <p>Administre los pagos a sus proveedores de leche</p>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>
