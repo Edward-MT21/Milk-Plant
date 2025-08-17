@@ -1,4 +1,4 @@
-package com.module.Milk_Collection.model.dtos;
+package com.module.Common.dtos;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

@@ -112,6 +112,11 @@ public class MilkCollectionServiceImpl implements IMilkCollectionService {
             Long milkSupplierId = entry.getKey();
             List<MilkCollection> milkCollections = entry.getValue();
 
+            // Calcular el total de litros para este proveedor
+            Integer totalLitersMilk = milkCollections.stream()
+                    .mapToInt(MilkCollection::getLitersMilk)
+                    .sum();
+
             List<MilkCollectionRecordDTO> recordDTOs = milkCollections.stream().map(mc -> {
                 MilkCollectionRecordDTO dto = new MilkCollectionRecordDTO();
                 dto.setCreatedAt(mc.getCreatedAt());
@@ -124,6 +129,7 @@ public class MilkCollectionServiceImpl implements IMilkCollectionService {
                     .milkSupplierId(milkSupplierId)
                     .personOutDto(milkSupplierDetailsDto.getPersonOutDto())
                     .collections(recordDTOs)
+                    .totalLitersMilk(totalLitersMilk)
                     .build());
         }
 
