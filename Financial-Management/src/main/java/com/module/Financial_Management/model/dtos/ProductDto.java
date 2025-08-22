@@ -1,7 +1,7 @@
 package com.module.Financial_Management.model.dtos;
 
 import com.module.Financial_Management.model.enums.ProductEnum;
-import lombok.Data;
+import lombok.*;
 
 import java.math.BigDecimal;
 
@@ -14,9 +14,12 @@ import java.math.BigDecimal;
  * - Un constructor @RequiredArgsConstructor
  * - @Value si la clase es final
  */
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProductDto {
-    private Long idProduct;
+    private Long productId;
     private ProductEnum name;
     private String description;
     private BigDecimal price;

@@ -3,11 +3,54 @@
     <button mat-icon-button (click)="goBack()" class="back-button">
       <mat-icon>arrow_back</mat-icon>
     </button>
-    <h1>Pagos a Proveedores de Leche</h1>
+    <div class="header-content">
+      <h1>Pagos a Proveedores de Leche</h1>
+      <div class="date-navigation">
+        <button mat-icon-button (click)="navigateFortnight('prev')" title="Quincena anterior">
+          <mat-icon>chevron_left</mat-icon>
+        </button>
+        <div class="date-info">
+          <h2>{{ currentMonthName }}</h2>
+          <p class="fortnight-info">{{ currentFortnight }}</p>
+        </div>
+        <button mat-icon-button (click)="navigateFortnight('next')" title="Siguiente quincena">
+          <mat-icon>chevron_right</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <div class="date-range-selector">
+    <mat-form-field appearance="outline">
+      <mat-label>Fecha Inicio</mat-label>
+      <input matInput [matDatepicker]="startDatePicker" [(ngModel)]="startDate" (dateChange)="onDateRangeChange()" [max]="endDate">
+      <mat-datepicker-toggle matSuffix [for]="startDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #startDatePicker></mat-datepicker>
+    </mat-form-field>
+
+    <span class="date-separator">a</span>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Fecha Fin</mat-label>
+      <input matInput [matDatepicker]="endDatePicker" [(ngModel)]="endDate" (dateChange)="onDateRangeChange()" [min]="startDate" [max]="currentDate">
+      <mat-datepicker-toggle matSuffix [for]="endDatePicker"></mat-datepicker-toggle>
+      <mat-datepicker #endDatePicker></mat-datepicker>
+    </mat-form-field>
   </div>
   
   <div class="content">
-    <div class="table-container">
+    <div *ngIf="isLoading" class="loading-spinner">
+      <mat-spinner></mat-spinner>
+      <p>Cargando datos de pagos...</p>
+    </div>
+    
+    <div *ngIf="!isLoading && error" class="error-message">
+      <mat-icon color="warn">error_outline</mat-icon>
+      <span>{{ error }}</span>
+      <button mat-button color="primary" (click)="loadPayments()">Reintentar</button>
+    </div>
+    
+    <div *ngIf="!isLoading && !error" class="table-container">
       <table mat-table [dataSource]="dataSource" class="mat-elevation-z2">
         <!-- Columna ID -->
         <ng-container matColumnDef="id">
@@ -46,6 +89,11 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
       </table>
+      
+      <div *ngIf="dataSource.length === 0" class="no-data">
+        <mat-icon>info</mat-icon>
+        <p>No se encontraron registros para el rango de fechas seleccionado</p>
+      </div>
     </div>
   </div>
 </div>

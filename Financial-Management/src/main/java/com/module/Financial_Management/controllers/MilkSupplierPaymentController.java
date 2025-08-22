@@ -6,11 +6,10 @@ import com.module.Financial_Management.model.dtos.ProductDto;
 import com.module.Financial_Management.model.enums.ProductEnum;
 import com.module.Financial_Management.services.IProductService;
 import com.module.Financial_Management.services.client.IMilkCollectionFeignClient;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -20,6 +19,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/MilkSupplierPaymentController")
 @RequiredArgsConstructor
+@CrossOrigin(origins = "http://localhost:4200")
 public class MilkSupplierPaymentController {
 
     private final IMilkCollectionFeignClient iMilkCollectionFeignClient;
@@ -27,11 +27,14 @@ public class MilkSupplierPaymentController {
 
     @GetMapping("/getBiweeklyInfoMilkSupplierPayment")
     public List<InfoMilkSupplierPaymentDto> getBiweeklyInfoMilkSupplierPayment(
-            @RequestParam LocalDate startDate,
-            @RequestParam LocalDate endDate) {
+            @RequestParam("startDate") LocalDate startDate,
+            @RequestParam("endDate") LocalDate endDate) {
 
-        List<MilkSupplierCollectionDTO> listMilkSupplierCollectionDTO =
+        ResponseEntity<List<MilkSupplierCollectionDTO>> responseEntityListMilkSupplierCollectionDTO =
                 iMilkCollectionFeignClient.fetchMilkSupplierCollectionByDateRange(startDate, endDate);
+
+        List<MilkSupplierCollectionDTO> listMilkSupplierCollectionDTO = responseEntityListMilkSupplierCollectionDTO.getBody();
+
 
         Long rawMilkProductId = ProductEnum.RAW_MILK.getIdProduct(); // Ajusta según corresponda
         ProductDto product = iProductService.getProductById(rawMilkProductId);

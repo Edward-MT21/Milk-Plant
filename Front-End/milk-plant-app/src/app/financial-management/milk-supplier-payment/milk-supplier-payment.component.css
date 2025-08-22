@@ -1,32 +1,87 @@
+/* General container styles */
 .payment-container {
   padding: 20px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
+/* Header styles */
 .header {
   display: flex;
   align-items: center;
-  margin-bottom: 24px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid #e0e0e0;
+  margin-bottom: 16px;
+  gap: 16px;
+}
+
+.header-content {
+  flex: 1;
 }
 
 .header h1 {
-  margin: 0 0 0 16px;
-  color: #3f51b5;
+  margin: 0 0 4px 0;
   font-size: 24px;
+  font-weight: 500;
+  color: #333;
 }
 
-.back-button {
-  background-color: #f5f5f5;
-  transition: background-color 0.3s;
+.date-navigation {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 8px;
 }
 
-.back-button:hover {
-  background-color: #e0e0e0;
+.date-info {
+  text-align: center;
+  flex: 1;
 }
 
+.date-info h2 {
+  margin: 0;
+  font-size: 20px;
+  font-weight: 500;
+  color: #444;
+}
+
+.fortnight-info {
+  margin: 2px 0 0 0;
+  font-size: 14px;
+  color: #666;
+  font-style: italic;
+}
+
+button[mat-icon-button] {
+  width: 36px;
+  height: 36px;
+  line-height: 36px;
+}
+
+button[mat-icon-button] mat-icon {
+  font-size: 24px;
+  width: 24px;
+  height: 24px;
+  line-height: 24px;
+}
+
+/* Date range selector styles */
+.date-range-selector {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+  flex-wrap: wrap;
+}
+
+.date-separator {
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+mat-form-field {
+  min-width: 200px;
+}
+
+/* Content styles */
 .content {
   padding: 20px;
   background-color: #ffffff;
@@ -34,8 +89,14 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Table styles */
 .table-container {
   overflow-x: auto;
+  border-radius: 4px;
+  background: white;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 
+              0 2px 2px 0 rgba(0, 0, 0, 0.14), 
+              0 1px 5px 0 rgba(0, 0, 0, 0.12);
   margin-top: 20px;
 }
 
@@ -45,38 +106,105 @@ table {
 }
 
 th.mat-header-cell {
-  background-color: #3f51b5;
-  color: white;
-  font-weight: 500;
-  padding: 12px;
-  text-align: left;
+  font-weight: 600;
+  color: rgba(0, 0, 0, 0.87);
+  background-color: #f5f5f5;
 }
 
+th.mat-header-cell, 
 td.mat-cell {
-  padding: 12px;
-  border-bottom: 1px solid #e0e0e0;
+  padding: 12px 16px;
+  text-align: left;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 tr.mat-row:hover {
   background-color: #f5f5f5;
 }
 
-.mat-elevation-z2 {
-  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 
-              0 2px 2px 0 rgba(0,0,0,.14), 
-              0 1px 5px 0 rgba(0,0,0,.12);
+/* Loading spinner styles */
+.loading-spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  background: white;
   border-radius: 4px;
-  overflow: hidden;
+  box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 
+              0 2px 2px 0 rgba(0, 0, 0, 0.14), 
+              0 1px 5px 0 rgba(0, 0, 0, 0.12);
 }
 
-/* Estilos para el botón de ver detalles */
-button[mat-icon-button] {
-  width: 40px;
-  height: 40px;
-  line-height: 40px;
+.loading-spinner p {
+  margin-top: 16px;
+  color: rgba(0, 0, 0, 0.6);
 }
 
-/* Ajustes para pantallas pequeñas */
+/* Error message styles */
+.error-message {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px;
+  background-color: #ffebee;
+  border-radius: 4px;
+  color: #d32f2f;
+  margin-bottom: 16px;
+}
+
+.error-message button {
+  margin-left: auto;
+}
+
+/* No data message */
+.no-data {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 40px;
+  color: rgba(0, 0, 0, 0.6);
+}
+
+.no-data mat-icon {
+  font-size: 48px;
+  width: 48px;
+  height: 48px;
+  margin-bottom: 16px;
+  color: #2196f3;
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .header-content {
+    width: 100%;
+  }
+  
+  .date-navigation {
+    margin-top: 12px;
+  }
+  
+  .date-range-selector {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .date-separator {
+    text-align: center;
+    margin: 8px 0;
+  }
+  
+  mat-form-field {
+    width: 100%;
+  }
+}
+
 @media (max-width: 768px) {
   .content {
     padding: 10px;

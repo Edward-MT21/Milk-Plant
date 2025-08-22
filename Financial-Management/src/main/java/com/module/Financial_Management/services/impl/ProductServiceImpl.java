@@ -4,7 +4,9 @@ import com.module.Financial_Management.model.dtos.ProductDto;
 import com.module.Financial_Management.model.entities.Product;
 import com.module.Financial_Management.repositories.IProductRepository;
 import com.module.Financial_Management.services.IProductService;
+import org.springframework.stereotype.Service;
 
+@Service
 public class ProductServiceImpl implements IProductService {
 
     private final IProductRepository iProductRepository;
@@ -18,6 +20,7 @@ public class ProductServiceImpl implements IProductService {
         Product product = new Product();
         product.setName(productDto.getName());
         product.setDescription(productDto.getDescription());
+        product.setPrice(productDto.getPrice());
 
         iProductRepository.saveAndFlush(product);
 
@@ -27,9 +30,10 @@ public class ProductServiceImpl implements IProductService {
 
         Product product = iProductRepository.findById(idProduct).orElseThrow(() -> new RuntimeException("Product not found"));
         ProductDto productDto = new ProductDto();
-        productDto.setIdProduct(product.getIdProduct());
+        productDto.setProductId(product.getProductId());
         productDto.setName(product.getName());
         productDto.setDescription(product.getDescription());
+        productDto.setPrice(product.getPrice());
 
         return productDto;
 

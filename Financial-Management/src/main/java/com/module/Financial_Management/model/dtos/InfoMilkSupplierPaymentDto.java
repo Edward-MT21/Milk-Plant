@@ -2,12 +2,15 @@ package com.module.Financial_Management.model.dtos;
 
 import com.module.Common.dtos.MilkCollectionRecordDTO;
 import com.module.Common.dtos.PersonOutDto;
-import lombok.Data;
+import lombok.*;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class InfoMilkSupplierPaymentDto {
     private Long milkSupplierId;
     private PersonOutDto personOutDto;

@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS `milk_supplier_payment` (
     `created_by` varchar(20) NOT NULL,
     `updated_at` timestamp DEFAULT NULL,
     `updated_by` varchar(20) DEFAULT NULL
+);
 
 
 INSERT INTO product (product_id, name, description, price, created_at, created_by)

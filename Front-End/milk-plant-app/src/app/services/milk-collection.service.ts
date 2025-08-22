@@ -54,6 +54,14 @@ export interface MilkSupplierCollectionDTO {
   collections: MilkCollectionRecordDTO[];
 }
 
+export interface InfoMilkSupplierPaymentDto {
+  milkSupplierId: number;
+  personOutDto: PersonOutDto;
+  collections: MilkCollectionRecordDTO[];
+  totalLitersMilk: number;
+  totalAmount: number;
+}
+
 @Injectable({
   providedIn: 'root'
 })
@@ -68,6 +76,7 @@ export class MilkCollectionService {
   private createMilkSupplierUrl = `${this.milkSupplierUrl}/createMilkSupplier`;
   private fetchAllMilkSupplierDetailsUrl = `${this.milkSupplierUrl}/fetchAllMilkSupplierDetails`;
   private fetchMilkSupplierCollectionByDateRangeUrl = `${this.baseUrl}/MilkCollectionController/fetch-milk-supplier-collection-by-date-range`;
+  private milkSupplierPaymentUrl = `http://localhost:8280/MilkSupplierPaymentController`;
 
   constructor(private http: HttpClient) {}
 
@@ -138,7 +147,18 @@ export class MilkCollectionService {
     return this.http.get<MilkSupplierCollectionDTO[]>(this.fetchMilkSupplierCollectionByDateRangeUrl, { params });
   }
 
-  
+  // Obtiene la información de pagos quincenales de los proveedores
+  getBiweeklyMilkSupplierPayments(startDate: string, endDate: string): Observable<InfoMilkSupplierPaymentDto[]> {
+    return this.http.get<InfoMilkSupplierPaymentDto[]>(
+      `${this.milkSupplierPaymentUrl}/getBiweeklyInfoMilkSupplierPayment`,
+      {
+        params: {
+          startDate: startDate,
+          endDate: endDate
+        }
+      }
+    );
+  }
   
   // ...otros métodos...
 
