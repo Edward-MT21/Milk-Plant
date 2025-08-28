@@ -37,7 +37,7 @@ export const routes: Routes = [
           import('./financial-management/milk-supplier-payment/milk-supplier-payment.component').then(m => m.MilkSupplierPaymentComponent)
       },
       {
-        path: 'person-management',
+        path: 'person-management/manage-person',
         loadComponent: () =>
           import('./person-management/manage-person/manage-person.component').then(m => m.ManagePersonComponent)
       }

@@ -242,8 +242,8 @@ export class MilkCollectionService {
    * @param person The person data to update
    * @returns Observable with the updated person
    */
-  updatePerson(person: PersonOutDto): Observable<PersonOutDto> {
-    return this.http.put<PersonOutDto>(`${this.personUrl}/updatePerson`, person);
+  editPerson(person: PersonOutDto): Observable<PersonOutDto> {
+    return this.http.put<PersonOutDto>(`${this.personUrl}/editPerson`, person);
   }
 
 }

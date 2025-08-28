@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { MilkCollectionService, Person, MilkSupplierDetails, PersonOutDto } from '../services/milk-collection.service';
 import { catchError, finalize } from 'rxjs/operators';
 import { of } from 'rxjs';
+import Swal from 'sweetalert2';
 
 /**
  * Component to manage milk suppliers.
@@ -164,10 +165,21 @@ export class MilkSupplierComponent implements OnInit {
   }
 
   /** Confirms the deletion of a supplier */
-  confirmDelete(milkSupplierId: number, event: Event) {
+  async confirmDelete(milkSupplierId: number, event: Event) {
     event.stopPropagation(); // Prevent row click event
     
-    if (confirm('¿Está seguro de que desea eliminar este proveedor? Esta acción no se puede deshacer.')) {
+    const result = await Swal.fire({
+      title: '¿Está seguro?',
+      text: '¿Desea eliminar este proveedor? Esta acción no se puede deshacer.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#dc3545',
+      cancelButtonColor: '#6c757d',
+    });
+
+    if (result.isConfirmed) {
       this.deleteSupplier(milkSupplierId);
     }
   }

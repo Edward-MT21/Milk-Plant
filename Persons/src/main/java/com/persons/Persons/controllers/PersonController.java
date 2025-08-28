@@ -56,7 +56,7 @@ public class PersonController {
      * @param personInDto the data transfer object containing the details of the person to be edited
      *                    including names, last names, identification number, age, and gender.
      */
-    @PostMapping("/editPerson")
+    @PutMapping("/editPerson")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ResponseDto> editPerson(@Valid @RequestBody PersonInDto personInDto) {
         iPersonService.editPerson(personInDto);

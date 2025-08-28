@@ -25,11 +25,20 @@
     <label>Número de Identificación:</label>
     <input [(ngModel)]="identificationNumber" name="identificationNumber" />
 
-    <label>Edad:</label>
-    <input [(ngModel)]="age" name="age" type="number" />
+    <label>Fecha de Nacimiento:</label>
+    <input 
+      type="date" 
+      [(ngModel)]="birthdate" 
+      name="birthdate" 
+      [max]="maxDate"
+    />
 
     <label>Género:</label>
-    <input [(ngModel)]="gender" name="gender" />
+    <select [(ngModel)]="gender" name="gender" class="form-select">
+      <option *ngFor="let option of genderOptions" [value]="option">
+        {{ option }}
+      </option>
+    </select>
 
     <label>Email:</label>
     <input [(ngModel)]="email" name="email" type="email" />

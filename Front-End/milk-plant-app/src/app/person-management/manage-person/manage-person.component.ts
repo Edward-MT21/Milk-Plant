@@ -4,6 +4,7 @@ import { FormsModule } from '@angular/forms';
 import { MilkCollectionService, PersonOutDto, Person } from '../../services/milk-collection.service';
 import { catchError, finalize } from 'rxjs/operators';
 import { of } from 'rxjs';
+import Swal from 'sweetalert2';
 
 /**
  * Component to manage persons.
@@ -61,7 +62,7 @@ export class ManagePersonComponent implements OnInit {
     this.loading = true;
     this.error = null;
     
-    this.milkCollectionService.updatePerson(this.editingPerson)
+    this.milkCollectionService.editPerson(this.editingPerson)
       .pipe(
         catchError(error => {
           console.error('Error updating person:', error);
@@ -74,13 +75,8 @@ export class ManagePersonComponent implements OnInit {
       )
       .subscribe(updatedPerson => {
         if (updatedPerson) {
-          // Update the person in the local array
-          const index = this.persons.findIndex(p => p.idPerson === updatedPerson.idPerson);
-          if (index !== -1) {
-            this.persons[index] = updatedPerson;
-          }
+          this.loadPersons();
           this.closeEditModal();
-          console.log('Persona actualizada exitosamente');
         }
       });
   }
@@ -124,10 +120,21 @@ export class ManagePersonComponent implements OnInit {
   }
 
   /** Confirms the deletion of a person. */
-  confirmDelete(personId: number, event: Event) {
+  async confirmDelete(personId: number, event: Event) {
     event.stopPropagation();
     
-    if (confirm('¿Está seguro de que desea eliminar esta persona? Esta acción no se puede deshacer.')) {
+    const result = await Swal.fire({
+      title: '¿Está seguro?',
+      text: '¿Desea eliminar esta persona? Esta acción no se puede deshacer.',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar',
+      confirmButtonColor: '#dc3545',
+      cancelButtonColor: '#6c757d',
+    });
+
+    if (result.isConfirmed) {
       this.deletePerson(personId);
     }
   }
@@ -151,9 +158,7 @@ export class ManagePersonComponent implements OnInit {
       )
       .subscribe(response => {
         if (response) {
-          // Remove the deleted person from the local array
-          this.persons = this.persons.filter(p => p.idPerson !== personId);
-          console.log('Persona eliminada exitosamente');
+          this.loadPersons();
         }
       });
   }

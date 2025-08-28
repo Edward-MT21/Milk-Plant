@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
+import { Router } from '@angular/router';
 import { MilkCollectionService, Person } from '../../services/milk-collection.service';
 
 @Component({
@@ -13,27 +14,47 @@ import { MilkCollectionService, Person } from '../../services/milk-collection.se
 export class PersonRegisterComponent {
 
   private milkService = inject(MilkCollectionService);
+  private router = inject(Router);
 
   names = '';
   lastNames = '';
   identificationNumber = '';
-  age: number | null = null;
-  gender = '';
+  birthdate: string = '';
+  gender: 'MASCULINO' | 'FEMENINO' = 'MASCULINO';
   email = '';
   mobileNumber = '';
+  
+  // Opciones de género
+  genderOptions = ['MASCULINO', 'FEMENINO'];
   
   // Estados para feedback al usuario
   isLoading = false;
   successMessage = '';
   errorMessage = '';
+  today = new Date().toISOString().split('T')[0]; // Formato YYYY-MM-DD para el input type="date"
+
+  // Formatear la fecha para el pipe
+  get maxDate(): string {
+    return this.today;
+  }
 
   guardar() {
     // Validar que todos los campos estén llenos
     if (!this.names || !this.lastNames || !this.identificationNumber || 
-        !this.age || !this.gender || !this.email || !this.mobileNumber) {
+        !this.birthdate || !this.gender || !this.email || !this.mobileNumber) {
       this.errorMessage = 'Por favor, complete todos los campos.';
       this.successMessage = '';
       return;
+    }
+
+    // Calcular la edad a partir de la fecha de nacimiento
+    const birthDate = new Date(this.birthdate);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
     }
 
     // Preparar los datos para enviar al backend
@@ -42,8 +63,8 @@ export class PersonRegisterComponent {
       names: this.names,
       lastNames: this.lastNames,
       identificationNumber: this.identificationNumber,
-      age: this.age,
-      gender: this.gender.toUpperCase(), // El backend espera género en mayúsculas
+      age: age,
+      gender: this.gender,
       email: this.email,
       mobileNumber: this.mobileNumber
     };
@@ -59,8 +80,10 @@ export class PersonRegisterComponent {
         this.successMessage = `Persona registrada exitosamente con ID: ${response.idPerson}`;
         console.log('Persona creada:', response);
         
-        // Limpiar el formulario después del éxito
-        this.limpiarFormulario();
+        // Limpiar el formulario después de 5 segundos
+        setTimeout(() => {
+          this.limpiarFormulario();
+        }, 5000);
       },
       error: (error) => {
         this.isLoading = false;
@@ -71,15 +94,15 @@ export class PersonRegisterComponent {
   }
 
   cancelar() {
-    this.limpiarFormulario();
+    this.router.navigate(['/person-management/manage-person']);
   }
 
   private limpiarFormulario() {
     this.names = '';
     this.lastNames = '';
     this.identificationNumber = '';
-    this.age = null;
-    this.gender = '';
+    this.birthdate = '';
+    this.gender = 'MASCULINO';
     this.email = '';
     this.mobileNumber = '';
     this.successMessage = '';
