@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-import { MilkCollectionService, Person } from '../services/milk-collection.service';
+import { MilkCollectionService, Person } from '../../services/milk-collection.service';
 
 @Component({
   selector: 'app-person-register',

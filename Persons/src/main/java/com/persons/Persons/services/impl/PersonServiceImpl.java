@@ -91,4 +91,10 @@ public class PersonServiceImpl implements IPersonService {
 
         return mapPersonToPersonOutDto(person);
     }
+
+    public boolean deletePersonById(Long personId) {
+        iPersonRepository.findById(personId).orElseThrow(() -> new RuntimeException("Person not found"));
+        iPersonRepository.deleteById(personId);
+        return true;
+    }
 }

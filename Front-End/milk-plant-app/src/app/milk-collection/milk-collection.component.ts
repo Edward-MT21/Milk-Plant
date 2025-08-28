@@ -5,7 +5,12 @@ import { catchError, finalize } from 'rxjs/operators';
 import { of } from 'rxjs';
 import { FormsModule } from '@angular/forms';
 
-
+/**
+ * Component to manage milk collection.
+ * Allows navigation between biweekly periods, fetching data from the backend,
+ * and displaying daily milk collection per supplier.
+ * @author Edward Malte
+ */
 @Component({
   selector: 'app-milk-collection',
   standalone: true,
@@ -15,39 +20,67 @@ import { FormsModule } from '@angular/forms';
 })
 export class MilkCollectionComponent implements OnInit {
 
+  /** Service for retrieving milk collection data */
   private milkService = inject(MilkCollectionService);
 
+  /** Array of milk collection details */
   collections: MilkCollectionDetails[] = [];
+
+  /** Loading state for data fetching */
   loading = false;
+
+  /** Error message */
   error: string | null = null;
   
+  /** Selected milk collection */
   selectedCollection: MilkCollectionDetails | null = null;
+  
+  /** Selected date */
   selectedDate: string = new Date().toISOString().split('T')[0];
+  
+  /** Description of the selected day */
   dayDescription: string = '';
+  
+  /** Show new collection modal */
   showNewCollectionModal = false;
+
+  /** New collection form */
   newCollection = {
     supplierId: null as number | null,
     litersMilk: 0,
     date: new Date().toISOString().split('T')[0]
   };
+
+  /** Array of suppliers */
   suppliers: {id: number, name: string}[] = [];
+
+  /** New liters of milk */
   newLiters: number = 0;
 
+  /** There is an error message */
   thereErrorMessage: boolean = false;
 
-  
-    ngOnInit(): void {
+  /** Lifecycle hook that initializes the component */
+  ngOnInit(): void {
     this.updateDayDescription(this.selectedDate);
     this.loadMilkCollections();
     this.extractSuppliers();
   }
 
+  /**
+   * Updates the selected date and loads milk collections for the new date.
+   * @param event The date change event.
+   */
   onDateChange(event: any) {
     this.selectedDate = event.target.value;
     this.updateDayDescription(this.selectedDate);
     this.loadMilkCollections();
   }
 
+  /**
+   * Updates the day description based on the selected date.
+   * @param dateString The selected date in YYYY-MM-DD format.
+   */
   updateDayDescription(dateString: string) {
     // Parse the date string in YYYY-MM-DD format, adding T12:00:00 to avoid timezone issues
     const [year, month, day] = dateString.split('-').map(Number);
@@ -59,6 +92,9 @@ export class MilkCollectionComponent implements OnInit {
     this.dayDescription = `${days[date.getDay()]}, ${date.getDate()} de ${months[date.getMonth()]}`;
   }
 
+  /**
+   * Loads milk collections for the selected date.
+   */
   loadMilkCollections(): void {
     this.loading = true;
     this.error = null;
@@ -80,26 +116,33 @@ export class MilkCollectionComponent implements OnInit {
       });
   }
 
-
+  /**
+   * Opens the modal for editing a milk collection.
+   * @param registro The milk collection to edit.
+   */
   openModal(registro: MilkCollectionDetails) {
     this.selectedCollection = registro;
     this.newLiters = registro.litersMilk ?? 0;
   }
 
+  /** Closes the modal */
   closeModal() {
     this.selectedCollection = null;
     this.newLiters = 0;
   }
 
+  /** Opens the new collection modal */
   openNewCollectionModal() {
     this.showNewCollectionModal = true;
   }
 
+  /** Closes the new collection modal */
   closeNewCollectionModal() {
     this.showNewCollectionModal = false;
     this.resetNewCollectionForm();
   }
 
+  /** Resets the new collection form */
   resetNewCollectionForm() {
     this.newCollection = {
       supplierId: null,
@@ -108,10 +151,12 @@ export class MilkCollectionComponent implements OnInit {
     };
   }
 
+  /** Handles the change of the supplier selector */
   onSupplierSelect() {
     // This method will be called when a supplier is selected
   }
 
+  /** Extracts suppliers from the backend */
   extractSuppliers() {
     this.loading = true;
     this.milkService.fetchAllMilkSupplierDetails().pipe(
@@ -132,8 +177,9 @@ export class MilkCollectionComponent implements OnInit {
     });
   }
 
+  /** Submits a new milk collection */
   submitNewCollection() {
-    if (this.newCollection.supplierId && this.newCollection.litersMilk > 0) {
+    if (this.newCollection.supplierId && this.newCollection.litersMilk >= 0) {
       this.loading = true;
       this.error = null; // Clear previous errors
       this.thereErrorMessage = false;
@@ -165,8 +211,9 @@ export class MilkCollectionComponent implements OnInit {
     }
   }
 
-  submitCollection() {
-    if (this.selectedCollection && this.newLiters > 0) {
+  /** Submits a milk collection */
+  submitUpdateMilkCollection() {
+    if (this.selectedCollection && this.newLiters >= 0) {
       this.loading = true;
       
       this.milkService.updateMilkCollection(

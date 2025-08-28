@@ -93,5 +93,19 @@ public class PersonController {
         return ResponseEntity.status(HttpStatus.OK).body(personOutDto);
     }
 
+    @DeleteMapping("/deletePersonById")
+    public ResponseEntity<ResponseDto> deletePersonById(@RequestParam("personId") Long personId) {
+        boolean isDeleted = iPersonService.deletePersonById(personId);
+        if(isDeleted) {
+            return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(new ResponseDto("200", "Person deleted successfully"));
+        }else{
+            return ResponseEntity
+                    .status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new ResponseDto("200", "Person not deleted"));
+        }
+    }
+
 
 }

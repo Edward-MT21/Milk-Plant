@@ -78,20 +78,42 @@ export class MilkCollectionService {
   private fetchMilkSupplierCollectionByDateRangeUrl = `${this.baseUrl}/MilkCollectionController/fetch-milk-supplier-collection-by-date-range`;
   private milkSupplierPaymentUrl = `http://localhost:8280/MilkSupplierPaymentController`;
 
+  /**
+   * Constructor
+   * @param http The HttpClient to make HTTP requests
+   */
   constructor(private http: HttpClient) {}
 
+  /**
+   * Fetches all milk collection
+   * @returns Observable with the list of milk collection
+   */
   fetchAllMilkCollection(): Observable<MilkCollection[]> {
     return this.http.get<MilkCollection[]>(this.milkCollectionUrl);
   }
 
+  /**
+   * Creates a new person
+   * @param person The person data to create
+   * @returns Observable with the created person
+   */
   createPerson(person: Person): Observable<Person> {
     return this.http.post<Person>(`${this.personUrl}/createPerson`, person);
   }
 
-  getAllPersons(): Observable<Person[]> {
-    return this.http.get<Person[]>(this.getAllPersonsUrl);
+  /**
+   * Fetches all persons
+   * @returns Observable with the list of persons
+   */
+  getAllPersons(): Observable<PersonOutDto[]> {
+    return this.http.get<PersonOutDto[]>(this.getAllPersonsUrl);
   }
 
+  /**
+   * Creates a new milk supplier
+   * @param personId The ID of the person to create the milk supplier for
+   * @returns Observable with the response
+   */
   createMilkSupplier(personId: number): Observable<any> {
     const payload = {
       milkSupplierId: null,
@@ -100,14 +122,28 @@ export class MilkCollectionService {
     return this.http.post(this.createMilkSupplierUrl, payload);
   }
 
+  /**
+   * Fetches all milk supplier details
+   * @returns Observable with the list of milk supplier details
+   */
   fetchAllMilkSupplierDetails(): Observable<MilkSupplierDetails[]> {
     return this.http.get<MilkSupplierDetails[]>(this.fetchAllMilkSupplierDetailsUrl);
   }
 
+  /**
+   * Fetches all milk collection details
+   * @returns Observable with the list of milk collection details
+   */
   fetchAllMilkCollectionDetails(): Observable<MilkCollectionDetails[]> {
     return this.http.get<MilkCollectionDetails[]>(this.milkCollectionDetailsUrl);
   }
 
+  /**
+   * Updates an existing milk collection
+   * @param milkCollectionId The ID of the milk collection to update
+   * @param litersMilk The amount of milk collected
+   * @returns Observable with the response
+   */
   updateMilkCollection(milkCollectionId: number, litersMilk: number): Observable<any> {
     const url = `${this.baseUrl}/MilkCollectionController/update-milk-collection`;
     const body = {
@@ -118,6 +154,12 @@ export class MilkCollectionService {
     return this.http.post(url, body);
   }
 
+  /**
+   * Creates a new milk collection
+   * @param milkSupplierId The ID of the milk supplier
+   * @param litersMilk The amount of milk collected
+   * @returns Observable with the response
+   */
   createMilkCollection(milkSupplierId: number, litersMilk: number): Observable<any> {
     const url = `${this.baseUrl}/MilkCollectionController/create-milk-collection`;
     const body = {
@@ -159,7 +201,49 @@ export class MilkCollectionService {
       }
     );
   }
-  
-  // ...otros métodos...
+
+  /**
+   * Deletes a milk supplier by ID
+   * @param milkSupplierId The ID of the milk supplier to delete
+   * @returns Observable with the response
+   */
+  deleteMilkSupplier(milkSupplierId: number): Observable<any> {
+    return this.http.delete(`${this.milkSupplierUrl}/deleteMilkSupplierById?milkSupplierId=${milkSupplierId}`);
+  }
+
+  /**
+   * Fetches milk supplier collection by date range
+   * @param startDate The start date in YYYY-MM-DD format
+   * @param endDate The end date in YYYY-MM-DD format
+   * @returns Observable with the list of milk supplier collections for the specified date range
+   */
+  fetchMilkSupplierCollectionByDateRange(
+    startDate: string,
+    endDate: string
+  ): Observable<MilkSupplierCollectionDTO[]> {
+    const params = { startDate, endDate };
+    return this.http.get<MilkSupplierCollectionDTO[]>(
+      this.fetchMilkSupplierCollectionByDateRangeUrl,
+      { params }
+    );
+  }
+
+  /**
+   * Deletes a person by ID
+   * @param personId The ID of the person to delete
+   * @returns Observable with the response
+   */
+  deletePerson(personId: number): Observable<any> {
+    return this.http.delete(`${this.personUrl}/deletePersonById?personId=${personId}`);
+  }
+
+  /**
+   * Updates an existing person
+   * @param person The person data to update
+   * @returns Observable with the updated person
+   */
+  updatePerson(person: PersonOutDto): Observable<PersonOutDto> {
+    return this.http.put<PersonOutDto>(`${this.personUrl}/updatePerson`, person);
+  }
 
 }

@@ -14,7 +14,7 @@ export const routes: Routes = [
       {
         path: 'person-register',
         loadComponent: () =>
-          import('./person-register/person-register.component').then(m => m.PersonRegisterComponent)
+          import('./person-management/person-register/person-register.component').then(m => m.PersonRegisterComponent)
       },
       {
         path: 'milk-supplier',
@@ -35,6 +35,11 @@ export const routes: Routes = [
         path: 'financial-management/milk-supplier-payment',
         loadComponent: () =>
           import('./financial-management/milk-supplier-payment/milk-supplier-payment.component').then(m => m.MilkSupplierPaymentComponent)
+      },
+      {
+        path: 'person-management',
+        loadComponent: () =>
+          import('./person-management/manage-person/manage-person.component').then(m => m.ManagePersonComponent)
       }
       
 ];

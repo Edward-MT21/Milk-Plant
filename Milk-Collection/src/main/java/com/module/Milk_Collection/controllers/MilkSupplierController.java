@@ -107,7 +107,7 @@ public class MilkSupplierController {
     }
     )
     @GetMapping("/fetchMilkSupplierById")
-    public ResponseEntity<MilkSupplierOutDto> fetchMilkSupplierById(@RequestParam Long milkSupplierId) {
+    public ResponseEntity<MilkSupplierOutDto> fetchMilkSupplierById(@RequestParam("milkSupplierId") Long milkSupplierId) {
         MilkSupplierOutDto milkSupplierOutDto = iMilkSupplierService.fetchMilkSupplierById(milkSupplierId);
         return ResponseEntity.status(HttpStatus.OK).body(milkSupplierOutDto);
     }
@@ -131,7 +131,7 @@ public class MilkSupplierController {
     }
     )
     @GetMapping("/fetchMilkSupplierByPersonId")
-    public ResponseEntity<MilkSupplierOutDto> fetchMilkSupplierByPersonId(@RequestParam Long personId) {
+    public ResponseEntity<MilkSupplierOutDto> fetchMilkSupplierByPersonId(@RequestParam("personId") Long personId) {
         MilkSupplierOutDto milkSupplierOutDto = iMilkSupplierService.fetchMilkSupplierByPersonId(personId);
         return ResponseEntity.status(HttpStatus.OK).body(milkSupplierOutDto);
     }
@@ -195,7 +195,7 @@ public class MilkSupplierController {
     }
     )
     @DeleteMapping("/deleteMilkSupplierById")
-    public ResponseEntity<ResponseDto> deleteMilkSupplierById(@RequestParam Long milkSupplierId) {
+    public ResponseEntity<ResponseDto> deleteMilkSupplierById(@RequestParam("milkSupplierId") Long milkSupplierId) {
         boolean isDeleted = iMilkSupplierService.deleteMilkSupplierById(milkSupplierId);
         if(isDeleted) {
             return ResponseEntity
@@ -231,7 +231,7 @@ public class MilkSupplierController {
     }
     )
     @DeleteMapping("/deleteMilkSupplierByPersonId")
-    public ResponseEntity<ResponseDto> deleteMilkSupplierByPersonId(@Positive @RequestParam Long personId) {
+    public ResponseEntity<ResponseDto> deleteMilkSupplierByPersonId(@Positive @RequestParam("personId") Long personId) {
         boolean isDeleted = iMilkSupplierService.deleteMilkSupplierByPersonId(personId);
         if(isDeleted) {
             return ResponseEntity

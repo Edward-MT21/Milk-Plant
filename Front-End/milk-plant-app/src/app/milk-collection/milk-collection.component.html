@@ -63,10 +63,10 @@
     </ng-template>
 </div>
 
-
+<!-- Update Collection Modal -->
 <div class="modal-backdrop" *ngIf="selectedCollection">
     <div class="modal">
-        <h3>Registrar Recolección</h3>
+        <h3>Actualizar Recolección</h3>
         <div class="modal-content">
             <p><strong>Proveedor:</strong> 
                 {{ selectedCollection.milkSupplierDetailsDto.personOutDto.names }}
@@ -80,19 +80,19 @@
                     id="litros" 
                     [(ngModel)]="newLiters" 
                     type="number" 
-                    min="0.1" 
-                    step="0.1" 
+                    min="0" 
+                    step="1" 
                     class="form-control" 
                     required
-                    [class.is-invalid]="newLiters <= 0"
+                    [class.is-invalid]="newLiters < 0"
                 />
-                <div *ngIf="newLiters <= 0" class="invalid-feedback">
-                    Por favor ingrese una cantidad válida mayor a 0
+                <div *ngIf="newLiters < 0" class="invalid-feedback">
+                    Por favor ingrese una cantidad válida
                 </div>
             </div>
 
             <div class="modal-actions">
-                <button class="btn btn-primary" (click)="submitCollection()" [disabled]="!newLiters || newLiters <= 0 || loading">
+                <button class="btn btn-primary" (click)="submitUpdateMilkCollection()" [disabled]="newLiters === null || newLiters === undefined || newLiters < 0 || loading">
                     <i class="fas fa-save"></i>
                     <span *ngIf="!loading">Guardar cambios</span>
                     <span *ngIf="loading">Guardando...</span>
@@ -144,15 +144,15 @@
                 <input 
                     id="new-liters" 
                     type="number" 
-                    min="0.1" 
-                    step="0.1" 
+                    min="0" 
+                    step="1" 
                     class="form-control" 
                     [(ngModel)]="newCollection.litersMilk"
                     [disabled]="!newCollection.supplierId"
-                    [class.is-invalid]="newCollection.litersMilk <= 0"
+                    [class.is-invalid]="newCollection.litersMilk < 0"
                 >
-                <div *ngIf="newCollection.litersMilk <= 0" class="invalid-feedback">
-                    Por favor ingrese una cantidad válida mayor a 0
+                <div *ngIf="newCollection.litersMilk < 0" class="invalid-feedback">
+                    Por favor ingrese una cantidad válida
                 </div>
             </div>
 
@@ -164,7 +164,7 @@
                 <button 
                     class="btn btn-primary" 
                     (click)="submitNewCollection()" 
-                    [disabled]="!newCollection.supplierId || newCollection.litersMilk <= 0 || loading"
+                    [disabled]="!newCollection.supplierId || newCollection.litersMilk < 0 || loading"
                 >
                     <i class="fas fa-save"></i>
                     <span *ngIf="!loading">Guardar</span>

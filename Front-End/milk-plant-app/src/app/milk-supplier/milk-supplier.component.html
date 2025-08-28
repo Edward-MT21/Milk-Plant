@@ -28,7 +28,7 @@
           <th>Nombre</th>
           <th>Apellido</th>
           <th>Identificación</th>
-          <th>Acción</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
@@ -39,6 +39,7 @@
           <td>{{ s.personOutDto.identificationNumber }}</td>
           <td>
             <button class="detail-btn" (click)="openDetails(s)">Más detalles</button>
+            <button class="delete-btn" (click)="confirmDelete(s.milkSupplierId, $event)">Eliminar</button>
           </td>
         </tr>
       </tbody>
@@ -82,7 +83,7 @@
         <option value="">-- Seleccione una persona --</option>
         <option 
           *ngFor="let person of availablePeople" 
-          [value]="person.idPerson?.toString() || ''">
+          [value]="person.idPerson.toString()">
           {{ person.names }} {{ person.lastNames }} ({{ person.identificationNumber }})
         </option>
       </select>

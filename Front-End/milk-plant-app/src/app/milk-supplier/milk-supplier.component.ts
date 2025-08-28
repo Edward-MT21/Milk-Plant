@@ -1,16 +1,16 @@
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { MilkCollectionService, Person, MilkSupplierDetails, PersonOutDto } from '../services/milk-collection.service';
 import { catchError, finalize } from 'rxjs/operators';
 import { of } from 'rxjs';
 
-// Using MilkSupplierDetails from the service instead of local interface
-
-// Person interface is now imported from MilkCollectionService
-
-
-
+/**
+ * Component to manage milk suppliers.
+ * Allows adding new suppliers, viewing existing suppliers,
+ * and deleting suppliers.
+ * @author Edward Malte
+ */
 @Component({
   selector: 'app-milk-supplier',
   standalone: true,
@@ -19,16 +19,44 @@ import { of } from 'rxjs';
   styleUrl: './milk-supplier.component.css'
 })
 export class MilkSupplierComponent implements OnInit {
-  constructor(private milkCollectionService: MilkCollectionService) {}
 
+  /** Service for retrieving milk supplier data */
+  private milkCollectionService = inject(MilkCollectionService);
+
+  /** Loading state for data fetching */
   loading = false;
+
+  /** Error message */
   error: string | null = null;
 
+  /** Array of milk suppliers */
+  suppliers: MilkSupplierDetails[] = [];
+
+  /** Array of available people */
+  availablePeople: PersonOutDto[] = [];
+
+  /** Selected milk supplier */
+  selectedSupplier: MilkSupplierDetails | null = null;
+
+  /** Show add supplier modal */
+  showAddSupplierModal: boolean = false;
+
+  /** Selected person ID */
+  selectedPersonId: string | null = null; // Cambiado a string porque viene del HTML select
+
+  /** Selected person details */
+  selectedPersonDetails: PersonOutDto | null = null;
+
+  /** Lifecycle hook that initializes the component by loading available people and milk suppliers.*/
   ngOnInit() {
     this.loadAvailablePeople();
     this.loadMilkSuppliers();
   }
 
+  /**
+   * Loads milk supplier data from the backend.
+   * Fetches data from the backend and processes it into a format suitable for display.
+   */
   loadMilkSuppliers() {
     this.loading = true;
     this.error = null;
@@ -48,6 +76,10 @@ export class MilkSupplierComponent implements OnInit {
       });
   }
 
+  /**
+   * Loads available people data from the backend.
+   * Fetches data from the backend and processes it into a format suitable for display.
+   */
   loadAvailablePeople() {
     this.milkCollectionService.getAllPersons()
       .pipe(
@@ -61,37 +93,32 @@ export class MilkSupplierComponent implements OnInit {
         this.availablePeople = persons;
       });
   }
-  suppliers: MilkSupplierDetails[] = [];
 
-  // Lista de personas disponibles para convertir en proveedores
-  availablePeople: Person[] = [];
-
-  selectedSupplier: MilkSupplierDetails | null = null;
-  showAddSupplierModal: boolean = false;
-  selectedPersonId: string | null = null; // Cambiado a string porque viene del HTML select
-  selectedPersonDetails: Person | null = null;
-
+  /** Opens the details modal */
   openDetails(supplier: MilkSupplierDetails) {
     this.selectedSupplier = supplier;
   }
 
+  /** Closes the details modal */
   closeModal() {
     this.selectedSupplier = null;
   }
 
-  // Métodos para el modal de agregar proveedor
+  /** Opens the add supplier modal */
   openAddSupplierModal() {
     this.showAddSupplierModal = true;
     this.selectedPersonId = null;
     this.selectedPersonDetails = null;
   }
 
+  /** Closes the add supplier modal */
   closeAddSupplierModal() {
     this.showAddSupplierModal = false;
     this.selectedPersonId = null;
     this.selectedPersonDetails = null;
   }
 
+  /** Handles the change of the person selector */
   onPersonSelected() {
     if (this.selectedPersonId) {
       // Convertir selectedPersonId a number para la comparación
@@ -106,6 +133,7 @@ export class MilkSupplierComponent implements OnInit {
     }
   }
 
+  /** Adds a new supplier */
   addNewSupplier() {
     if (this.selectedPersonDetails && this.selectedPersonDetails.idPerson !== null) {
       this.loading = true;
@@ -133,6 +161,40 @@ export class MilkSupplierComponent implements OnInit {
           }
         });
     }
+  }
+
+  /** Confirms the deletion of a supplier */
+  confirmDelete(milkSupplierId: number, event: Event) {
+    event.stopPropagation(); // Prevent row click event
+    
+    if (confirm('¿Está seguro de que desea eliminar este proveedor? Esta acción no se puede deshacer.')) {
+      this.deleteSupplier(milkSupplierId);
+    }
+  }
+
+  /** Deletes a supplier by ID */
+  private deleteSupplier(milkSupplierId: number) {
+    this.loading = true;
+    this.error = null;
+    
+    this.milkCollectionService.deleteMilkSupplier(milkSupplierId)
+      .pipe(
+        catchError(error => {
+          console.error('Error deleting milk supplier:', error);
+          this.error = 'Error al eliminar el proveedor. Por favor, intente nuevamente.';
+          return of(null);
+        }),
+        finalize(() => {
+          this.loading = false;
+        })
+      )
+      .subscribe(response => {
+        if (response) {
+          // Remove the deleted supplier from the local array
+          this.suppliers = this.suppliers.filter(s => s.milkSupplierId !== milkSupplierId);
+          console.log('Proveedor eliminado exitosamente');
+        }
+      });
   }
 
 }

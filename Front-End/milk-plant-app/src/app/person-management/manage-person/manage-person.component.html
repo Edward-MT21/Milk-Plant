@@ -1,0 +1,123 @@
+<div class="persons-container">
+  <h2 class="persons-title">👥 Gestión de Personas</h2>
+  
+  <div class="table-wrapper">
+    <!-- Loading state -->
+    <div *ngIf="loading && persons.length === 0" class="loading-message">
+      Cargando personas...
+    </div>
+
+    <!-- Error message -->
+    <div *ngIf="error" class="error-message">
+      {{ error }}
+    </div>
+
+    <!-- Persons table -->
+    <table class="persons-table" *ngIf="!loading || persons.length > 0">
+      <thead>
+        <tr>
+          <th>ID Persona</th>
+          <th>Nombres</th>
+          <th>Apellidos</th>
+          <th>Identificación</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let person of persons">
+          <td>P{{ person.idPerson.toString().padStart(3, '0') || 'N/A' }}</td>
+          <td>{{ person.names }}</td>
+          <td>{{ person.lastNames }}</td>
+          <td>{{ person.identificationNumber }}</td>
+          <td class="actions">
+            <button class="detail-btn" (click)="openDetails(person)">Ver detalles</button>
+            <button class="edit-btn" (click)="openEditModal(person); $event.stopPropagation()">Editar</button>
+            <button class="delete-btn" (click)="confirmDelete(person.idPerson, $event)">Eliminar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- Person Details Modal -->
+<div class="modal-backdrop" *ngIf="selectedPerson" (click)="closeModal()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h3>📝 Detalles de la Persona</h3>
+    <ul>
+      <li><strong>ID Persona:</strong> P{{ selectedPerson.idPerson.toString().padStart(3, '0') || 'N/A' }}</li>
+      <li><strong>Nombres:</strong> {{ selectedPerson.names }}</li>
+      <li><strong>Apellidos:</strong> {{ selectedPerson.lastNames }}</li>
+      <li><strong>Identificación:</strong> {{ selectedPerson.identificationNumber }}</li>
+      <li><strong>Edad:</strong> {{ selectedPerson.age }}</li>
+      <li><strong>Género:</strong> {{ selectedPerson.gender }}</li>
+      <li><strong>Email:</strong> {{ selectedPerson.email || 'N/A' }}</li>
+      <li><strong>Teléfono:</strong> {{ selectedPerson.mobileNumber || 'N/A' }}</li>
+    </ul>
+    <div class="modal-actions">
+      <button class="close-btn" (click)="closeModal()">Cerrar</button>
+    </div>
+  </div>
+</div>
+
+<!-- Edit Person Modal -->
+<div class="modal-backdrop" *ngIf="editingPerson" (click)="closeEditModal()">
+  <div class="modal" (click)="$event.stopPropagation()">
+    <h3>✏️ Editar Persona</h3>
+    
+    <div *ngIf="error" class="error-message">
+      {{ error }}
+    </div>
+    
+    <div class="form-group">
+      <label>ID Persona</label>
+      <input type="text" [value]="'P' + (editingPerson.idPerson.toString().padStart(3, '0') || 'N/A')" disabled>
+    </div>
+    
+    <div class="form-group">
+      <label>Nombres</label>
+      <input type="text" [(ngModel)]="editingPerson.names" name="names" required>
+    </div>
+    
+    <div class="form-group">
+      <label>Apellidos</label>
+      <input type="text" [(ngModel)]="editingPerson.lastNames" name="lastNames" required>
+    </div>
+    
+    <div class="form-group">
+      <label>Identificación</label>
+      <input type="text" [(ngModel)]="editingPerson.identificationNumber" name="identificationNumber" required>
+    </div>
+    
+    <div class="form-group">
+      <label>Edad</label>
+      <input type="number" [(ngModel)]="editingPerson.age" name="age" min="1" required>
+    </div>
+    
+    <div class="form-group">
+      <label>Género</label>
+      <select [(ngModel)]="editingPerson.gender" name="gender" required>
+        <option value="M">Masculino</option>
+        <option value="F">Femenino</option>
+        <option value="O">Otro</option>
+      </select>
+    </div>
+    
+    <div class="form-group">
+      <label>Email</label>
+      <input type="email" [(ngModel)]="editingPerson.email" name="email">
+    </div>
+    
+    <div class="form-group">
+      <label>Teléfono</label>
+      <input type="tel" [(ngModel)]="editingPerson.mobileNumber" name="mobileNumber">
+    </div>
+    
+    <div class="modal-actions">
+      <button class="cancel-btn" (click)="closeEditModal()" [disabled]="loading">Cancelar</button>
+      <button class="save-btn" (click)="saveEdit()" [disabled]="!editingPerson.names || !editingPerson.lastNames || !editingPerson.identificationNumber || !editingPerson.age || !editingPerson.gender || loading">
+        {{ loading ? 'Guardando...' : 'Guardar Cambios' }}
+      </button>
+    </div>
+  </div>
+</div>

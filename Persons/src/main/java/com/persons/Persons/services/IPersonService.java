@@ -19,4 +19,6 @@ public interface IPersonService {
     List<PersonOutDto> getAllPersons();
 
     PersonOutDto fetchPersonById(Long personId);
+
+    boolean deletePersonById(Long personId);
 }
