@@ -5,6 +5,7 @@ import com.module.Financial_Management.model.enums.PaymentStatusEnum;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -23,12 +24,11 @@ public class MilkSupplierPayment extends BaseEntity {
         private Long milkSupplierId; // Referencia externa al proveedor
         private LocalDate startDate; // Inicio de la quincena
         private LocalDate endDate;   // Fin de la quincena
-        private Double totalLitersMilk;  // Litros recogidos en ese periodo
-        private Double pricePerLiter;
-        private Double totalAmount;// totalLitersMilk * pricePerLiter
-
+        private Integer totalLitersMilk;  // Litros recogidos en ese periodo
+        private BigDecimal pricePerLiter;
+        private BigDecimal totalAmount;// totalLitersMilk * pricePerLiter
         @Enumerated(EnumType.STRING)
-        private PaymentStatusEnum status; // Enum: PENDING, PAID, CANCELLED
+        private PaymentStatusEnum paymentStatusEnum; // Enum: PENDING, PAID, CANCELLED
         private LocalDateTime paymentDate; // Fecha en que se realizó el pago (si aplica)
 
 }

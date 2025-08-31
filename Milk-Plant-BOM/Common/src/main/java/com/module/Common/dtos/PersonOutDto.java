@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Schema(
         name = "PersonOutDto",
         description = "Schema to PersonOutDto information"
@@ -24,7 +26,7 @@ public class PersonOutDto {
 
     private String identificationNumber;
 
-    private Integer age;
+    private LocalDate birthdate;
 
     @Schema(
             description = "Person gender", example = "FEMALE"

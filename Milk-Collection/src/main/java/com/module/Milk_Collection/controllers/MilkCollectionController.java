@@ -1,10 +1,10 @@
 package com.module.Milk_Collection.controllers;
 
+import com.module.Common.dtos.ResponseDto;
 import com.module.Milk_Collection.constants.AccountsConstants;
 import com.module.Milk_Collection.model.dtos.MilkCollectionDetailsDto;
 import com.module.Milk_Collection.model.dtos.MilkCollectionDto;
 import com.module.Milk_Collection.model.dtos.MilkSupplierCollectionDTO;
-import com.module.Milk_Collection.model.dtos.ResponseDto;
 import com.module.Milk_Collection.services.IMilkCollectionService;
 import lombok.AllArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;

@@ -1,9 +1,9 @@
 package com.module.Milk_Collection.mapper;
 
+import com.module.Common.dtos.PersonOutDto;
 import com.module.Milk_Collection.model.dtos.MilkSupplierDetailsDto;
 import com.module.Milk_Collection.model.dtos.MilkSupplierInDto;
 import com.module.Milk_Collection.model.dtos.MilkSupplierOutDto;
-import com.module.Milk_Collection.model.dtos.PersonOutDto;
 import com.module.Milk_Collection.model.entities.MilkSupplier;
 import org.springframework.http.ResponseEntity;
 

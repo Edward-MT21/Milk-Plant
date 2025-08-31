@@ -1,12 +1,7 @@
 package com.persons.Persons.services;
 
+import com.module.Common.dtos.PersonOutDto;
 import com.persons.Persons.model.dtos.PersonInDto;
-import com.persons.Persons.model.dtos.PersonOutDto;
-import jakarta.validation.Valid;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 

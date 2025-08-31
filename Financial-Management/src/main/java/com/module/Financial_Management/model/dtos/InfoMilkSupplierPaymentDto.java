@@ -17,4 +17,5 @@ public class InfoMilkSupplierPaymentDto {
     private List<MilkCollectionRecordDTO> collections;
     private Integer totalLitersMilk;
     private BigDecimal totalAmount;
+    private BigDecimal pricePerLiter;
 }

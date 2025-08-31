@@ -1,24 +1,17 @@
 package com.persons.Persons.services.impl;
 
+import com.module.Common.dtos.PersonOutDto;
 import com.persons.Persons.exception.ResourceNotFoundException;
 import com.persons.Persons.model.dtos.PersonInDto;
-import com.persons.Persons.model.dtos.PersonOutDto;
 import com.persons.Persons.model.entities.Person;
 import com.persons.Persons.repositories.IPersonRepository;
 import com.persons.Persons.services.IPersonService;
-import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
+
 
 import java.util.List;
 @Service
-//@RequiredArgsConstructor
 @Slf4j
 public class PersonServiceImpl implements IPersonService {
 
@@ -34,7 +27,7 @@ public class PersonServiceImpl implements IPersonService {
         person.setNames(personInDto.getNames());
         person.setLastNames(personInDto.getLastNames());
         person.setIdentificationNumber(personInDto.getIdentificationNumber());
-        person.setAge(personInDto.getAge());
+        person.setBirthdate(personInDto.getBirthdate());
         person.setGender(personInDto.getGender());
         person.setEmail(personInDto.getEmail());
         person.setMobileNumber(personInDto.getMobileNumber());
@@ -55,7 +48,7 @@ public class PersonServiceImpl implements IPersonService {
                 names(personInDto.getNames()).
                 lastNames(personInDto.getLastNames()).
                 identificationNumber(personInDto.getIdentificationNumber()).
-                age(personInDto.getAge()).
+                birthdate(personInDto.getBirthdate()).
                 gender(personInDto.getGender()).
                 email(personInDto.getEmail()).
                 mobileNumber(personInDto.getMobileNumber())
@@ -77,7 +70,7 @@ public class PersonServiceImpl implements IPersonService {
                 names(person.getNames()).
                 lastNames(person.getLastNames()).
                 identificationNumber(person.getIdentificationNumber()).
-                age(person.getAge()).
+                birthdate(person.getBirthdate()).
                 gender(person.getGender()).
                 email(person.getEmail()).
                 mobileNumber(person.getMobileNumber())

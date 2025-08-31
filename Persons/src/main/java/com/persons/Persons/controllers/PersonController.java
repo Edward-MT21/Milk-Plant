@@ -1,11 +1,12 @@
 package com.persons.Persons.controllers;
 
+import com.module.Common.dtos.PersonOutDto;
+import com.module.Common.dtos.ResponseDto;
 import com.persons.Persons.constants.PersonConstants;
 import com.persons.Persons.model.dtos.PersonInDto;
-import com.persons.Persons.model.dtos.PersonOutDto;
 import com.persons.Persons.model.dtos.PersonsContactsDto;
-import com.persons.Persons.model.dtos.ResponseDto;
 import com.persons.Persons.services.IPersonService;
+import com.persons.Persons.services.client.IMilkCollectionFeignClient;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -28,6 +29,7 @@ public class PersonController {
     private static final Logger logger = LoggerFactory.getLogger(PersonController.class);
 
     IPersonService iPersonService;
+    IMilkCollectionFeignClient iMilkCollectionFeignClient;
 
     @Autowired
     private PersonsContactsDto personsContactsDto;
@@ -95,16 +97,30 @@ public class PersonController {
 
     @DeleteMapping("/deletePersonById")
     public ResponseEntity<ResponseDto> deletePersonById(@RequestParam("personId") Long personId) {
-        boolean isDeleted = iPersonService.deletePersonById(personId);
-        if(isDeleted) {
-            return ResponseEntity
-                    .status(HttpStatus.OK)
-                    .body(new ResponseDto("200", "Person deleted successfully"));
-        }else{
+
+        ResponseEntity<ResponseDto> feignResponse = iMilkCollectionFeignClient.deletePersonById(personId);
+
+        boolean feignSuccess = feignResponse.getStatusCode() == HttpStatus.OK &&
+                "200".equals(feignResponse.getBody().getStatusCode());
+
+        if (!feignSuccess) {
             return ResponseEntity
                     .status(HttpStatus.EXPECTATION_FAILED)
-                    .body(new ResponseDto("200", "Person not deleted"));
+                    .body(new ResponseDto("200", "Person not deleted (external service failed)"));
         }
+
+        boolean isDeleted = iPersonService.deletePersonById(personId);
+
+        if (!isDeleted) {
+            return ResponseEntity
+                    .status(HttpStatus.EXPECTATION_FAILED)
+                    .body(new ResponseDto("200", "Person not deleted (local deletion failed)"));
+        }
+
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(new ResponseDto("200", "Person deleted successfully"));
+
     }
 
 

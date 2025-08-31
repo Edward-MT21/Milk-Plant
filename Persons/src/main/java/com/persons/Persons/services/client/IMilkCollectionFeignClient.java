@@ -1,4 +1,4 @@
-package com.module.Financial_Management.services.client;
+package com.persons.Persons.services.client;
 
 import com.module.Common.dtos.MilkSupplierCollectionDTO;
 import com.module.Common.dtos.ResponseDto;
@@ -25,11 +25,8 @@ import java.util.List;
 @FeignClient(name = "Milk-Collection")
 public interface IMilkCollectionFeignClient {
 
-    @GetMapping(value = "/MilkCollectionController/fetch-milk-supplier-collection-by-date-range", produces = "application/json")
-    ResponseEntity<List<MilkSupplierCollectionDTO>> fetchMilkSupplierCollectionByDateRange(
-            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
-    );
+    @DeleteMapping(value = "MilkCollectionController/deleteMilkSupplierByPersonId", produces = "application/json")
+    public ResponseEntity<ResponseDto> deletePersonById(@RequestParam("personId") Long personId);
 
 }
 

@@ -3,6 +3,8 @@ package com.persons.Persons.model.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "PERSONS")
 @Getter
@@ -22,7 +24,7 @@ public class Person extends BaseEntity {
 
     private String identificationNumber;
 
-    private Integer age;
+    private LocalDate birthdate;
 
     private String gender;
 

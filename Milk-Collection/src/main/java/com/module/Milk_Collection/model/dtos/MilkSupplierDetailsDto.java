@@ -1,4 +1,5 @@
 package com.module.Milk_Collection.model.dtos;
+import com.module.Common.dtos.PersonOutDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

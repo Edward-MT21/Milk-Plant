@@ -1,6 +1,5 @@
 package com.module.Milk_Collection.services.client;
 
-import com.module.Milk_Collection.model.dtos.PersonOutDto;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 

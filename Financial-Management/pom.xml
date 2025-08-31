@@ -88,7 +88,9 @@
 		</dependency>
 
 		<!--
-		Para llamar a un servicio de otro microservicio en Spring Boot, la mejor práctica es usar Feign Client, que es un cliente HTTP declarativo que simplifica la comunicación entre servicios. Aquí te muestro cómo hacerlo:
+		Para llamar a un servicio de otro microservicio en Spring Boot, la mejor práctica es usar Feign Client,
+		que es un cliente HTTP declarativo que simplifica la comunicación entre servicios.
+		Aquí te muestro cómo hacerlo:
 		1. Primero, asegúrate de tener la dependencia de Spring Cloud OpenFeign en tu pom.xml
 		-->
 		<dependency>
