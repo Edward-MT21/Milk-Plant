@@ -36,8 +36,8 @@ public class MilkCollectionController {
     }
 
     @GetMapping("/fetch-milk-collection-details-by-date")
-    public ResponseEntity<List<MilkCollectionDetailsDto>> fetchMilkCollectionDetailsByDate(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
-        return ResponseEntity.ok(iMilkCollectionService.fetchAllMilkCollectionDetailsByDate(date));
+    public ResponseEntity<List<MilkCollectionDetailsDto>> fetchAllMilkCollectionDetailsByCollectionDate(@RequestParam("date") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate date) {
+        return ResponseEntity.ok(iMilkCollectionService.fetchAllMilkCollectionDetailsByCollectionDate(date));
     }
 
     @PostMapping("/create-milk-collection")
@@ -57,10 +57,22 @@ public class MilkCollectionController {
     }
 
     @GetMapping("/fetch-milk-supplier-collection-by-date-range")
-    public ResponseEntity<List<MilkSupplierCollectionDTO>> fetchMilkSupplierCollectionByDateRange(@RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
+    public ResponseEntity<List<MilkSupplierCollectionDTO>> fetchMilkSupplierCollectionByCollectionDateRange(@RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
                                                                                                   @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
-        return ResponseEntity.ok(iMilkCollectionService.fetchMilkSupplierCollectionByDateRange(startDate, endDate));
+        return ResponseEntity.ok(iMilkCollectionService.fetchMilkSupplierCollectionByCollectionDateRange(startDate, endDate));
     }
+
+    @DeleteMapping("/deleteAllMilkCollectionByMilkSupplierId")
+    public ResponseEntity<ResponseDto> deleteAllMilkCollectionByMilkSupplierId(@RequestParam("milkSupplierId") Long milkSupplierId) {
+        boolean result = iMilkCollectionService.deleteAllMilkCollectionByMilkSupplierId(milkSupplierId);
+        if (!result) {
+            return ResponseEntity.badRequest().body(new ResponseDto("400", "Error deleting milk collection"));
+        }
+        return ResponseEntity.ok(new ResponseDto(AccountsConstants.STATUS_200, AccountsConstants.MESSAGE_200));
+
+    }
+
+
 
 
 }

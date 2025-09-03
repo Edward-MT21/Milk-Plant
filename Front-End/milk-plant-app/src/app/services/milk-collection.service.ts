@@ -13,7 +13,7 @@ export interface Person {
   names: string;
   lastNames: string;
   identificationNumber: string;
-  age: number;
+  birthdate: string; // Changed from 'age: number' to 'birthDate: string' to match backend LocalDate
   gender: string;
   email: string;
   mobileNumber: string;
@@ -24,7 +24,7 @@ export interface PersonOutDto {
   names: string;
   lastNames: string;
   identificationNumber: string;
-  age: number;
+  birthdate: string;  // Changed from birthDate to match the backend
   gender: string;
   email: string;
   mobileNumber: string;
@@ -160,12 +160,13 @@ export class MilkCollectionService {
    * @param litersMilk The amount of milk collected
    * @returns Observable with the response
    */
-  createMilkCollection(milkSupplierId: number, litersMilk: number): Observable<any> {
+  createMilkCollection(milkSupplierId: number, litersMilk: number, collectionDate: string): Observable<any> {
     const url = `${this.baseUrl}/MilkCollectionController/create-milk-collection`;
     const body = {
       milkCollectionId: null,
       milkSupplierId: milkSupplierId,
-      litersMilk: litersMilk
+      litersMilk: litersMilk,
+      collectionDate: collectionDate
     };
     return this.http.post(url, body);
   }

@@ -1,5 +1,6 @@
 package com.module.Milk_Collection.services.impl;
 
+import com.module.Common.dtos.ResponseDto;
 import com.module.Milk_Collection.exception.ResourceNotFoundException;
 import com.module.Milk_Collection.mapper.MilkCollectionMapper;
 import com.module.Milk_Collection.model.dtos.*;
@@ -7,7 +8,9 @@ import com.module.Milk_Collection.model.entities.MilkCollection;
 import com.module.Milk_Collection.repositories.IMilkCollectionRepository;
 import com.module.Milk_Collection.repositories.IMilkSupplierRepository;
 import com.module.Milk_Collection.services.IMilkCollectionService;
+import com.module.Milk_Collection.services.client.IFinancialManagementFeingClient;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import com.module.Milk_Collection.mapper.MilkSupplierMapper;
@@ -28,6 +31,8 @@ public class MilkCollectionServiceImpl implements IMilkCollectionService {
     private IMilkCollectionRepository iMilkCollectionRepository;
 
     private MilkSupplierServiceImpl milkSupplierServiceImpl;
+
+    private final IFinancialManagementFeingClient iMilkCollectionFeingClient;
 
     @Override
     public List<MilkCollectionDto> fetchAllMilkCollection() {
@@ -58,12 +63,8 @@ public class MilkCollectionServiceImpl implements IMilkCollectionService {
     public void createMilkCollection(MilkCollectionDto milkCollectionDto) {
         MilkCollection milkCollection = MilkCollectionMapper.mapToMilkCollection(milkCollectionDto);
 
-        LocalDate fechaActual = LocalDate.now();
-        LocalDateTime startOfDay = fechaActual.atStartOfDay();
-        LocalDateTime endOfDay = fechaActual.atTime(LocalTime.MAX);
-
         Optional<MilkCollection> existing = iMilkCollectionRepository
-                .findByMilkSupplierIdAndCreatedAtBetween(milkCollectionDto.getMilkSupplierId(), startOfDay, endOfDay);
+                .findByMilkSupplierIdAndCollectionDate(milkCollectionDto.getMilkSupplierId(), milkCollectionDto.getCollectionDate());
 
         if (existing.isPresent()) {
             throw new IllegalArgumentException("Ya existe un registro para este proveedor y fecha.");
@@ -86,21 +87,17 @@ public class MilkCollectionServiceImpl implements IMilkCollectionService {
     }
 
     @Override
-    public List<MilkCollectionDetailsDto> fetchAllMilkCollectionDetailsByDate(LocalDate date) {
-        LocalDateTime start = date.atStartOfDay();
-        LocalDateTime end = date.atTime(LocalTime.MAX);
-        return iMilkCollectionRepository.findAllByCreatedAtBetween(start, end)
+    public List<MilkCollectionDetailsDto> fetchAllMilkCollectionDetailsByCollectionDate(LocalDate date) {
+        return iMilkCollectionRepository.findAllByCollectionDate(date)
                 .stream()
                 .map(this::getMilkCollectionDetailsDto)
                 .toList();
     }
 
     @Override
-    public List<MilkSupplierCollectionDTO> fetchMilkSupplierCollectionByDateRange(LocalDate startDate, LocalDate endDate) {
-        LocalDateTime start = startDate.atStartOfDay();
-        LocalDateTime end = endDate.atTime(LocalTime.MAX);
+    public List<MilkSupplierCollectionDTO> fetchMilkSupplierCollectionByCollectionDateRange(LocalDate startDate, LocalDate endDate) {
 
-        List<MilkCollection> collections = iMilkCollectionRepository.findAllByCreatedAtBetween(start, end);
+        List<MilkCollection> collections = iMilkCollectionRepository.findAllByCollectionDateBetween(startDate, endDate);
 
         // Agrupar por milkSupplierId
         Map<Long, List<MilkCollection>> grouped = collections.stream()
@@ -135,6 +132,22 @@ public class MilkCollectionServiceImpl implements IMilkCollectionService {
 
         return result;
 
+    }
+
+    @Override
+    public boolean deleteAllMilkCollectionByMilkSupplierId(Long milkSupplierId) {
+
+        ResponseEntity<ResponseDto> feignResponse = iMilkCollectionFeingClient.deleteAllMilkSupplierPaymentByMilkSupplierId(milkSupplierId);
+
+        boolean feignSuccess = feignResponse.getStatusCode() == HttpStatus.OK &&
+                "200".equals(feignResponse.getBody().getStatusCode());
+
+        if (!feignSuccess) {
+            return false;
+        }
+
+        iMilkCollectionRepository.deleteAllByMilkSupplierId(milkSupplierId);
+        return true;
     }
 
 }

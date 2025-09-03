@@ -2,7 +2,9 @@ package com.module.Financial_Management.services.impl;
 
 import com.module.Common.dtos.MilkSupplierCollectionDTO;
 import com.module.Financial_Management.model.dtos.InfoMilkSupplierPaymentDto;
+import com.module.Financial_Management.model.entities.MilkSupplierPayment;
 import com.module.Financial_Management.model.enums.ProductEnum;
+import com.module.Financial_Management.repositories.IMilkSupplierPaymentRepository;
 import com.module.Financial_Management.services.IMilkSupplierPaymentService;
 import com.module.Financial_Management.services.IProductService;
 import com.module.Financial_Management.services.client.IMilkCollectionFeignClient;
@@ -23,6 +25,7 @@ public class MilkSupplierPaymentServiceImpl implements IMilkSupplierPaymentServi
 
     private final IMilkCollectionFeignClient iMilkCollectionFeignClient;
     private final IProductService iProductService;
+    private final IMilkSupplierPaymentRepository iMilkSupplierPaymentRepository;
 
     public List<InfoMilkSupplierPaymentDto> getBiweeklyInfoMilkSupplierPayment(LocalDate startDate, LocalDate endDate) {
         ResponseEntity<List<MilkSupplierCollectionDTO>> response =
@@ -50,6 +53,19 @@ public class MilkSupplierPaymentServiceImpl implements IMilkSupplierPaymentServi
                     );
                 })
                 .collect(Collectors.toList());
+    }
+
+    @Override
+    public boolean deleteMilkSupplierPaymentById(Long milkSupplierPaymentId) {
+        MilkSupplierPayment milkSupplierPayment = iMilkSupplierPaymentRepository.findById(milkSupplierPaymentId).orElseThrow(() -> new RuntimeException("MilkSupplierPayment not found"));
+        iMilkSupplierPaymentRepository.delete(milkSupplierPayment);
+        return true;
+    }
+
+    @Override
+    public boolean deleteAllMilkSupplierPaymentByMilkSupplierId(Long milkSupplierId) {
+        iMilkSupplierPaymentRepository.deleteAllByMilkSupplierId(milkSupplierId);
+        return true;
     }
 
 }

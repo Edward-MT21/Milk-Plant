@@ -1,6 +1,7 @@
 package com.module.Financial_Management.controllers;
 
 import com.module.Common.dtos.MilkSupplierCollectionDTO;
+import com.module.Common.dtos.ResponseDto;
 import com.module.Financial_Management.model.dtos.InfoMilkSupplierPaymentDto;
 import com.module.Financial_Management.model.dtos.ProductDto;
 import com.module.Financial_Management.model.enums.ProductEnum;
@@ -39,6 +40,25 @@ public class MilkSupplierPaymentController {
     @PostMapping("/executeMilkSupplierFortnightClosure")
     public void executeClosureManually(@RequestParam("closureDate") LocalDate closureDate) {
         iFortnightClosureSchedulerService.executeMilkSupplierFortnightClosure(closureDate);
+    }
+
+    @DeleteMapping("/deleteMilkSupplierPaymentById")
+    public ResponseEntity<ResponseDto> deleteMilkSupplierPaymentById(@RequestParam("milkSupplierPaymentId") Long milkSupplierPaymentId) {
+        boolean deleted = iMilkSupplierPaymentService.deleteMilkSupplierPaymentById(milkSupplierPaymentId);
+        if (!deleted) {
+            return ResponseEntity.badRequest().body(new ResponseDto("400", "MilkSupplierPayment not deleted"));
+        }
+        return ResponseEntity.ok().body(new ResponseDto("200", "MilkSupplierPayment deleted successfully"));
+
+    }
+
+    @DeleteMapping("/deleteAllMilkSupplierPaymentByMilkSupplierId")
+    public ResponseEntity<ResponseDto> deleteMilkSupplierPaymentByMilkSupplierId(@RequestParam("milkSupplierId") Long milkSupplierId) {
+        boolean deleted = iMilkSupplierPaymentService.deleteAllMilkSupplierPaymentByMilkSupplierId(milkSupplierId);
+        if (!deleted) {
+            return ResponseEntity.badRequest().body(new ResponseDto("400", "MilkSupplierPayment not deleted"));
+        }
+        return ResponseEntity.ok().body(new ResponseDto("200", "MilkSupplierPayment deleted successfully"));
     }
 
 

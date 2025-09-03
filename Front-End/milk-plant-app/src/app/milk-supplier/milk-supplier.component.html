@@ -56,7 +56,7 @@
       <li><strong>ID Persona:</strong> {{ selectedSupplier.personOutDto.idPerson }}</li>
       <li><strong>Nombre Completo:</strong> {{ selectedSupplier.personOutDto.names }} {{ selectedSupplier.personOutDto.lastNames }}</li>
       <li><strong>Identificación:</strong> {{ selectedSupplier.personOutDto.identificationNumber }}</li>
-      <li><strong>Edad:</strong> {{ selectedSupplier.personOutDto.age }}</li>
+      <li><strong>Fecha de Nacimiento:</strong> {{ selectedSupplier.personOutDto.birthdate | date:'mediumDate' }}</li>
       <li><strong>Género:</strong> {{ selectedSupplier.personOutDto.gender }}</li>
       <li><strong>Email:</strong> {{ selectedSupplier.personOutDto.email }}</li>
       <li><strong>Teléfono:</strong> {{ selectedSupplier.personOutDto.mobileNumber }}</li>
@@ -103,7 +103,7 @@
           <strong>Identificación:</strong> {{ selectedPersonDetails.identificationNumber }}
         </div>
         <div class="detail-item">
-          <strong>Edad:</strong> {{ selectedPersonDetails.age }} años
+          <strong>Fecha de Nacimiento:</strong> {{ selectedPersonDetails.birthdate | date:'mediumDate' }}
         </div>
         <div class="detail-item">
           <strong>Género:</strong> {{ selectedPersonDetails.gender }}

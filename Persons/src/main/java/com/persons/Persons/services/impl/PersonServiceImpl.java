@@ -1,12 +1,16 @@
 package com.persons.Persons.services.impl;
 
 import com.module.Common.dtos.PersonOutDto;
+import com.module.Common.dtos.ResponseDto;
 import com.persons.Persons.exception.ResourceNotFoundException;
 import com.persons.Persons.model.dtos.PersonInDto;
 import com.persons.Persons.model.entities.Person;
 import com.persons.Persons.repositories.IPersonRepository;
 import com.persons.Persons.services.IPersonService;
+import com.persons.Persons.services.client.IMilkCollectionFeignClient;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 
@@ -16,9 +20,12 @@ import java.util.List;
 public class PersonServiceImpl implements IPersonService {
 
     IPersonRepository iPersonRepository;
+    IMilkCollectionFeignClient iMilkCollectionFeignClient;
 
-    public PersonServiceImpl(IPersonRepository iPersonRepository) {
+    public PersonServiceImpl(IPersonRepository iPersonRepository, IMilkCollectionFeignClient iMilkCollectionFeignClient) {
+
         this.iPersonRepository = iPersonRepository;
+        this.iMilkCollectionFeignClient = iMilkCollectionFeignClient;
     }
 
     @Override
@@ -86,8 +93,21 @@ public class PersonServiceImpl implements IPersonService {
     }
 
     public boolean deletePersonById(Long personId) {
+
         iPersonRepository.findById(personId).orElseThrow(() -> new RuntimeException("Person not found"));
+
+        ResponseEntity<ResponseDto> feignResponse = iMilkCollectionFeignClient.deleteMilkSupplierByPersonId(personId);
+
+        boolean feignSuccess = feignResponse.getStatusCode() == HttpStatus.OK &&
+                "200".equals(feignResponse.getBody().getStatusCode());
+
+        if (!feignSuccess) {
+            return false;
+        }
+
         iPersonRepository.deleteById(personId);
         return true;
     }
+
+
 }

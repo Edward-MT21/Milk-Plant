@@ -134,6 +134,8 @@ export class MilkCollectionComponent implements OnInit {
   /** Opens the new collection modal */
   openNewCollectionModal() {
     this.showNewCollectionModal = true;
+    this.newCollection.date = this.selectedDate;
+
   }
 
   /** Closes the new collection modal */
@@ -186,7 +188,8 @@ export class MilkCollectionComponent implements OnInit {
       
       this.milkService.createMilkCollection(
         this.newCollection.supplierId,
-        this.newCollection.litersMilk
+        this.newCollection.litersMilk,
+        this.newCollection.date
       ).pipe(
         finalize(() => {
           this.loading = false;

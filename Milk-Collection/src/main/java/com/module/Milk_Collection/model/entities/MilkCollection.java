@@ -3,6 +3,8 @@ package com.module.Milk_Collection.model.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Entity
 @Getter
 @Setter
@@ -22,6 +24,9 @@ public class MilkCollection extends BaseEntity {
 
     @Column(name = "liters_milk")
     private Integer litersMilk;
+
+    @Column(name = "collection_date")
+    private LocalDate collectionDate;
 
 }
     

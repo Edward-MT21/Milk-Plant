@@ -20,6 +20,7 @@ public class MilkCollectionMapper {
         milkCollection.setMilkCollectionId(milkCollectionDto.getMilkCollectionId());
         milkCollection.setMilkSupplierId(milkCollectionDto.getMilkSupplierId());
         milkCollection.setLitersMilk(milkCollectionDto.getLitersMilk());
+        milkCollection.setCollectionDate(milkCollectionDto.getCollectionDate());
         return milkCollection;
 
     }

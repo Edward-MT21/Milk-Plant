@@ -1,11 +1,13 @@
 package com.module.Milk_Collection.services.impl;
 
+import com.module.Common.dtos.ResponseDto;
 import com.module.Milk_Collection.exception.MilkSupplierAlreadyExistsException;
 import com.module.Milk_Collection.exception.ResourceNotFoundException;
 import com.module.Milk_Collection.mapper.MilkSupplierMapper;
 import com.module.Milk_Collection.model.dtos.*;
 import com.module.Milk_Collection.model.entities.MilkSupplier;
 import com.module.Milk_Collection.repositories.IMilkSupplierRepository;
+import com.module.Milk_Collection.services.IMilkCollectionService;
 import com.module.Milk_Collection.services.IMilkSupplierService;
 import com.module.Milk_Collection.services.client.IFinancialManagementFeingClient;
 import com.module.Milk_Collection.services.client.IPersonsFeingClient;
@@ -13,6 +15,7 @@ import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.cloud.stream.function.StreamBridge;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -31,6 +34,8 @@ public class MilkSupplierServiceImpl implements IMilkSupplierService {
     IPersonsFeingClient iPersonsFeingClient;
     IFinancialManagementFeingClient iFinancialManagementFeingClient;
     private final StreamBridge streamBridge;
+    private final IFinancialManagementFeingClient iMilkCollectionFeingClient;
+    private final IMilkCollectionService iMilkCollectionService;
 
     @Override
     public void createMilkSupplier(MilkSupplierInDto milkSupplierInDto) {
@@ -88,14 +93,23 @@ public class MilkSupplierServiceImpl implements IMilkSupplierService {
 
     @Override
     public boolean deleteMilkSupplierById(Long milkSupplierId) {
+
+        boolean deleteMilkCollectionSuccess = iMilkCollectionService.deleteAllMilkCollectionByMilkSupplierId(milkSupplierId);
+
+        if (!deleteMilkCollectionSuccess) {
+            return false;
+        }
+
         iMilkSupplierRepository.deleteById(milkSupplierId);
         return true;
     }
 
     @Override
     public boolean deleteMilkSupplierByPersonId(Long personId) {
-        iMilkSupplierRepository.deleteByPersonId(personId);
-        return true;
+
+        MilkSupplier milkSupplier = iMilkSupplierRepository.findByPersonId(personId).orElseThrow(() -> new RuntimeException("MilkSupplier not found"));
+        return deleteMilkSupplierById(milkSupplier.getMilkSupplierId());
+
     }
 
     @Override

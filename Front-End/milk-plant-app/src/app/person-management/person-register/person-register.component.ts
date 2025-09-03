@@ -47,23 +47,13 @@ export class PersonRegisterComponent {
       return;
     }
 
-    // Calcular la edad a partir de la fecha de nacimiento
-    const birthDate = new Date(this.birthdate);
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-    
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
-
     // Preparar los datos para enviar al backend
     const personData: Person = {
       idPerson: null, // Se genera automáticamente en el backend
       names: this.names,
       lastNames: this.lastNames,
       identificationNumber: this.identificationNumber,
-      age: age,
+      birthdate: this.birthdate, // Enviamos la fecha directamente en formato YYYY-MM-DD
       gender: this.gender,
       email: this.email,
       mobileNumber: this.mobileNumber

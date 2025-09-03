@@ -20,7 +20,7 @@ public class FortnightClosureScheduler {
     private final IMilkSupplierPaymentService iMilkSupplierPaymentService;
     private final IMilkSupplierPaymentRepository iMilkSupplierPaymentRepository;
 
-    @Scheduled(cron = "59 23 15,28,30,31 * ?")
+    @Scheduled(cron = "0 59 23 15,28,30,31 * ?")
     public void executeMilkSupplierFortnightClosure() {
 
         LocalDate today = LocalDate.now();
@@ -39,9 +39,9 @@ public class FortnightClosureScheduler {
                 : cierreDate.withDayOfMonth(16);
         LocalDate endDate = cierreDate;
 
-        List<InfoMilkSupplierPaymentDto> pagos = iMilkSupplierPaymentService.getBiweeklyInfo(startDate, endDate);
+        List<InfoMilkSupplierPaymentDto> payments = iMilkSupplierPaymentService.getBiweeklyInfoMilkSupplierPayment(startDate, endDate);
 
-        List<MilkSupplierPayment> entities = pagos.stream()
+        List<MilkSupplierPayment> entities = payments.stream()
                 .map(dto -> MilkSupplierPayment.builder()
                         .milkSupplierId(dto.getMilkSupplierId())
                         .startDate(startDate)

@@ -49,7 +49,7 @@
       <li><strong>Nombres:</strong> {{ selectedPerson.names }}</li>
       <li><strong>Apellidos:</strong> {{ selectedPerson.lastNames }}</li>
       <li><strong>Identificación:</strong> {{ selectedPerson.identificationNumber }}</li>
-      <li><strong>Edad:</strong> {{ selectedPerson.age }}</li>
+      <li><strong>Fecha de Nacimiento:</strong> {{ selectedPerson.birthdate | date:'mediumDate' }}</li>
       <li><strong>Género:</strong> {{ selectedPerson.gender }}</li>
       <li><strong>Email:</strong> {{ selectedPerson.email || 'N/A' }}</li>
       <li><strong>Teléfono:</strong> {{ selectedPerson.mobileNumber || 'N/A' }}</li>
@@ -90,8 +90,8 @@
     </div>
     
     <div class="form-group">
-      <label>Edad</label>
-      <input type="number" [(ngModel)]="editingPerson.age" name="age" min="1" required>
+      <label>Fecha de Nacimiento</label>
+      <input type="date" [(ngModel)]="editingPerson.birthdate" name="birthdate" required>
     </div>
     
     <div class="form-group">
@@ -115,7 +115,7 @@
     
     <div class="modal-actions">
       <button class="cancel-btn" (click)="closeEditModal()" [disabled]="loading">Cancelar</button>
-      <button class="save-btn" (click)="saveEdit()" [disabled]="!editingPerson.names || !editingPerson.lastNames || !editingPerson.identificationNumber || !editingPerson.age || !editingPerson.gender || loading">
+      <button class="save-btn" (click)="saveEdit()" [disabled]="!editingPerson.names || !editingPerson.lastNames || !editingPerson.identificationNumber || !editingPerson.birthdate || !editingPerson.gender || loading">
         {{ loading ? 'Guardando...' : 'Guardar Cambios' }}
       </button>
     </div>

@@ -13,11 +13,13 @@ public interface IMilkCollectionService {
 
     List<MilkCollectionDetailsDto> fetchAllMilkCollectionDetails();
 
-    List<MilkCollectionDetailsDto> fetchAllMilkCollectionDetailsByDate(LocalDate date);
+    List<MilkCollectionDetailsDto> fetchAllMilkCollectionDetailsByCollectionDate(LocalDate date);
 
     void createMilkCollection(MilkCollectionDto milkCollectionDto);
 
     void updateMilkCollection(MilkCollectionDto milkCollectionDto);
 
-    List<MilkSupplierCollectionDTO> fetchMilkSupplierCollectionByDateRange(LocalDate startDate, LocalDate endDate);
+    List<MilkSupplierCollectionDTO> fetchMilkSupplierCollectionByCollectionDateRange(LocalDate startDate, LocalDate endDate);
+
+    boolean deleteAllMilkCollectionByMilkSupplierId(Long milkSupplierId);
 }

@@ -8,4 +8,8 @@ import java.util.List;
 public interface IMilkSupplierPaymentService {
 
     List<InfoMilkSupplierPaymentDto> getBiweeklyInfoMilkSupplierPayment(LocalDate startDate, LocalDate endDate);
+
+    boolean deleteMilkSupplierPaymentById(Long milkSupplierPaymentId);
+
+    boolean deleteAllMilkSupplierPaymentByMilkSupplierId(Long milkSupplierId);
 }

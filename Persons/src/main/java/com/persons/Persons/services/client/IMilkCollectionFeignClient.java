@@ -25,8 +25,8 @@ import java.util.List;
 @FeignClient(name = "Milk-Collection")
 public interface IMilkCollectionFeignClient {
 
-    @DeleteMapping(value = "MilkCollectionController/deleteMilkSupplierByPersonId", produces = "application/json")
-    public ResponseEntity<ResponseDto> deletePersonById(@RequestParam("personId") Long personId);
+    @DeleteMapping(value = "MilkSupplierController/deleteMilkSupplierByPersonId", produces = "application/json")
+    public ResponseEntity<ResponseDto> deleteMilkSupplierByPersonId(@RequestParam("personId") Long personId);
 
 }
 

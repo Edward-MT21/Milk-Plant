@@ -29,7 +29,6 @@ public class PersonController {
     private static final Logger logger = LoggerFactory.getLogger(PersonController.class);
 
     IPersonService iPersonService;
-    IMilkCollectionFeignClient iMilkCollectionFeignClient;
 
     @Autowired
     private PersonsContactsDto personsContactsDto;
@@ -98,23 +97,13 @@ public class PersonController {
     @DeleteMapping("/deletePersonById")
     public ResponseEntity<ResponseDto> deletePersonById(@RequestParam("personId") Long personId) {
 
-        ResponseEntity<ResponseDto> feignResponse = iMilkCollectionFeignClient.deletePersonById(personId);
-
-        boolean feignSuccess = feignResponse.getStatusCode() == HttpStatus.OK &&
-                "200".equals(feignResponse.getBody().getStatusCode());
-
-        if (!feignSuccess) {
-            return ResponseEntity
-                    .status(HttpStatus.EXPECTATION_FAILED)
-                    .body(new ResponseDto("200", "Person not deleted (external service failed)"));
-        }
 
         boolean isDeleted = iPersonService.deletePersonById(personId);
 
         if (!isDeleted) {
             return ResponseEntity
                     .status(HttpStatus.EXPECTATION_FAILED)
-                    .body(new ResponseDto("200", "Person not deleted (local deletion failed)"));
+                    .body(new ResponseDto("417", "Person not deleted (local deletion failed)"));
         }
 
         return ResponseEntity
