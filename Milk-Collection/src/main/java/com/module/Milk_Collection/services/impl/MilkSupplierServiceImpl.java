@@ -30,7 +30,6 @@ import com.module.Common.dtos.PersonOutDto;
 public class MilkSupplierServiceImpl implements IMilkSupplierService {
 
     private static final Logger log = LoggerFactory.getLogger(MilkSupplierServiceImpl.class);
-
     private final IMilkSupplierRepository iMilkSupplierRepository;
     private final IPersonsFeingClient iPersonsFeingClient;
     private final IFinancialManagementFeingClient iFinancialManagementFeingClient;
@@ -38,6 +37,7 @@ public class MilkSupplierServiceImpl implements IMilkSupplierService {
     private final IMilkCollectionRepository iMilkCollectionRepository;
 
     @Override
+    @Transactional
     public void createMilkSupplier(MilkSupplierInDto milkSupplierInDto) {
         MilkSupplier milkSupplier = MilkSupplierMapper.mapToMilkSupplier(milkSupplierInDto, new MilkSupplier());
         if(milkSupplierInDto.getMilkSupplierId() != null) {
@@ -77,6 +77,7 @@ public class MilkSupplierServiceImpl implements IMilkSupplierService {
     }
 
     @Override
+    @Transactional
     public boolean updateMilkSupplier(MilkSupplierInDto milkSupplierInDto) {
         boolean isUpdated = false;
 
@@ -111,6 +112,7 @@ public class MilkSupplierServiceImpl implements IMilkSupplierService {
     }
 
     @Override
+    @Transactional
     public boolean deleteMilkSupplierByPersonId(Long personId) {
 
         MilkSupplier milkSupplier = iMilkSupplierRepository.findByPersonId(personId).orElseThrow(() -> new RuntimeException("MilkSupplier not found"));
@@ -133,6 +135,7 @@ public class MilkSupplierServiceImpl implements IMilkSupplierService {
     }
 
     @Override
+    @Transactional
     public boolean updateCommunicationStatus(Long milkSupplierId) {
         boolean isUpdated = false;
         if(milkSupplierId !=null ){

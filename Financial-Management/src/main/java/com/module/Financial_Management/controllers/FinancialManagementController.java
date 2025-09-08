@@ -22,11 +22,8 @@ import org.springframework.web.bind.annotation.*;
 public class FinancialManagementController {
 
     private static final Logger logger = LoggerFactory.getLogger(FinancialManagementController.class);
-
     private final IMilkSupplierPaymentService iMilkSupplierPaymentService;
 
-
-    //
     @Value("${build.version}")
     private String buildVersion;
 
@@ -39,36 +36,34 @@ public class FinancialManagementController {
 
     @GetMapping("/getGreeting")
     public String getGreeting(@RequestHeader("milk-plant-correlation-id") String correlationId) {
-        logger.debug("getGreeting start and end");
+        logger.debug("Start getGreeting");
+
+        logger.debug("End getGreeting");
         return "Hello World since getGreeting FinancialManagement.";
     }
 
     @GetMapping("/getBuildVersion")
     public ResponseEntity<String> getBuildVersion() {
+        logger.debug("Start getBuildVersion");
+
+        logger.debug("End getBuildVersion");
         return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
     }
 
-    @GetMapping("/get-java-home")
+    @GetMapping("/getJavaHome")
     public ResponseEntity<String> getJavaHome() {
+        logger.debug("Start getJavaHome");
+
+        logger.debug("End getJavaHome");
         return ResponseEntity.status(HttpStatus.OK).body(environment.getProperty("JAVA_HOME"));
     }
 
-    @GetMapping("/get-financial-management-contacts")
+    @GetMapping("/getFinancialManagementContacts")
     public ResponseEntity<FinancialManagementContactsDto> getFinancialManagementContacts() {
+        logger.debug("Start getFinancialManagementContacts");
+
+        logger.debug("End getFinancialManagementContacts");
         return ResponseEntity.status(HttpStatus.OK).body(financialManagementContactsDto);
-    }
-
-    @DeleteMapping("/deleteAllMilkSupplierPaymentByMilkSupplierId")
-    public ResponseEntity<ResponseDto> deleteAllMilkSupplierPaymentByMilkSupplierId(@RequestParam("milkSupplierId") Long milkSupplierId) {
-        logger.debug("deleteAllMilkSupplierPaymentByMilkSupplierId start");
-
-        boolean deleted = iMilkSupplierPaymentService.deleteAllMilkSupplierPaymentByMilkSupplierId(milkSupplierId);
-        if (!deleted) {
-            return ResponseEntity.badRequest().body(new ResponseDto("400", "MilkSupplierPayment not deleted"));
-        }
-
-        logger.debug("deleteAllMilkSupplierPaymentByMilkSupplierId end");
-        return ResponseEntity.ok().body(new ResponseDto("200", "MilkSupplierPayment deleted successfully"));
     }
 
 }

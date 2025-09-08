@@ -13,6 +13,7 @@ import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,13 +23,12 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/MilkSupplierPaymentController")
+@RequestMapping(path = "/MilkSupplierPaymentController", produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:4200")
 public class MilkSupplierPaymentController {
 
     private static final Logger logger = LoggerFactory.getLogger(MilkSupplierPaymentController.class);
-
     private final IMilkSupplierPaymentService iMilkSupplierPaymentService;
     private final IFortnightClosureSchedulerService iFortnightClosureSchedulerService;
 
@@ -36,27 +36,46 @@ public class MilkSupplierPaymentController {
     public List<InfoMilkSupplierPaymentDto> getBiweeklyInfoMilkSupplierPayment(
             @RequestParam("startDate") LocalDate startDate,
             @RequestParam("endDate") LocalDate endDate) {
+        logger.debug("Start getBiweeklyInfoMilkSupplierPayment");
 
+        logger.debug("End getBiweeklyInfoMilkSupplierPayment");
         return iMilkSupplierPaymentService.getBiweeklyInfoMilkSupplierPayment(startDate, endDate);
 
     }
 
     @PostMapping("/executeMilkSupplierFortnightClosure")
     public void executeClosureManually(@RequestParam("closureDate") LocalDate closureDate) {
+        logger.debug("Start executeClosureManually");
+
+        logger.debug("End executeClosureManually");
         iFortnightClosureSchedulerService.executeMilkSupplierFortnightClosure(closureDate);
     }
 
     @DeleteMapping("/deleteMilkSupplierPaymentById")
     public ResponseEntity<ResponseDto> deleteMilkSupplierPaymentById(@RequestParam("milkSupplierPaymentId") Long milkSupplierPaymentId) {
+        logger.debug("Start deleteMilkSupplierPaymentById");
+
         boolean deleted = iMilkSupplierPaymentService.deleteMilkSupplierPaymentById(milkSupplierPaymentId);
         if (!deleted) {
             return ResponseEntity.badRequest().body(new ResponseDto("400", "MilkSupplierPayment not deleted"));
         }
+
+        logger.debug("End deleteMilkSupplierPaymentById");
         return ResponseEntity.ok().body(new ResponseDto("200", "MilkSupplierPayment deleted successfully"));
 
     }
 
+    @DeleteMapping("/deleteAllMilkSupplierPaymentByMilkSupplierId")
+    public ResponseEntity<ResponseDto> deleteAllMilkSupplierPaymentByMilkSupplierId(@RequestParam("milkSupplierId") Long milkSupplierId) {
+        logger.debug("Start deleteAllMilkSupplierPaymentByMilkSupplierId");
 
+        boolean deleted = iMilkSupplierPaymentService.deleteAllMilkSupplierPaymentByMilkSupplierId(milkSupplierId);
+        if (!deleted) {
+            return ResponseEntity.badRequest().body(new ResponseDto("400", "MilkSupplierPayment not deleted"));
+        }
 
+        logger.debug("End deleteAllMilkSupplierPaymentByMilkSupplierId ");
+        return ResponseEntity.ok().body(new ResponseDto("200", "MilkSupplierPayment deleted successfully"));
+    }
 
 }
