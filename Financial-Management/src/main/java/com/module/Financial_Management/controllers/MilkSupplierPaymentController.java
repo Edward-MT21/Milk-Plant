@@ -11,6 +11,8 @@ import com.module.Financial_Management.services.IProductService;
 import com.module.Financial_Management.services.client.IMilkCollectionFeignClient;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,6 +26,8 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 @CrossOrigin(origins = "http://localhost:4200")
 public class MilkSupplierPaymentController {
+
+    private static final Logger logger = LoggerFactory.getLogger(MilkSupplierPaymentController.class);
 
     private final IMilkSupplierPaymentService iMilkSupplierPaymentService;
     private final IFortnightClosureSchedulerService iFortnightClosureSchedulerService;
@@ -52,14 +56,7 @@ public class MilkSupplierPaymentController {
 
     }
 
-    @DeleteMapping("/deleteAllMilkSupplierPaymentByMilkSupplierId")
-    public ResponseEntity<ResponseDto> deleteMilkSupplierPaymentByMilkSupplierId(@RequestParam("milkSupplierId") Long milkSupplierId) {
-        boolean deleted = iMilkSupplierPaymentService.deleteAllMilkSupplierPaymentByMilkSupplierId(milkSupplierId);
-        if (!deleted) {
-            return ResponseEntity.badRequest().body(new ResponseDto("400", "MilkSupplierPayment not deleted"));
-        }
-        return ResponseEntity.ok().body(new ResponseDto("200", "MilkSupplierPayment deleted successfully"));
-    }
+
 
 
 }

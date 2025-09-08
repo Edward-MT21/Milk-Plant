@@ -6,14 +6,13 @@ import com.module.Milk_Collection.mapper.MilkCollectionMapper;
 import com.module.Milk_Collection.model.dtos.*;
 import com.module.Milk_Collection.model.entities.MilkCollection;
 import com.module.Milk_Collection.repositories.IMilkCollectionRepository;
-import com.module.Milk_Collection.repositories.IMilkSupplierRepository;
 import com.module.Milk_Collection.services.IMilkCollectionService;
+import com.module.Milk_Collection.services.IMilkSupplierService;
 import com.module.Milk_Collection.services.client.IFinancialManagementFeingClient;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import com.module.Milk_Collection.mapper.MilkSupplierMapper;
 
 import java.time.*;
 import java.util.ArrayList;
@@ -22,15 +21,13 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.toList;
-
 @Service
 @AllArgsConstructor
 public class MilkCollectionServiceImpl implements IMilkCollectionService {
 
-    private IMilkCollectionRepository iMilkCollectionRepository;
+    private final IMilkCollectionRepository iMilkCollectionRepository;
 
-    private MilkSupplierServiceImpl milkSupplierServiceImpl;
+    private final IMilkSupplierService iMilkSupplierService;
 
     private final IFinancialManagementFeingClient iMilkCollectionFeingClient;
 
@@ -53,7 +50,7 @@ public class MilkCollectionServiceImpl implements IMilkCollectionService {
     private MilkCollectionDetailsDto getMilkCollectionDetailsDto(MilkCollection milkCollection) {
         MilkCollectionDetailsDto milkCollectionDetailsDto = new MilkCollectionDetailsDto();
         milkCollectionDetailsDto.setMilkCollectionId(milkCollection.getMilkCollectionId());
-        MilkSupplierDetailsDto milkSupplierDetailsDto = milkSupplierServiceImpl.fetchMilkSupplierDetailsById(milkCollection.getMilkSupplierId(), "0");
+        MilkSupplierDetailsDto milkSupplierDetailsDto = iMilkSupplierService.fetchMilkSupplierDetailsById(milkCollection.getMilkSupplierId(), "0");
         milkCollectionDetailsDto.setMilkSupplierDetailsDto(milkSupplierDetailsDto);
         milkCollectionDetailsDto.setLitersMilk(milkCollection.getLitersMilk());
         return milkCollectionDetailsDto;
@@ -121,7 +118,7 @@ public class MilkCollectionServiceImpl implements IMilkCollectionService {
                 return dto;
             }).collect(Collectors.toList());
 
-            MilkSupplierDetailsDto milkSupplierDetailsDto = milkSupplierServiceImpl.fetchMilkSupplierDetailsById(milkSupplierId, "0");
+            MilkSupplierDetailsDto milkSupplierDetailsDto = iMilkSupplierService.fetchMilkSupplierDetailsById(milkSupplierId, "0");
             result.add(MilkSupplierCollectionDTO.builder()
                     .milkSupplierId(milkSupplierId)
                     .personOutDto(milkSupplierDetailsDto.getPersonOutDto())
@@ -135,19 +132,10 @@ public class MilkCollectionServiceImpl implements IMilkCollectionService {
     }
 
     @Override
-    public boolean deleteAllMilkCollectionByMilkSupplierId(Long milkSupplierId) {
-
-        ResponseEntity<ResponseDto> feignResponse = iMilkCollectionFeingClient.deleteAllMilkSupplierPaymentByMilkSupplierId(milkSupplierId);
-
-        boolean feignSuccess = feignResponse.getStatusCode() == HttpStatus.OK &&
-                "200".equals(feignResponse.getBody().getStatusCode());
-
-        if (!feignSuccess) {
-            return false;
-        }
-
-        iMilkCollectionRepository.deleteAllByMilkSupplierId(milkSupplierId);
+    public boolean deleteMilkCollectionById(Long milkCollectionId) {
+        iMilkCollectionRepository.deleteById(milkCollectionId);
         return true;
     }
+
 
 }

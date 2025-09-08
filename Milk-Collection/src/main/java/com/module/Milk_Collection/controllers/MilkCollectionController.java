@@ -62,17 +62,13 @@ public class MilkCollectionController {
         return ResponseEntity.ok(iMilkCollectionService.fetchMilkSupplierCollectionByCollectionDateRange(startDate, endDate));
     }
 
-    @DeleteMapping("/deleteAllMilkCollectionByMilkSupplierId")
-    public ResponseEntity<ResponseDto> deleteAllMilkCollectionByMilkSupplierId(@RequestParam("milkSupplierId") Long milkSupplierId) {
-        boolean result = iMilkCollectionService.deleteAllMilkCollectionByMilkSupplierId(milkSupplierId);
+    @DeleteMapping("/deleteMilkCollectionById")
+    public ResponseEntity<ResponseDto> deleteMilkCollectionById(@RequestParam("milkCollectionId") Long milkCollectionId) {
+        boolean result = iMilkCollectionService.deleteMilkCollectionById(milkCollectionId);
         if (!result) {
             return ResponseEntity.badRequest().body(new ResponseDto("400", "Error deleting milk collection"));
         }
         return ResponseEntity.ok(new ResponseDto(AccountsConstants.STATUS_200, AccountsConstants.MESSAGE_200));
-
     }
-
-
-
 
 }

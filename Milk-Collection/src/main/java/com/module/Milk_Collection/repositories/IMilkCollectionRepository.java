@@ -18,4 +18,6 @@ public interface IMilkCollectionRepository extends JpaRepository<MilkCollection,
     void deleteAllByMilkSupplierId(Long milkSupplierId);
 
     List<MilkCollection> findByMilkSupplierId(Long milkSupplierId);
+
+    List<MilkCollection> findAllByMilkSupplierId(Long milkSupplierId);
 }

@@ -11,7 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 @SpringBootApplication
 @EnableConfigurationProperties(value = { PersonsContactsDto.class })
 @EnableJpaAuditing(auditorAwareRef = "auditAwareImpl")
-@EnableDiscoveryClient
+//@EnableDiscoveryClient
 @EnableFeignClients
 public class PersonsApplication {
 

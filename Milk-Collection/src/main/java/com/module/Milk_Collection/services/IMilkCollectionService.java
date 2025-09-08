@@ -21,5 +21,6 @@ public interface IMilkCollectionService {
 
     List<MilkSupplierCollectionDTO> fetchMilkSupplierCollectionByCollectionDateRange(LocalDate startDate, LocalDate endDate);
 
-    boolean deleteAllMilkCollectionByMilkSupplierId(Long milkSupplierId);
+
+    boolean deleteMilkCollectionById(Long milkCollectionId);
 }

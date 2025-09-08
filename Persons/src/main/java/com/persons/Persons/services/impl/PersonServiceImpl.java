@@ -94,7 +94,10 @@ public class PersonServiceImpl implements IPersonService {
 
     public boolean deletePersonById(Long personId) {
 
-        iPersonRepository.findById(personId).orElseThrow(() -> new RuntimeException("Person not found"));
+        if (!iPersonRepository.existsById(personId)) {
+            log.warn("Person not found with ID: {}", personId);
+            return false;
+        }
 
         ResponseEntity<ResponseDto> feignResponse = iMilkCollectionFeignClient.deleteMilkSupplierByPersonId(personId);
 

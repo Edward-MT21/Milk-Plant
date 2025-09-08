@@ -6,8 +6,8 @@ import com.module.Milk_Collection.exception.ResourceNotFoundException;
 import com.module.Milk_Collection.mapper.MilkSupplierMapper;
 import com.module.Milk_Collection.model.dtos.*;
 import com.module.Milk_Collection.model.entities.MilkSupplier;
+import com.module.Milk_Collection.repositories.IMilkCollectionRepository;
 import com.module.Milk_Collection.repositories.IMilkSupplierRepository;
-import com.module.Milk_Collection.services.IMilkCollectionService;
 import com.module.Milk_Collection.services.IMilkSupplierService;
 import com.module.Milk_Collection.services.client.IFinancialManagementFeingClient;
 import com.module.Milk_Collection.services.client.IPersonsFeingClient;
@@ -18,6 +18,7 @@ import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,12 +31,11 @@ public class MilkSupplierServiceImpl implements IMilkSupplierService {
 
     private static final Logger log = LoggerFactory.getLogger(MilkSupplierServiceImpl.class);
 
-    IMilkSupplierRepository iMilkSupplierRepository;
-    IPersonsFeingClient iPersonsFeingClient;
-    IFinancialManagementFeingClient iFinancialManagementFeingClient;
+    private final IMilkSupplierRepository iMilkSupplierRepository;
+    private final IPersonsFeingClient iPersonsFeingClient;
+    private final IFinancialManagementFeingClient iFinancialManagementFeingClient;
     private final StreamBridge streamBridge;
-    private final IFinancialManagementFeingClient iMilkCollectionFeingClient;
-    private final IMilkCollectionService iMilkCollectionService;
+    private final IMilkCollectionRepository iMilkCollectionRepository;
 
     @Override
     public void createMilkSupplier(MilkSupplierInDto milkSupplierInDto) {
@@ -92,14 +92,20 @@ public class MilkSupplierServiceImpl implements IMilkSupplierService {
     }
 
     @Override
+    @Transactional
     public boolean deleteMilkSupplierById(Long milkSupplierId) {
 
-        boolean deleteMilkCollectionSuccess = iMilkCollectionService.deleteAllMilkCollectionByMilkSupplierId(milkSupplierId);
+        ResponseEntity<ResponseDto> feignResponse = iFinancialManagementFeingClient
+                .deleteAllMilkSupplierPaymentByMilkSupplierId(milkSupplierId);
 
-        if (!deleteMilkCollectionSuccess) {
+        boolean feignSuccess = feignResponse.getStatusCode() == HttpStatus.OK &&
+                "200".equals(feignResponse.getBody().getStatusCode());
+
+        if (!feignSuccess) {
             return false;
         }
 
+        iMilkCollectionRepository.deleteAllByMilkSupplierId(milkSupplierId);
         iMilkSupplierRepository.deleteById(milkSupplierId);
         return true;
     }
@@ -120,8 +126,8 @@ public class MilkSupplierServiceImpl implements IMilkSupplierService {
         );
 
         ResponseEntity<PersonOutDto> personOutDtoResponseEntity = iPersonsFeingClient.fetchPersonById(correlationId, milkSupplier.getPersonId());
-        //String greetingFinancialManagement = iFinancialManagementFeingClient.getGreeting(correlationId);
-        String greetingFinancialManagement = "Hello from Financial Management Test";
+        String greetingFinancialManagement = iFinancialManagementFeingClient.getGreeting(correlationId);
+        //String greetingFinancialManagement = "Hello from Financial Management Test";
 
         return MilkSupplierMapper.mapToMilkSupplierDetailsDto(milkSupplier, personOutDtoResponseEntity, greetingFinancialManagement);
     }

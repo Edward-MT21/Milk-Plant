@@ -11,7 +11,5 @@ public interface IMilkSupplierRepository extends JpaRepository<MilkSupplier, Lon
 
     Optional<MilkSupplier> findByPersonId(Long personId);
 
-    @Transactional
-    @Modifying
     void deleteByPersonId(Long personId);
 }

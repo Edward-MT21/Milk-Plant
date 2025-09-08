@@ -81,6 +81,11 @@ logging:
     com:
       module:
         Milk_Collection: DEBUG
+    feign: DEBUG
+    feign.hystrix: DEBUG
+    org.springframework.cloud.openfeign: DEBUG
+    com.module.Milk_Collection.services.client: DEBUG
+
   pattern:
     level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
 
@@ -110,3 +115,13 @@ resilience4j.ratelimiter:
       timeoutDuration: 1000
       limitRefreshPeriod: 5000
       limitForPeriod: 1
+
+feign:
+  client:
+    config:
+      default:
+        connect-timeout: 5000
+        read-timeout: 30000
+        logger-level: full
+  circuitbreaker:
+    enabled: true

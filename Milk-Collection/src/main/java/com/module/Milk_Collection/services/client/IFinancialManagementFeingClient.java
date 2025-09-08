@@ -15,7 +15,7 @@ public interface IFinancialManagementFeingClient {
     @GetMapping(value = "/FinancialManagementController/getGreeting", produces = "application/json")
     public String getGreeting(@RequestHeader("milk-plant-correlation-id") String correlationId);
 
-    @DeleteMapping(value = "/MilkSupplierPaymentController/deleteAllMilkSupplierPaymentByMilkSupplierId", produces = "application/json")
+    @DeleteMapping(value = "/FinancialManagementController/deleteAllMilkSupplierPaymentByMilkSupplierId", produces = "application/json")
     public ResponseEntity<ResponseDto> deleteAllMilkSupplierPaymentByMilkSupplierId(@RequestParam("milkSupplierId") Long milkSupplierId);
 
 }
