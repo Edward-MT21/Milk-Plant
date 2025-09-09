@@ -27,8 +27,7 @@ import java.util.List;
 public class PersonController {
 
     private static final Logger logger = LoggerFactory.getLogger(PersonController.class);
-
-    IPersonService iPersonService;
+    private final IPersonService iPersonService;
 
     @Autowired
     private PersonsContactsDto personsContactsDto;
