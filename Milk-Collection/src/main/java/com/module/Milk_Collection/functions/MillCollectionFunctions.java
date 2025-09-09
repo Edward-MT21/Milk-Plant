@@ -11,12 +11,12 @@ import java.util.function.Consumer;
 @Configuration
 public class MillCollectionFunctions {
 
-    private static final Logger log = LoggerFactory.getLogger(MillCollectionFunctions.class);
+    private static final Logger logger = LoggerFactory.getLogger(MillCollectionFunctions.class);
 
     @Bean
     public Consumer<Long> updateCommunication(IMilkSupplierService iMilkSupplierService) {
         return milkSupplierId -> {
-            log.info("Updating Communication status for the milkSupplierId : " + milkSupplierId.toString());
+            logger.info("Updating Communication status for the milkSupplierId : {}", milkSupplierId.toString());
             iMilkSupplierService.updateCommunicationStatus(milkSupplierId);
         };
     }

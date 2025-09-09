@@ -14,7 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.Positive;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,7 +40,6 @@ import java.util.concurrent.TimeoutException;
 public class MilkSupplierController {
 
     private static final Logger logger = LoggerFactory.getLogger(MilkSupplierController.class);
-
     private final IMilkSupplierService iMilkSupplierService;
 
     @Value("${build.version}")
@@ -58,10 +56,6 @@ public class MilkSupplierController {
         this.iMilkSupplierService = iMilkSupplierService;
     }
 
-    @GetMapping("/getSomeData")
-    public String getSomeData() {
-        return "Hello World since getSomeData";
-    }
 
     @Operation(
             summary = "Create Milk Supplier REST API",
@@ -83,7 +77,11 @@ public class MilkSupplierController {
     )
     @PostMapping("/createMilkSupplier")
     public ResponseEntity<ResponseDto> createMilkSupplier(@RequestBody MilkSupplierInDto milkSupplierInDto) {
+        logger.debug("Start createMilkSupplier");
+
         iMilkSupplierService.createMilkSupplier(milkSupplierInDto);
+
+        logger.debug("End createMilkSupplier");
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new ResponseDto(AccountsConstants.STATUS_201, AccountsConstants.MESSAGE_201));
@@ -109,7 +107,11 @@ public class MilkSupplierController {
     )
     @GetMapping("/fetchMilkSupplierById")
     public ResponseEntity<MilkSupplierOutDto> fetchMilkSupplierById(@RequestParam("milkSupplierId") Long milkSupplierId) {
+        logger.debug("Start fetchMilkSupplierById");
+
         MilkSupplierOutDto milkSupplierOutDto = iMilkSupplierService.fetchMilkSupplierById(milkSupplierId);
+
+        logger.debug("End fetchMilkSupplierById");
         return ResponseEntity.status(HttpStatus.OK).body(milkSupplierOutDto);
     }
 
@@ -133,7 +135,11 @@ public class MilkSupplierController {
     )
     @GetMapping("/fetchMilkSupplierByPersonId")
     public ResponseEntity<MilkSupplierOutDto> fetchMilkSupplierByPersonId(@RequestParam("personId") Long personId) {
+        logger.debug("Start fetchMilkSupplierByPersonId");
+
         MilkSupplierOutDto milkSupplierOutDto = iMilkSupplierService.fetchMilkSupplierByPersonId(personId);
+
+        logger.debug("End fetchMilkSupplierByPersonId");
         return ResponseEntity.status(HttpStatus.OK).body(milkSupplierOutDto);
     }
 
@@ -161,12 +167,17 @@ public class MilkSupplierController {
     )
     @PutMapping("/updateMilkSupplier")
     public ResponseEntity<ResponseDto> updateMilkSupplier(@RequestBody MilkSupplierInDto milkSupplierInDto) {
+        logger.debug("Start updateMilkSupplier");
+
         boolean isUpdated = iMilkSupplierService.updateMilkSupplier(milkSupplierInDto);
         if(isUpdated) {
+
+            logger.debug("End updateMilkSupplier, isUpdated: true");
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(new ResponseDto(AccountsConstants.STATUS_200, AccountsConstants.MESSAGE_200));
         }else{
+            logger.debug("End updateMilkSupplier, isUpdated: false");
             return ResponseEntity
                     .status(HttpStatus.EXPECTATION_FAILED)
                     .body(new ResponseDto(AccountsConstants.STATUS_417, AccountsConstants.MESSAGE_417_UPDATE));
@@ -197,12 +208,16 @@ public class MilkSupplierController {
     )
     @DeleteMapping("/deleteMilkSupplierById")
     public ResponseEntity<ResponseDto> deleteMilkSupplierById(@RequestParam("milkSupplierId") Long milkSupplierId) {
+        logger.debug("Start deleteMilkSupplierById");
+
         boolean isDeleted = iMilkSupplierService.deleteMilkSupplierById(milkSupplierId);
         if(isDeleted) {
+            logger.debug("End deleteMilkSupplierById, isDeleted: true");
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(new ResponseDto(AccountsConstants.STATUS_200, AccountsConstants.MESSAGE_200));
         }else{
+            logger.debug("End deleteMilkSupplierById, isDeleted: false");
             return ResponseEntity
                     .status(HttpStatus.EXPECTATION_FAILED)
                     .body(new ResponseDto(AccountsConstants.STATUS_417, AccountsConstants.MESSAGE_417_DELETE));
@@ -233,12 +248,16 @@ public class MilkSupplierController {
     )
     @DeleteMapping("/deleteMilkSupplierByPersonId")
     public ResponseEntity<ResponseDto> deleteMilkSupplierByPersonId(@Positive @RequestParam("personId") Long personId) {
+        logger.debug("Start deleteMilkSupplierByPersonId");
+
         boolean isDeleted = iMilkSupplierService.deleteMilkSupplierByPersonId(personId);
         if(isDeleted) {
+            logger.debug("End deleteMilkSupplierByPersonId, isDeleted: true");
             return ResponseEntity
                     .status(HttpStatus.OK)
                     .body(new ResponseDto(AccountsConstants.STATUS_200, AccountsConstants.MESSAGE_200));
         }else{
+            logger.debug("End deleteMilkSupplierByPersonId, isDeleted: false");
             return ResponseEntity
                     .status(HttpStatus.EXPECTATION_FAILED)
                     .body(new ResponseDto(AccountsConstants.STATUS_417, AccountsConstants.MESSAGE_417_DELETE));
@@ -248,29 +267,41 @@ public class MilkSupplierController {
     @Retry(name = "retryGetBuildVersion", fallbackMethod = "getBuildVersionFallback")
     @GetMapping("/getBuildVersion")
     public ResponseEntity<String> getBuildVersion() throws TimeoutException {
-        logger.debug("Into getBuildVersion");
+        logger.debug("Start getBuildVersion");
+
         //throw new NullPointerException();
         throw new TimeoutException();
         //return ResponseEntity.status(HttpStatus.OK).body(buildVersion);
     }
 
     public ResponseEntity<String> getBuildVersionFallback(Throwable throwable) {
-        logger.debug("Into getBuildVersionFallback");
+        logger.debug("Start getBuildVersionFallback");
+
+        logger.debug("End getBuildVersionFallback");
         return ResponseEntity.status(HttpStatus.OK).body("0.0");
     }
 
     @RateLimiter(name = "rateLimiterGetJavaHome", fallbackMethod = "getJavaHomeFallback")
-    @GetMapping("/get-java-home")
+    @GetMapping("/getJavaHome")
     public ResponseEntity<String> getJavaHome() {
+        logger.debug("Start getJavaHome");
+
+        logger.debug("End getJavaHome");
         return ResponseEntity.status(HttpStatus.OK).body(environment.getProperty("JAVA_HOME"));
     }
 
     public ResponseEntity<String> getJavaHomeFallback(Throwable throwable) {
+        logger.debug("Start getJavaHomeFallback");
+
+        logger.debug("End getJavaHomeFallback");
         return ResponseEntity.status(HttpStatus.OK).body("Java 17");
     }
 
     @GetMapping("/getMilkCollectionContacts")
     public ResponseEntity<MilkCollectionContactsDto> getMilkCollectionContacts() {
+        logger.debug("Start getMilkCollectionContacts");
+
+        logger.debug("End getMilkCollectionContacts");
         return ResponseEntity.status(HttpStatus.OK).body(milkCollectionContactsDto);
     }
 
@@ -278,17 +309,22 @@ public class MilkSupplierController {
     public ResponseEntity<MilkSupplierDetailsDto> fetchMilkSupplierDetailsById(
             @RequestHeader("milk-plant-correlation-id") String correlationId,
             @RequestParam("milkSupplierId") Long milkSupplierId) {
-        logger.debug("fetchMilkSupplierDetailsById start");
+
+        logger.debug("Start fetchMilkSupplierDetailsById");
+
         MilkSupplierDetailsDto milkSupplierDetailsDto = iMilkSupplierService.fetchMilkSupplierDetailsById(milkSupplierId, correlationId);
-        logger.debug("fetchMilkSupplierDetailsById end");
+
+        logger.debug("End fetchMilkSupplierDetailsById");
         return ResponseEntity.status(HttpStatus.OK).body(milkSupplierDetailsDto);
     }
 
     @GetMapping("/fetchAllMilkSupplierDetails")
     public ResponseEntity<List<MilkSupplierDetailsDto>> fetchAllMilkSupplierDetails() {
+        logger.debug("Start fetchAllMilkSupplierDetails");
 
         List<MilkSupplierDetailsDto> listMilkSupplierDetailsDto= iMilkSupplierService.fetchAllMilkSupplierDetails();
 
+        logger.debug("End fetchAllMilkSupplierDetails");
         return ResponseEntity.status(HttpStatus.OK).body(listMilkSupplierDetailsDto);
     }
 

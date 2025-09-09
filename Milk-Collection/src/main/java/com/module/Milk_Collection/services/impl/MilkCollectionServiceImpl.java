@@ -1,6 +1,5 @@
 package com.module.Milk_Collection.services.impl;
 
-import com.module.Common.dtos.ResponseDto;
 import com.module.Milk_Collection.exception.ResourceNotFoundException;
 import com.module.Milk_Collection.mapper.MilkCollectionMapper;
 import com.module.Milk_Collection.model.dtos.*;
@@ -8,11 +7,11 @@ import com.module.Milk_Collection.model.entities.MilkCollection;
 import com.module.Milk_Collection.repositories.IMilkCollectionRepository;
 import com.module.Milk_Collection.services.IMilkCollectionService;
 import com.module.Milk_Collection.services.IMilkSupplierService;
-import com.module.Milk_Collection.services.client.IFinancialManagementFeingClient;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.*;
 import java.util.ArrayList;
@@ -25,20 +24,23 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class MilkCollectionServiceImpl implements IMilkCollectionService {
 
+    private static final Logger logger = LoggerFactory.getLogger(MilkCollectionServiceImpl.class);
     private final IMilkCollectionRepository iMilkCollectionRepository;
-
     private final IMilkSupplierService iMilkSupplierService;
-
-    private final IFinancialManagementFeingClient iMilkCollectionFeingClient;
 
     @Override
     public List<MilkCollectionDto> fetchAllMilkCollection() {
+        logger.debug("Start fetchAllMilkCollection");
+
+        logger.debug("End fetchAllMilkCollection");
         return iMilkCollectionRepository.findAll().stream().map(MilkCollectionMapper::mapToMilkCollectionDto).toList();
     }
 
     @Override
     public List<MilkCollectionDetailsDto> fetchAllMilkCollectionDetails() {
+        logger.debug("Start fetchAllMilkCollectionDetails");
 
+        logger.debug("End fetchAllMilkCollectionDetails");
         return iMilkCollectionRepository.findAll().stream().map(
                 milkCollection -> {
                     MilkCollectionDetailsDto milkCollectionDetailsDto = getMilkCollectionDetailsDto(milkCollection);
@@ -48,16 +50,23 @@ public class MilkCollectionServiceImpl implements IMilkCollectionService {
     }
 
     private MilkCollectionDetailsDto getMilkCollectionDetailsDto(MilkCollection milkCollection) {
+        logger.debug("Start getMilkCollectionDetailsDto");
+
         MilkCollectionDetailsDto milkCollectionDetailsDto = new MilkCollectionDetailsDto();
         milkCollectionDetailsDto.setMilkCollectionId(milkCollection.getMilkCollectionId());
         MilkSupplierDetailsDto milkSupplierDetailsDto = iMilkSupplierService.fetchMilkSupplierDetailsById(milkCollection.getMilkSupplierId(), "0");
         milkCollectionDetailsDto.setMilkSupplierDetailsDto(milkSupplierDetailsDto);
         milkCollectionDetailsDto.setLitersMilk(milkCollection.getLitersMilk());
+
+        logger.debug("End getMilkCollectionDetailsDto");
         return milkCollectionDetailsDto;
     }
 
     @Override
+    @Transactional
     public void createMilkCollection(MilkCollectionDto milkCollectionDto) {
+        logger.debug("Start createMilkCollection");
+
         MilkCollection milkCollection = MilkCollectionMapper.mapToMilkCollection(milkCollectionDto);
 
         Optional<MilkCollection> existing = iMilkCollectionRepository
@@ -68,10 +77,15 @@ public class MilkCollectionServiceImpl implements IMilkCollectionService {
         }
 
         iMilkCollectionRepository.saveAndFlush(milkCollection);
+
+        logger.debug("End createMilkCollection");
     }
 
     @Override
+    @Transactional
     public void updateMilkCollection(MilkCollectionDto milkCollectionDto) {
+        logger.debug("Start updateMilkCollection");
+
         iMilkCollectionRepository.findById(milkCollectionDto.getMilkCollectionId())
                 .ifPresentOrElse(
                         milkCollection -> {
@@ -81,10 +95,14 @@ public class MilkCollectionServiceImpl implements IMilkCollectionService {
                         () -> { throw new ResourceNotFoundException("MilkCollection", "MilkCollectionId", milkCollectionDto.getMilkCollectionId().toString()); }
                 );
 
+        logger.debug("End updateMilkCollection");
     }
 
     @Override
     public List<MilkCollectionDetailsDto> fetchAllMilkCollectionDetailsByCollectionDate(LocalDate date) {
+        logger.debug("Start fetchAllMilkCollectionDetailsByCollectionDate");
+
+        logger.debug("End fetchAllMilkCollectionDetailsByCollectionDate");
         return iMilkCollectionRepository.findAllByCollectionDate(date)
                 .stream()
                 .map(this::getMilkCollectionDetailsDto)
@@ -93,6 +111,7 @@ public class MilkCollectionServiceImpl implements IMilkCollectionService {
 
     @Override
     public List<MilkSupplierCollectionDTO> fetchMilkSupplierCollectionByCollectionDateRange(LocalDate startDate, LocalDate endDate) {
+        logger.debug("Start fetchMilkSupplierCollectionByCollectionDateRange");
 
         List<MilkCollection> collections = iMilkCollectionRepository.findAllByCollectionDateBetween(startDate, endDate);
 
@@ -127,12 +146,16 @@ public class MilkCollectionServiceImpl implements IMilkCollectionService {
                     .build());
         }
 
+        logger.debug("End fetchMilkSupplierCollectionByCollectionDateRange");
         return result;
-
     }
 
     @Override
+    @Transactional
     public boolean deleteMilkCollectionById(Long milkCollectionId) {
+        logger.debug("Start deleteMilkCollectionById");
+
+        logger.debug("End deleteMilkCollectionById");
         iMilkCollectionRepository.deleteById(milkCollectionId);
         return true;
     }
