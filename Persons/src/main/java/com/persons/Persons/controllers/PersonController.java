@@ -34,11 +34,6 @@ public class PersonController {
     private PersonsContactsDto personsContactsDto;
 
 
-    @GetMapping("/getGreeting")
-    public String getGreeting() {
-        return "Hello World since getGreeting";
-    }
-
     /**
      * Creates a new person with the given data.
      * @param personInDto the data transfer object containing the details of the person to be created.
@@ -46,7 +41,11 @@ public class PersonController {
     @PostMapping("/createPerson")
     @ResponseStatus(HttpStatus.CREATED)
     public ResponseEntity<ResponseDto> createPerson(@Valid @RequestBody PersonInDto personInDto) {
+        logger.debug("Start createPerson");
+
         iPersonService.createPerson(personInDto);
+
+        logger.debug("End createPerson");
         return ResponseEntity
                 .status(HttpStatus.CREATED)
                 .body(new ResponseDto(PersonConstants.STATUS_201, PersonConstants.MESSAGE_201));
@@ -60,7 +59,11 @@ public class PersonController {
     @PutMapping("/editPerson")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<ResponseDto> editPerson(@Valid @RequestBody PersonInDto personInDto) {
+        logger.debug("Start editPerson");
+
         iPersonService.editPerson(personInDto);
+
+        logger.debug("End editPerson");
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponseDto(PersonConstants.STATUS_200, PersonConstants.MESSAGE_200));
@@ -73,7 +76,11 @@ public class PersonController {
     @GetMapping("/getAllPersons")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<PersonOutDto>> getAllPersons() {
+        logger.debug("Start getAllPersons");
+
         List<PersonOutDto> listPersonOutDto = iPersonService.getAllPersons();
+
+        logger.debug("End getAllPersons");
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(listPersonOutDto);
@@ -81,22 +88,26 @@ public class PersonController {
 
     @GetMapping("/getPersonsContacts")
     public ResponseEntity<PersonsContactsDto> getPersonsContacts() {
-        logger.debug("Invoking getPersonsContacts");
+        logger.debug("Start getPersonsContacts");
+
+        logger.debug("End getPersonsContacts");
         return ResponseEntity.status(HttpStatus.OK).body(personsContactsDto);
     }
 
     @GetMapping("/fetchPersonById")
     public ResponseEntity<PersonOutDto> fetchPersonById(
             @RequestHeader("milk-plant-correlation-id") String correlationId, @RequestParam("personId") Long personId) {
-        logger.debug("fetchPersonById start");
+        logger.debug("Start fetchPersonById");
+
         PersonOutDto personOutDto = iPersonService.fetchPersonById(personId);
-        logger.debug("fetchPersonById end");
+
+        logger.debug("End fetchPersonById");
         return ResponseEntity.status(HttpStatus.OK).body(personOutDto);
     }
 
     @DeleteMapping("/deletePersonById")
     public ResponseEntity<ResponseDto> deletePersonById(@RequestParam("personId") Long personId) {
-
+        logger.debug("Start deletePersonById");
 
         boolean isDeleted = iPersonService.deletePersonById(personId);
 
@@ -106,6 +117,7 @@ public class PersonController {
                     .body(new ResponseDto("417", "Person not deleted (local deletion failed)"));
         }
 
+        logger.debug("End deletePersonById");
         return ResponseEntity
                 .status(HttpStatus.OK)
                 .body(new ResponseDto("200", "Person deleted successfully"));
