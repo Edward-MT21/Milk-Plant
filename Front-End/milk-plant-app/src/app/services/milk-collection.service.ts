@@ -62,21 +62,36 @@ export interface InfoMilkSupplierPaymentDto {
   totalAmount: number;
 }
 
+
+/**
+ * Service to manage milk collection.
+ * Allows fetching milk collection data from the backend and updating milk collection records.
+ * @author Edward Malte
+ */
 @Injectable({
   providedIn: 'root'
 })
 export class MilkCollectionService {
 
-  private baseUrl = 'http://localhost:8080';
-  private milkCollectionUrl = `${this.baseUrl}/MilkCollectionController/fetch-all-milk-collection`;
-  private milkCollectionDetailsUrl = `${this.baseUrl}/MilkCollectionController/fetch-all-milk-collection-details`;
-  private personUrl = 'http://localhost:8180/PersonController';
-  private getAllPersonsUrl = `${this.personUrl}/getAllPersons`;
-  private milkSupplierUrl = 'http://localhost:8080/MilkSupplierController';
-  private createMilkSupplierUrl = `${this.milkSupplierUrl}/createMilkSupplier`;
-  private fetchAllMilkSupplierDetailsUrl = `${this.milkSupplierUrl}/fetchAllMilkSupplierDetails`;
-  private fetchMilkSupplierCollectionByDateRangeUrl = `${this.baseUrl}/MilkCollectionController/fetch-milk-supplier-collection-by-date-range`;
-  private milkSupplierPaymentUrl = `http://localhost:8280/MilkSupplierPaymentController`;
+  private milkCollectionBaseUrl = 'http://localhost:8080';
+  private personBaseUrl = 'http://localhost:8180';
+  private financialManagementBaseUrl = 'http://localhost:8280';
+
+  private fetchAllMilkCollectionUrl = `${this.milkCollectionBaseUrl}/MilkCollectionController/fetchAllMilkCollection`;
+  private fetchAllMilkCollectionDetailsUrl = `${this.milkCollectionBaseUrl}/MilkCollectionController/fetchAllMilkCollectionDetails`;
+  private createPersonUrl = `${this.personBaseUrl}/PersonController/createPerson`;
+  private getAllPersonsUrl = `${this.personBaseUrl}/PersonController/getAllPersons`;
+  private createMilkSupplierUrl = `${this.milkCollectionBaseUrl}/MilkSupplierController/createMilkSupplier`;
+  private fetchAllMilkSupplierDetailsUrl = `${this.milkCollectionBaseUrl}/MilkSupplierController/fetchAllMilkSupplierDetails`;
+  private fetchMilkSupplierCollectionByDateRangeUrl = `${this.milkCollectionBaseUrl}/MilkCollectionController/fetchMilkSupplierCollectionByDateRange`;
+  private getBiweeklyInfoMilkSupplierPaymentUrl = `${this.financialManagementBaseUrl}/MilkSupplierPaymentController/getBiweeklyInfoMilkSupplierPayment`;
+  private updateMilkCollectionUrl = `${this.milkCollectionBaseUrl}/MilkCollectionController/updateMilkCollection`;
+  private createMilkCollectionUrl = `${this.milkCollectionBaseUrl}/MilkCollectionController/createMilkCollection`;
+  private fetchAllMilkCollectionDetailsByCollectionDateUrl = `${this.milkCollectionBaseUrl}/MilkCollectionController/fetchAllMilkCollectionDetailsByCollectionDate`;
+  private fetchMilkSupplierCollectionByCollectionDateRangeUrl = `${this.milkCollectionBaseUrl}/MilkCollectionController/fetchMilkSupplierCollectionByCollectionDateRange`;
+  private deleteMilkSupplierByIdUrl = `${this.milkCollectionBaseUrl}/MilkSupplierController/deleteMilkSupplierById`;
+  private deletePersonByIdUrl = `${this.personBaseUrl}/PersonController/deletePersonById`;
+  private editPersonUrl = `${this.personBaseUrl}/PersonController/editPerson`;
 
   /**
    * Constructor
@@ -89,7 +104,7 @@ export class MilkCollectionService {
    * @returns Observable with the list of milk collection
    */
   fetchAllMilkCollection(): Observable<MilkCollection[]> {
-    return this.http.get<MilkCollection[]>(this.milkCollectionUrl);
+    return this.http.get<MilkCollection[]>(this.fetchAllMilkCollectionUrl);
   }
 
   /**
@@ -98,7 +113,7 @@ export class MilkCollectionService {
    * @returns Observable with the created person
    */
   createPerson(person: Person): Observable<Person> {
-    return this.http.post<Person>(`${this.personUrl}/createPerson`, person);
+    return this.http.post<Person>(this.createPersonUrl, person);
   }
 
   /**
@@ -135,7 +150,7 @@ export class MilkCollectionService {
    * @returns Observable with the list of milk collection details
    */
   fetchAllMilkCollectionDetails(): Observable<MilkCollectionDetails[]> {
-    return this.http.get<MilkCollectionDetails[]>(this.milkCollectionDetailsUrl);
+    return this.http.get<MilkCollectionDetails[]>(this.fetchAllMilkCollectionDetailsUrl);
   }
 
   /**
@@ -145,13 +160,12 @@ export class MilkCollectionService {
    * @returns Observable with the response
    */
   updateMilkCollection(milkCollectionId: number, litersMilk: number): Observable<any> {
-    const url = `${this.baseUrl}/MilkCollectionController/update-milk-collection`;
     const body = {
       milkCollectionId: milkCollectionId,
       milkSupplierId: null,
       litersMilk: litersMilk
     };
-    return this.http.post(url, body);
+    return this.http.post(this.updateMilkCollectionUrl, body);
   }
 
   /**
@@ -161,14 +175,13 @@ export class MilkCollectionService {
    * @returns Observable with the response
    */
   createMilkCollection(milkSupplierId: number, litersMilk: number, collectionDate: string): Observable<any> {
-    const url = `${this.baseUrl}/MilkCollectionController/create-milk-collection`;
     const body = {
       milkCollectionId: null,
       milkSupplierId: milkSupplierId,
       litersMilk: litersMilk,
       collectionDate: collectionDate
     };
-    return this.http.post(url, body);
+    return this.http.post(this.createMilkCollectionUrl, body);
   }
 
   /**
@@ -176,24 +189,30 @@ export class MilkCollectionService {
    * @param date The date in YYYY-MM-DD format
    * @returns Observable with the list of milk collection details for the specified date
    */
-  fetchMilkCollectionDetailsByDate(date: string): Observable<MilkCollectionDetails[]> {
-    const url = `${this.baseUrl}/MilkCollectionController/fetch-milk-collection-details-by-date?date=${date}`;
-    return this.http.get<MilkCollectionDetails[]>(url);
+  fetchAllMilkCollectionDetailsByCollectionDate(date: string): Observable<MilkCollectionDetails[]> {
+    return this.http.get<MilkCollectionDetails[]>(this.fetchAllMilkCollectionDetailsByCollectionDateUrl + `?date=${date}`);
   }
-
 
   /**
-   * Obtiene las colecciones de proveedores en un rango de fechas
+   * Fetches milk collection details for a specific date range
+   * @param startDate The start date in YYYY-MM-DD format
+   * @param endDate The end date in YYYY-MM-DD format
+   * @returns Observable with the list of milk collection details for the specified date range
    */
-  fetchAllMilkCollectionDetailsByDateRange(startDate: string, endDate: string): Observable<MilkSupplierCollectionDTO[]> {
+  fetchMilkSupplierCollectionByCollectionDateRange(startDate: string, endDate: string): Observable<MilkSupplierCollectionDTO[]> {
     const params = { startDate, endDate };
-    return this.http.get<MilkSupplierCollectionDTO[]>(this.fetchMilkSupplierCollectionByDateRangeUrl, { params });
+    return this.http.get<MilkSupplierCollectionDTO[]>(this.fetchMilkSupplierCollectionByCollectionDateRangeUrl, { params });
   }
 
-  // Obtiene la información de pagos quincenales de los proveedores
+  /**
+   * Fetches biweekly milk supplier payments for a specific date range
+   * @param startDate The start date in YYYY-MM-DD format
+   * @param endDate The end date in YYYY-MM-DD format
+   * @returns Observable with the list of biweekly milk supplier payments for the specified date range
+   */
   getBiweeklyMilkSupplierPayments(startDate: string, endDate: string): Observable<InfoMilkSupplierPaymentDto[]> {
     return this.http.get<InfoMilkSupplierPaymentDto[]>(
-      `${this.milkSupplierPaymentUrl}/getBiweeklyInfoMilkSupplierPayment`,
+      this.getBiweeklyInfoMilkSupplierPaymentUrl,
       {
         params: {
           startDate: startDate,
@@ -209,7 +228,7 @@ export class MilkCollectionService {
    * @returns Observable with the response
    */
   deleteMilkSupplier(milkSupplierId: number): Observable<any> {
-    return this.http.delete(`${this.milkSupplierUrl}/deleteMilkSupplierById?milkSupplierId=${milkSupplierId}`);
+    return this.http.delete(this.deleteMilkSupplierByIdUrl + `?milkSupplierId=${milkSupplierId}`);
   }
 
   /**
@@ -235,7 +254,7 @@ export class MilkCollectionService {
    * @returns Observable with the response
    */
   deletePerson(personId: number): Observable<any> {
-    return this.http.delete(`${this.personUrl}/deletePersonById?personId=${personId}`);
+    return this.http.delete(this.deletePersonByIdUrl + `?personId=${personId}`);
   }
 
   /**
@@ -244,7 +263,7 @@ export class MilkCollectionService {
    * @returns Observable with the updated person
    */
   editPerson(person: PersonOutDto): Observable<PersonOutDto> {
-    return this.http.put<PersonOutDto>(`${this.personUrl}/editPerson`, person);
+    return this.http.put<PersonOutDto>(this.editPersonUrl, person);
   }
 
 }

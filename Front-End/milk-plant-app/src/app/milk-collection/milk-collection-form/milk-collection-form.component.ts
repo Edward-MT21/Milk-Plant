@@ -89,7 +89,7 @@ export class MilkCollectionFormComponent implements OnInit {
   loadData() {
     this.loading = true;
     const { fechaInicio, fechaFin } = this.getMonthStartEnd();
-    this.milkCollectionService.fetchAllMilkCollectionDetailsByDateRange(fechaInicio, fechaFin)
+    this.milkCollectionService.fetchMilkSupplierCollectionByCollectionDateRange(fechaInicio, fechaFin)
       .subscribe({
         next: (data: MilkSupplierCollectionDTO[]) => {
           this.supplierRows = this.processData(data);

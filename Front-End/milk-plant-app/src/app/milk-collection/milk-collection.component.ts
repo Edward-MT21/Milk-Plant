@@ -99,7 +99,7 @@ export class MilkCollectionComponent implements OnInit {
     this.loading = true;
     this.error = null;
     
-    this.milkService.fetchMilkCollectionDetailsByDate(this.selectedDate)
+    this.milkService.fetchAllMilkCollectionDetailsByCollectionDate(this.selectedDate)
       .pipe(
         finalize(() => {
           this.loading = false;
