@@ -112,7 +112,7 @@ export class MilkCollectionFormComponent implements OnInit {
       const litersByDay: { [day: number]: number } = {};
       allDays.forEach(day => { litersByDay[day] = 0; });
       collections.forEach(col => {
-        const day = new Date(col.createdAt).getDate();
+        const day = Number(col.collectionDate.split('-')[2]);
         litersByDay[day] = col.litersMilk;
       });
       return {

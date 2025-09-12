@@ -134,6 +134,7 @@ public class MilkCollectionServiceImpl implements IMilkCollectionService {
                 MilkCollectionRecordDTO dto = new MilkCollectionRecordDTO();
                 dto.setCreatedAt(mc.getCreatedAt());
                 dto.setLitersMilk(mc.getLitersMilk());
+                dto.setCollectionDate(mc.getCollectionDate());
                 return dto;
             }).collect(Collectors.toList());
 

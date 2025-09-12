@@ -46,6 +46,7 @@ export interface MilkCollectionDetails {
 export interface MilkCollectionRecordDTO {
   createdAt: string; // ISO string
   litersMilk: number;
+  collectionDate: string;
 }
 
 export interface MilkSupplierCollectionDTO {
