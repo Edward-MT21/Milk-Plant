@@ -12,10 +12,13 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.context.annotation.Import;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
 @SpringBootApplication
+@Import(com.module.Common.config.AuditAwareImpl.class)
 @EnableJpaAuditing(auditorAwareRef = "auditAwareImpl")
+//@Import(com.module.Common.config.JpaAuditingConfig.class)
 @OpenAPIDefinition(
 		info = @Info(
 				title = "Milk Collection microservice REST API Documentation",

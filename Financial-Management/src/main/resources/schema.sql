@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `milk_supplier_payment` (
     `price_per_liter` decimal(15,2) NOT NULL,
     `total_amount` decimal(15,2) NOT NULL,
     `payment_status_enum` varchar(20) NOT NULL,
-    `payment_date` timestamp NOT NULL,
+    `payment_date` timestamp DEFAULT NULL,
     `created_at` timestamp NOT NULL,
     `created_by` varchar(20) NOT NULL,
     `updated_at` timestamp DEFAULT NULL,

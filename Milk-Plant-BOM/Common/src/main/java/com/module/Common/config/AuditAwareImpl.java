@@ -1,4 +1,4 @@
-package com.persons.Persons.audit;
+package com.module.Common.config;
 
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Component;
@@ -15,7 +15,7 @@ public class AuditAwareImpl implements AuditorAware<String> {
      */
     @Override
     public Optional<String> getCurrentAuditor() {
-        return Optional.of("PERSONS_MS");
+        return Optional.of("MILK_COLLECTION_MS");
     }
 
 }
