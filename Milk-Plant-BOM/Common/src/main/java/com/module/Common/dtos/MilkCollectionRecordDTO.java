@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Data
@@ -15,4 +16,5 @@ public class MilkCollectionRecordDTO {
 
     private LocalDateTime createdAt;
     private Integer litersMilk;
+    private LocalDate collectionDate;
 }

@@ -1,5 +1,7 @@
 package com.module.Milk_Collection.services.impl;
 
+import com.module.Common.dtos.MilkCollectionRecordDTO;
+import com.module.Common.dtos.MilkSupplierCollectionDTO;
 import com.module.Milk_Collection.exception.ResourceNotFoundException;
 import com.module.Milk_Collection.mapper.MilkCollectionMapper;
 import com.module.Milk_Collection.model.dtos.*;

@@ -35,7 +35,7 @@ public class MilkSupplierPaymentServiceImpl implements IMilkSupplierPaymentServi
         logger.debug("Start getBiweeklyInfoMilkSupplierPayment");
 
         ResponseEntity<List<MilkSupplierCollectionDTO>> response =
-                iMilkCollectionFeignClient.fetchMilkSupplierCollectionByDateRange(startDate, endDate);
+                iMilkCollectionFeignClient.fetchMilkSupplierCollectionByCollectionDateRange(startDate, endDate);
 
         if (response.getStatusCode() != HttpStatus.OK || response.getBody() == null) {
             throw new RuntimeException("Error al obtener datos de recolección de leche");

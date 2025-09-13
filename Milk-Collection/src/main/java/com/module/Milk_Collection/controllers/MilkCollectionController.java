@@ -1,10 +1,10 @@
 package com.module.Milk_Collection.controllers;
 
+import com.module.Common.dtos.MilkSupplierCollectionDTO;
 import com.module.Common.dtos.ResponseDto;
 import com.module.Milk_Collection.constants.AccountsConstants;
 import com.module.Milk_Collection.model.dtos.MilkCollectionDetailsDto;
 import com.module.Milk_Collection.model.dtos.MilkCollectionDto;
-import com.module.Milk_Collection.model.dtos.MilkSupplierCollectionDTO;
 import com.module.Milk_Collection.services.IMilkCollectionService;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
@@ -78,7 +78,7 @@ public class MilkCollectionController {
 
     @GetMapping("/fetchMilkSupplierCollectionByCollectionDateRange")
     public ResponseEntity<List<MilkSupplierCollectionDTO>> fetchMilkSupplierCollectionByCollectionDateRange(@RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
-                                                                                                  @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
+                                                                                                            @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate) {
         logger.debug("Start fetchMilkSupplierCollectionByCollectionDateRange");
 
         logger.debug("End fetchMilkSupplierCollectionByCollectionDateRange");

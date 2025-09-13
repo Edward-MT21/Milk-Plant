@@ -25,8 +25,8 @@ import java.util.List;
 @FeignClient(name = "Milk-Collection")
 public interface IMilkCollectionFeignClient {
 
-    @GetMapping(value = "/MilkCollectionController/fetch-milk-supplier-collection-by-date-range", produces = "application/json")
-    ResponseEntity<List<MilkSupplierCollectionDTO>> fetchMilkSupplierCollectionByDateRange(
+    @GetMapping(value = "/MilkCollectionController/fetchMilkSupplierCollectionByCollectionDateRange", produces = "application/json")
+    ResponseEntity<List<MilkSupplierCollectionDTO>> fetchMilkSupplierCollectionByCollectionDateRange(
             @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate startDate,
             @RequestParam("endDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate endDate
     );
