@@ -4,17 +4,22 @@ import com.module.Financial_Management.services.IFortnightClosureSchedulerServic
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
 
 @Component
-@RequiredArgsConstructor
 public class FortnightClosureScheduler {
 
     private static final Logger logger = LoggerFactory.getLogger(FortnightClosureScheduler.class);
     private final IFortnightClosureSchedulerService iFortnightClosureSchedulerService;
+
+    @Autowired
+    public FortnightClosureScheduler(IFortnightClosureSchedulerService iFortnightClosureSchedulerService) {
+        this.iFortnightClosureSchedulerService = iFortnightClosureSchedulerService;
+    }
 
     @Scheduled(cron = "0 59 23 15,28,30,31 * ?")
     public void executeMilkSupplierFortnightClosure() {

@@ -18,20 +18,18 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping(path = "/FinancialManagementController", produces = MediaType.APPLICATION_JSON_VALUE)
 @CrossOrigin(origins = "http://localhost:4200")
-@RequiredArgsConstructor
 public class FinancialManagementController {
 
     private static final Logger logger = LoggerFactory.getLogger(FinancialManagementController.class);
-    private final IMilkSupplierPaymentService iMilkSupplierPaymentService;
-
-    @Value("${build.version}")
-    private String buildVersion;
 
     @Autowired
     private Environment environment;
 
     @Autowired
     private FinancialManagementContactsDto financialManagementContactsDto;
+
+    @Value("${build.version}")
+    private String buildVersion;
 
 
     @GetMapping("/getGreeting")
