@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
+
 @Schema(
         name = "MilkSupplierInDto",
         description = "Schema to MilkSupplierInDto information"
@@ -15,6 +17,6 @@ import lombok.NoArgsConstructor;
 public class MilkSupplierInDto {
 
     private Long milkSupplierId;
-
     private Long personId;
+    private BigDecimal pricePerLiter;
 }

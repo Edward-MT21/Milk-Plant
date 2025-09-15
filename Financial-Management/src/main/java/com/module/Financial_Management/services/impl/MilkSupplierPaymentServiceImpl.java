@@ -41,11 +41,12 @@ public class MilkSupplierPaymentServiceImpl implements IMilkSupplierPaymentServi
             throw new RuntimeException("Error al obtener datos de recolección de leche");
         }
 
-        BigDecimal pricePerLiter = iProductService.getProductById(ProductEnum.RAW_MILK.getIdProduct()).getPrice();
+        //BigDecimal pricePerLiter = iProductService.getProductById(ProductEnum.RAW_MILK.getIdProduct()).getPrice();
 
         logger.debug("End getBiweeklyInfoMilkSupplierPayment");
         return response.getBody().stream()
                 .map(collection -> {
+                    BigDecimal pricePerLiter = collection.getPricePerLiter();
                     BigDecimal totalAmount = Optional.ofNullable(collection.getTotalLitersMilk())
                             .map(liters -> pricePerLiter.multiply(BigDecimal.valueOf(liters)))
                             .orElse(BigDecimal.ZERO);

@@ -3,6 +3,8 @@ package com.module.Milk_Collection.model.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.math.BigDecimal;
+
 @Entity
 @Getter
 @Setter
@@ -23,6 +25,9 @@ public class MilkSupplier extends BaseEntity {
 
     @Column(name = "communication_sw")
     private Boolean communicationSw;
+
+    @Column(name = "price_per_liter")
+    private BigDecimal pricePerLiter;
 
 
 

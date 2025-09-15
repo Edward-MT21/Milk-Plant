@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { MilkCollectionService, Person, MilkSupplierDetails, PersonOutDto } from '../services/milk-collection.service';
+import { MilkCollectionService, Person, MilkSupplierDetailsDto, PersonOutDto, MilkSupplierInDto } from '../services/milk-collection.service';
 import { catchError, finalize } from 'rxjs/operators';
 import { of } from 'rxjs';
 import Swal from 'sweetalert2';
@@ -31,13 +31,13 @@ export class MilkSupplierComponent implements OnInit {
   error: string | null = null;
 
   /** Array of milk suppliers */
-  suppliers: MilkSupplierDetails[] = [];
+  suppliers: MilkSupplierDetailsDto[] = [];
 
   /** Array of available people */
   availablePeople: PersonOutDto[] = [];
 
   /** Selected milk supplier */
-  selectedSupplier: MilkSupplierDetails | null = null;
+  selectedSupplier: MilkSupplierDetailsDto | null = null;
 
   /** Show add supplier modal */
   showAddSupplierModal: boolean = false;
@@ -47,6 +47,9 @@ export class MilkSupplierComponent implements OnInit {
 
   /** Selected person details */
   selectedPersonDetails: PersonOutDto | null = null;
+
+  /** Price per liter for the milk supplier */
+  pricePerLiter: number = 0;
 
   /** Lifecycle hook that initializes the component by loading available people and milk suppliers.*/
   ngOnInit() {
@@ -96,7 +99,7 @@ export class MilkSupplierComponent implements OnInit {
   }
 
   /** Opens the details modal */
-  openDetails(supplier: MilkSupplierDetails) {
+  openDetails(supplier: MilkSupplierDetailsDto) {
     this.selectedSupplier = supplier;
   }
 
@@ -117,6 +120,7 @@ export class MilkSupplierComponent implements OnInit {
     this.showAddSupplierModal = false;
     this.selectedPersonId = null;
     this.selectedPersonDetails = null;
+    this.pricePerLiter = 0; // Reset price per liter when closing modal
   }
 
   /** Handles the change of the person selector */
@@ -137,11 +141,27 @@ export class MilkSupplierComponent implements OnInit {
   /** Adds a new supplier */
   addNewSupplier() {
     if (this.selectedPersonDetails && this.selectedPersonDetails.idPerson !== null) {
+      if (this.pricePerLiter <= 0) {
+        Swal.fire({
+          title: 'Error',
+          text: 'Por favor ingrese un precio por litro válido',
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
+        return;
+      }
+
       this.loading = true;
       this.error = null;
+
+      const milkSupplierInDto: MilkSupplierInDto = {
+        milkSupplierId: null,
+        personId: this.selectedPersonDetails.idPerson,
+        pricePerLiter: this.pricePerLiter
+      };
       
       // Call the service to create a new milk supplier
-      this.milkCollectionService.createMilkSupplier(this.selectedPersonDetails.idPerson)
+      this.milkCollectionService.createMilkSupplier(milkSupplierInDto)
         .subscribe({
           next: (response) => {
             console.log('Proveedor creado exitosamente:', response);

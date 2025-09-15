@@ -144,6 +144,7 @@ public class MilkCollectionServiceImpl implements IMilkCollectionService {
             result.add(MilkSupplierCollectionDTO.builder()
                     .milkSupplierId(milkSupplierId)
                     .personOutDto(milkSupplierDetailsDto.getPersonOutDto())
+                    .pricePerLiter(milkSupplierDetailsDto.getPricePerLiter())
                     .collections(recordDTOs)
                     .totalLitersMilk(totalLitersMilk)
                     .build());

@@ -1,19 +1,25 @@
 <div class="dashboard-container">
-  <h1>Gestión Financiera</h1>
+  <h2 class="title-base">💰Gestión Financiera</h2>
   
   <div class="cards-container">
     <!-- Tarjeta de Pagos a Proveedores -->
-    <mat-card class="dashboard-card" (click)="navigateToPayments()">
-      <mat-card-header>
-        <div mat-card-avatar class="payment-icon">
-          <mat-icon>payments</mat-icon>
+    <mat-card class="payment-card" (click)="navigateToPayments()">
+      <div class="card-header">
+        <div class="payment-icon">
+          <mat-icon>account_balance_wallet</mat-icon>
         </div>
-        <mat-card-title>Pagos a Proveedores</mat-card-title>
-        <mat-card-subtitle>Gestión de pagos a proveedores de leche</mat-card-subtitle>
-      </mat-card-header>
-      <mat-card-content>
-        <p>Administre los pagos a sus proveedores de leche</p>
-      </mat-card-content>
+        <div class="card-titles">
+          <h2>Pagos a Proveedores</h2>
+          <p>Gestión de pagos a proveedores de leche</p>
+        </div>
+      </div>
+      <div class="card-content">
+        <p>Administre los pagos a sus proveedores de leche de manera eficiente y segura. Realice seguimiento de pagos, consulte historial y gestione facturas en un solo lugar.</p>
+      </div>
+      <div class="card-footer">
+        <span>Acceder</span>
+        <mat-icon>arrow_forward</mat-icon>
+      </div>
     </mat-card>
   </div>
 </div>

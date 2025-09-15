@@ -30,15 +30,16 @@ export interface PersonOutDto {
   mobileNumber: string;
 }
 
-export interface MilkSupplierDetails {
+export interface MilkSupplierDetailsDto {
   milkSupplierId: number;
   personOutDto: PersonOutDto;
   greetingFinancialManagement?: string;
+  pricePerLiter: number;
 }
 
 export interface MilkCollectionDetails {
   milkCollectionId: number;
-  milkSupplierDetailsDto: MilkSupplierDetails;
+  milkSupplierDetailsDto: MilkSupplierDetailsDto;
   litersMilk: number;
   createdAt: string; // Fecha de la recolección (ISO string)
 }
@@ -61,6 +62,12 @@ export interface InfoMilkSupplierPaymentDto {
   collections: MilkCollectionRecordDTO[];
   totalLitersMilk: number;
   totalAmount: number;
+}
+
+export interface MilkSupplierInDto {
+  milkSupplierId: number|null;
+  personId: number;
+  pricePerLiter: number;
 }
 
 
@@ -130,20 +137,16 @@ export class MilkCollectionService {
    * @param personId The ID of the person to create the milk supplier for
    * @returns Observable with the response
    */
-  createMilkSupplier(personId: number): Observable<any> {
-    const payload = {
-      milkSupplierId: null,
-      personId: personId
-    };
-    return this.http.post(this.createMilkSupplierUrl, payload);
+  createMilkSupplier(milkSupplierInDto: MilkSupplierInDto): Observable<any> {
+    return this.http.post(this.createMilkSupplierUrl, milkSupplierInDto);
   }
 
   /**
    * Fetches all milk supplier details
    * @returns Observable with the list of milk supplier details
    */
-  fetchAllMilkSupplierDetails(): Observable<MilkSupplierDetails[]> {
-    return this.http.get<MilkSupplierDetails[]>(this.fetchAllMilkSupplierDetailsUrl);
+  fetchAllMilkSupplierDetails(): Observable<MilkSupplierDetailsDto[]> {
+    return this.http.get<MilkSupplierDetailsDto[]>(this.fetchAllMilkSupplierDetailsUrl);
   }
 
   /**

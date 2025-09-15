@@ -216,3 +216,11 @@ tr.mat-row:hover {
     font-size: 14px;
   }
 }
+
+.title-orange {
+  --title-color: #e67e22;
+}
+
+.title-base-color {
+  --title-color: #3498db;
+}

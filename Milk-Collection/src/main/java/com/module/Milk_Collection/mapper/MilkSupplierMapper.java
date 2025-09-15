@@ -18,6 +18,7 @@ public class MilkSupplierMapper {
 
         milkSupplierOutDto.setMilkSupplierId(milkSupplier.getMilkSupplierId());
         milkSupplierOutDto.setPersonId(milkSupplier.getPersonId());
+        milkSupplierOutDto.setPricePerLiter(milkSupplier.getPricePerLiter());
 
         logger.debug("End mapToMilkSupplierOutDto");
         return milkSupplierOutDto;
@@ -28,6 +29,7 @@ public class MilkSupplierMapper {
 
         //milkSupplier.setMilkSupplierId(milkSupplierInDto.getMilkSupplierId());
         milkSupplier.setPersonId(milkSupplierInDto.getPersonId());
+        milkSupplier.setPricePerLiter(milkSupplierInDto.getPricePerLiter());
 
         logger.debug("End mapToMilkSupplier");
         return milkSupplier;
@@ -42,6 +44,7 @@ public class MilkSupplierMapper {
             milkSupplierDetailsDto.setPersonOutDto(personOutDtoResponseEntity.getBody());
         }
         milkSupplierDetailsDto.setGreetingFinancialManagement(greetingFinancialManagement);
+        milkSupplierDetailsDto.setPricePerLiter(milkSupplier.getPricePerLiter());
 
         logger.debug("End mapToMilkSupplierDetailsDto");
         return milkSupplierDetailsDto;
