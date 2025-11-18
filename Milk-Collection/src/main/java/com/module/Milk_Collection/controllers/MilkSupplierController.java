@@ -40,6 +40,7 @@ import java.util.concurrent.TimeoutException;
 public class MilkSupplierController {
 
     private static final Logger logger = LoggerFactory.getLogger(MilkSupplierController.class);
+
     private final IMilkSupplierService iMilkSupplierService;
 
     @Value("${build.version}")
