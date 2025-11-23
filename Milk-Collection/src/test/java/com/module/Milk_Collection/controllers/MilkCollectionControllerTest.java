@@ -3,6 +3,7 @@ package com.module.Milk_Collection.controllers;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.module.Common.dtos.MilkSupplierCollectionDTO;
 import com.module.Milk_Collection.constants.AccountsConstants;
+import com.module.Milk_Collection.model.dtos.MilkCollectionDetailsDto;
 import com.module.Milk_Collection.model.dtos.MilkCollectionDto;
 import com.module.Milk_Collection.services.IMilkCollectionService;
 import org.junit.jupiter.api.BeforeEach;
@@ -22,6 +23,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+
 
 class MilkCollectionControllerTest {
 
@@ -64,6 +66,55 @@ class MilkCollectionControllerTest {
     }
 
     @Test
+    void fetchAllMilkCollectionDetails_ShouldReturnListOfMilkCollections() throws Exception {
+        // Arrange
+        MilkCollectionDetailsDto milkCollection1 = new MilkCollectionDetailsDto();
+        milkCollection1.setMilkCollectionId(1L);
+        MilkCollectionDetailsDto milkCollection2 = new MilkCollectionDetailsDto();
+        milkCollection2.setMilkCollectionId(2L);
+        List<MilkCollectionDetailsDto> milkCollections = Arrays.asList(milkCollection1, milkCollection2);
+
+        when(milkCollectionService.fetchAllMilkCollectionDetails()).thenReturn(milkCollections);
+
+        // Act & Assert
+        mockMvc.perform(get("/MilkCollectionController/fetchAllMilkCollectionDetails")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[0].milkCollectionId").value(1))
+                .andExpect(jsonPath("$[1].milkCollectionId").value(2));
+
+        verify(milkCollectionService, times(1)).fetchAllMilkCollectionDetails();
+    }
+
+    @Test
+    void fetchAllMilkCollectionDetailsByCollectionDate_ShouldReturnListOfMilkCollections() throws Exception {
+
+        // Arrange
+
+        LocalDate date = LocalDate.of(2023, 1, 1);
+
+        MilkCollectionDetailsDto milkCollection1 = new MilkCollectionDetailsDto();
+        milkCollection1.setMilkCollectionId(1L);
+        MilkCollectionDetailsDto milkCollection2 = new MilkCollectionDetailsDto();
+        milkCollection2.setMilkCollectionId(2L);
+        List<MilkCollectionDetailsDto> milkCollections = Arrays.asList(milkCollection1, milkCollection2);
+
+        when(milkCollectionService.fetchAllMilkCollectionDetailsByCollectionDate(date)).thenReturn(milkCollections);
+
+        // Act & Assert
+        mockMvc.perform(get("/MilkCollectionController/fetchAllMilkCollectionDetailsByCollectionDate")
+                        .param("date", date.toString())
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.length()").value(2))
+                .andExpect(jsonPath("$[0].milkCollectionId").value(1))
+                .andExpect(jsonPath("$[1].milkCollectionId").value(2));
+
+        verify(milkCollectionService, times(1)).fetchAllMilkCollectionDetailsByCollectionDate(date);
+    }
+
+    @Test
     void createMilkCollection_ShouldReturnCreatedStatus() throws Exception {
         // Arrange
         MilkCollectionDto milkCollectionDto = new MilkCollectionDto();
@@ -78,6 +129,23 @@ class MilkCollectionControllerTest {
                 .andExpect(jsonPath("$.statusMsg").value(AccountsConstants.MESSAGE_201));
 
         verify(milkCollectionService, times(1)).createMilkCollection(any(MilkCollectionDto.class));
+    }
+
+    @Test
+    void updateMilkCollection_ShouldReturnCreatedStatus() throws Exception {
+        // Arrange
+        MilkCollectionDto milkCollectionDto = new MilkCollectionDto();
+        milkCollectionDto.setMilkCollectionId(1L);
+
+        // Act & Assert
+        mockMvc.perform(post("/MilkCollectionController/updateMilkCollection")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(milkCollectionDto)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.statusCode").value(AccountsConstants.STATUS_201))
+                .andExpect(jsonPath("$.statusMsg").value(AccountsConstants.MESSAGE_201));
+
+        verify(milkCollectionService, times(1)).updateMilkCollection(any(MilkCollectionDto.class));
     }
 
     @Test
