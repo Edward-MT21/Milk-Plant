@@ -22,6 +22,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.Assert;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import com.module.Common.dtos.ErrorResponseDto;
@@ -56,7 +57,6 @@ public class MilkSupplierController {
     public MilkSupplierController(IMilkSupplierService iMilkSupplierService) {
         this.iMilkSupplierService = iMilkSupplierService;
     }
-
 
     @Operation(
             summary = "Create Milk Supplier REST API",
@@ -308,8 +308,7 @@ public class MilkSupplierController {
 
     @GetMapping("/fetchMilkSupplierDetailsById")
     public ResponseEntity<MilkSupplierDetailsDto> fetchMilkSupplierDetailsById(
-            @RequestHeader("milk-plant-correlation-id") String correlationId,
-            @RequestParam("milkSupplierId") Long milkSupplierId) {
+            @RequestParam("milkSupplierId") Long milkSupplierId, @RequestHeader("milk-plant-correlation-id") String correlationId) {
 
         logger.debug("Start fetchMilkSupplierDetailsById");
 
