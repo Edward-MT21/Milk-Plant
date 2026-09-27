@@ -10,9 +10,12 @@ spring:
     username: root
     password: root
   jpa:
+    # Servir para ver en la consola de tu IDE las consultas SQL reales que Spring Data JPA está generando y ejecutando en tu base de datos
     show-sql: true
   sql:
     init:
+      #Esta propiedad es la que le ordena a Spring Boot ejecutar tus scripts de base de datos automáticamente cada vez que la aplicación arranca
+      #siempre debe buscar los archivos de inicialización .sql en tu carpeta de recursos (src/main/resources) y ejecutarlos.
       mode: always
   config:
     # import: "optional:configserver:http..."
@@ -20,6 +23,7 @@ spring:
   cloud:
     openfeign:
       circuitbreaker:
+        #activa el Patrón de Disyuntor (Circuit Breaker) específicamente para tus clientes de OpenFeign
         enabled: true
     function:
       definition: updateCommunication
@@ -33,6 +37,7 @@ spring:
       kafka:
         binder:
           brokers:
+            #indica a tu microservicio dónde está ubicado físicamente el servidor de mensajería para poder conectarse a él.
             - localhost:9092
 #    kubernetes:
 #      discovery:
@@ -40,36 +45,50 @@ spring:
 
 eureka:
   instance:
+    #regístrate usando mi dirección IP real
     preferIpAddress: true
   client:
+    #Descarga la lista de todos los demás servicios que ya están registrados en Eureka
     fetchRegistry: true
+    #Cuando arranques, busca el servidor Eureka y registrate
     registerWithEureka: true
     serviceUrl:
+      #Es el punto de encuentro donde todos los microservicios van a reportarse
       defaultZone: http://localhost:8070/eureka/
 
 management:
   endpoints:
     web:
       exposure:
+        #expone absolutamente toda la información de diagnóstico a través de la web
         include: "*"
   endpoint:
     shutdown:
+      #Esto añade una funcionalidad especial: la capacidad de apagar el microservicio de forma remota
       enabled: true
     health:
       probes:
+        #Esto divide el estado de salud en dos detalles técnicos muy importantes, especialmente si usas Docker o Kubernetes:
+        #readiness y liveness
         enabled: true
   info:
     env:
+      #Permite que cuando consultes el endpoint /info, Actuator te revele detalles de tu entorno.
       enabled: true
   health:
     readiness-state:
+      #Estoy listo para trabajar
       enabled: true
     liveness-state:
+      #Estoy vivo
       enabled: true
   metrics:
     tags:
+      #Esta es una configuración para organizar tus estadísticas
+      #Si en el futuro usas una herramienta visual como Prometheus o Grafana, estas etiquetas permiten que los datos no se mezclen
       application: ${spring.application.name}
 
+#metadatos informativos.
 info:
   app:
     name: "Milk-Collection"
@@ -80,48 +99,82 @@ logging:
   level:
     com:
       module:
+        #Verás todos los mensajes detallados de tu propio código
         Milk_Collection: DEBUG
+    #Verás exactamente qué le está preguntando tu microservicio a otros
     feign: DEBUG
     feign.hystrix: DEBUG
     org.springframework.cloud.openfeign: DEBUG
+    #Específicamente quieres ver con lupa lo que hacen tus interfaces cliente
     com.module.Milk_Collection.services.client: DEBUG
 
   pattern:
+    #Esta línea es la que define el ADN de tus mensajes en la consola para su respectivo monitoreo
     level: "%5p [${spring.application.name},%X{trace_id},%X{span_id}]"
+
+
+#Circuit Breaker: Corta la conexión si el fallo es grave.
+#Retry: Reintenta si falla.
+#Rate Limiter: Controla la velocidad para no saturar.
 
 resilience4j.circuitbreaker:
   configs:
     default:
+      #analizará las últimas 10 llamadas que se hicieron
       slidingWindowSize: 10
+      #Pasados los 10 segundos, el circuito pasa a estado Medio Abierto (Half-Open).
+      #En este estado, el sistema deja pasar solo 2 llamadas de prueba.
+      #Si esas 2 llamadas salen bien: El circuito se CIERRA y todo vuelve a la normalidad.
+      #Si alguna falla: El circuito se vuelve a ABRIR y el cronómetro de 10 segundos empieza de nuevo.
       permittedNumberOfCallsInHalfOpenState: 2
+      #Es el porcentaje de error permitido respecto a las llamadas para abrir el circuito.
       failureRateThreshold: 50
+      #Es el tiempo de espera (en milisegundos). Una vez que el circuito se abre, se quedará así por 10 segundos
       waitDurationInOpenState: 10000
 
 resilience4j.retry:
   configs:
     default:
+      #Es el número máximo de veces que se intentará ejecutar la acción.(Cuenta el intento original)
       maxAttempts: 3
+      #Es el tiempo inicial de espera entre reintentos. En este caso, son 500 milisegundos (medio segundo).
       waitDuration: 500
+      #La espera va creciendo exponencialmente.
+      #Con un multiplicador de 2, el tiempo de espera sería:
+      #Fallo 1: Espera 500ms.Fallo 2: Espera 1000ms ($500 \times 2$).Fallo 3: Se rinde y lanza el error.
       enableExponentialBackoff: true
       exponentialBackoffMultiplier: 2
+      #Si el error es un NullPointer, NO reintentes".
+      #¿Por qué? Porque un NullPointerException es un error de programación
       ignoreExceptions:
         - java.lang.NullPointerException
+      #Si el error es que el servidor tardó mucho en responder (Timeout), SÍ reintenta
       retryException:
         - java.util.concurrent.TimeoutException
 
 resilience4j.ratelimiter:
   configs:
     default:
+      #Es el tiempo de espera en la "fila".Espera hasta 1 segundo (1000ms) a ver si el permiso se libera
+      #Si después de 1 segundo sigue sin haber permiso, entonces lanza una excepción de "Rate Limit Exceeded"
       timeoutDuration: 1000
+      #s el tiempo (en milisegundos) que tarda en reiniciarse el contador.(1 llamada cada 5 segundos)
       limitRefreshPeriod: 5000
+      #Este es el número de permisos disponibles. Le estás diciendo: "Solo se permite 1 llamada"
       limitForPeriod: 1
 
 feign:
   client:
     config:
       default:
+        #Es el tiempo máximo (5 segundos) que tu servicio esperará para establecer la conexión inicial con el otro servidor
         connect-timeout: 5000
+        #Una vez conectado, este es el tiempo máximo (30 segundos) que esperas a que el otro servicio termine de procesar y te dé una respuesta
         read-timeout: 30000
+        #esta propiedad le dice a Feign exactamente qué tanto detalle anotar en esos logs.
+        #full: Es el nivel más detallado. Registrará los encabezados (headers), el cuerpo del mensaje (JSON), los metadatos y la respuesta
         logger-level: full
   circuitbreaker:
+    #Esta es la pieza que une a Feign con el Resilience4j que explicamos hace un momento.
+    #Al ponerlo en true, le dices a Feign: "Antes de intentar llamar a otro servicio, mira si el Circuit Breaker está abierto".
     enabled: true
