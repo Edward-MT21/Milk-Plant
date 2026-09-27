@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgClass, TitleCasePipe } from '@angular/common';
 import { Component, OnInit, inject } from '@angular/core';
 import { MilkCollectionService, MilkCollection, MilkCollectionDetails } from '../services/milk-collection.service';
 import { catchError, finalize } from 'rxjs/operators';
@@ -14,7 +14,7 @@ import { FormsModule } from '@angular/forms';
 @Component({
   selector: 'app-milk-collection',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule, TitleCasePipe, NgClass],
   templateUrl: './milk-collection.component.html',
   styleUrls: ['./milk-collection.component.scss']
 })

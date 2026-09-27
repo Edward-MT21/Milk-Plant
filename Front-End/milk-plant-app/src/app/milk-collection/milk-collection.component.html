@@ -1,6 +1,6 @@
 <div class="milk-collection-container">
+    <h2 class="collection-title">🧺 Recolección de Leche</h2>
     <div class="header-actions">
-        <h2 class="collection-title">🧺 Recolección de Leche</h2>
         <button class="new-collection-btn" (click)="openNewCollectionModal()">
             <i class="fas fa-plus"></i> Nueva Recolección
         </button>
@@ -24,161 +24,170 @@
     </div>
 
     <!-- Loading state -->
-    <div *ngIf="loading && collections.length === 0" class="loading-message">
-        <i class="fas fa-spinner fa-spin"></i> Cargando recolecciones...
-    </div>
+    @if (loading && collections.length === 0) {
+        <div class="loading-message">
+            <i class="fas fa-spinner fa-spin"></i> Cargando recolecciones...
+        </div>
+    }
+
 
     <div class="table-wrapper">
-        <table class="collection-table" *ngIf="!loading && collections.length > 0; else sinDatos ">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Proveedor</th>
-                    <th>Identificación</th>
-                    <th>Litros</th>
-                    <th>Acciones</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr *ngFor="let c of collections">
-                    <td>RC-{{ c.milkCollectionId.toString().padStart(3, '0') }}</td>
-                    <td>
-                        {{ c.milkSupplierDetailsDto.personOutDto.names }} 
-                        {{ c.milkSupplierDetailsDto.personOutDto.lastNames }}
-                    </td>
-                    <td>{{ c.milkSupplierDetailsDto.personOutDto.identificationNumber }}</td>
-                    <td class="liters-cell">{{ c.litersMilk }} L</td>
-                    <td class="actions-cell">
-                        <button class="update-btn" (click)="openModal(c)">
-                            <i class="fas fa-edit"></i> Actualizar
-                        </button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+        @if (!loading && collections.length > 0) {
+            <table class="collection-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Proveedor</th>
+                        <th>Identificación</th>
+                        <th>Litros</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for (c of collections; track $index) {
+                        <tr>
+                            <td>RC-{{ c.milkCollectionId.toString().padStart(3, '0') }}</td>
+                            <td>
+                                {{ c.milkSupplierDetailsDto.personOutDto.names | titlecase}} 
+                                {{ c.milkSupplierDetailsDto.personOutDto.lastNames | titlecase }}
+                            </td>
+                            <td>{{ c.milkSupplierDetailsDto.personOutDto.identificationNumber }}</td>
+                            <td class="liters-cell">{{ c.litersMilk }} L</td>
+                            <td class="actions-cell">
+                                <button class="update-btn" (click)="openModal(c)">
+                                    <i class="fas fa-edit"></i> Actualizar
+                                </button>
+                            </td>
+                        </tr>
+                    }
+
+                </tbody>
+            </table>
+        }
+        @else {
+            <div>
+                <p class="no-data">No se encontraron registros de leche recolectada ☹️</p>
+            </div>
+        }
+
     </div>
     
-    <ng-template #sinDatos>
-        <p class="no-data">No se encontraron registros de leche recolectada ☹️</p>
-    </ng-template>
+
 </div>
 
 <!-- Update Collection Modal -->
-<div class="modal-backdrop" *ngIf="selectedCollection">
-    <div class="modal">
-        <h3>Actualizar Recolección</h3>
-        <div class="modal-content">
-            <p><strong>Proveedor:</strong> 
-                {{ selectedCollection.milkSupplierDetailsDto.personOutDto.names }}
-                {{ selectedCollection.milkSupplierDetailsDto.personOutDto.lastNames }}
-            </p>
-            <p><strong>ID:</strong> RC-{{ selectedCollection.milkCollectionId.toString().padStart(3, '0') }}</p>
-            
-            <div class="form-group">
-                <label for="litros">Litros de leche:</label>
-                <input 
-                    id="litros" 
-                    [(ngModel)]="newLiters" 
-                    type="number" 
-                    min="0" 
-                    step="1" 
-                    class="form-control" 
-                    required
-                    [class.is-invalid]="newLiters < 0"
-                />
-                <div *ngIf="newLiters < 0" class="invalid-feedback">
-                    Por favor ingrese una cantidad válida
-                </div>
-            </div>
 
-            <div class="modal-actions">
-                <button class="btn btn-primary" (click)="submitUpdateMilkCollection()" [disabled]="newLiters === null || newLiters === undefined || newLiters < 0 || loading">
-                    <i class="fas fa-save"></i>
-                    <span *ngIf="!loading">Guardar cambios</span>
-                    <span *ngIf="loading">Guardando...</span>
-                </button>
-                <button class="btn btn-secondary" (click)="closeModal()">
-                    <i class="fas fa-times"></i> Cancelar
-                </button>
+@if (selectedCollection) {
+    <div class="modal-backdrop" >
+        <div class="modal">
+            <h3>Actualizar Recolección</h3>
+            <div class="modal-content">
+                <p><strong>Proveedor:</strong> 
+                    {{ selectedCollection.milkSupplierDetailsDto.personOutDto.names }}
+                    {{ selectedCollection.milkSupplierDetailsDto.personOutDto.lastNames }}
+                </p>
+                <p><strong>ID:</strong> RC-{{ selectedCollection.milkCollectionId.toString().padStart(3, '0') }}</p>
+                
+                <div class="form-group">
+                    <label for="litros">Litros de leche:</label>
+                    <input 
+                        id="litros" 
+                        [(ngModel)]="newLiters" 
+                        type="number" 
+                        min="0" 
+                        step="1" 
+                        class="form-control" 
+                        required
+                        [class.is-invalid]="newLiters < 0"
+                    />
+                    @if (newLiters < 0) {
+                        <div class="invalid-feedback">
+                            Por favor ingrese una cantidad válida
+                        </div>
+                    }
+
+                </div>
+
+                <div class="modal-actions">
+                    <button class="btn btn-primary" (click)="submitUpdateMilkCollection()" [disabled]="newLiters === null || newLiters === undefined || newLiters < 0 || loading">
+                        <i class="fas fa-save"></i>
+                        @if (loading) {
+                            <span>Guardando...</span>
+                        }@else {
+                            <span >Guardar cambios</span>
+                        }
+                    </button>
+                    <button class="btn btn-secondary" (click)="closeModal()">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+}
 
 <!-- New Collection Modal -->
-<div class="modal-backdrop" *ngIf="showNewCollectionModal">
-    <div class="modal">
-        <h3>Nueva Recolección</h3>
-        <div class="modal-content">
-            <div class="form-group">
-                <label for="collection-date">Fecha:</label>
-                <input 
-                    type="date" 
-                    id="collection-date" 
-                    [(ngModel)]="newCollection.date" 
-                    class="form-control"
-                    [disabled]="true"
-                >
-            </div>
-
-            <div class="form-group">
-                <label for="supplier-select">Proveedor:</label>
-                <select 
-                    id="supplier-select" 
-                    class="form-control" 
-                    [(ngModel)]="newCollection.supplierId"
-                    (change)="onSupplierSelect()"
-                >
-                    <option [ngValue]="null" disabled>Seleccione un proveedor</option>
-                    <option 
-                        *ngFor="let supplier of suppliers" 
-                        [ngValue]="supplier.id"
-                    >
-                        {{ supplier.name }}
-                    </option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="new-liters">Litros de leche:</label>
-                <input 
-                    id="new-liters" 
-                    type="number" 
-                    min="0" 
-                    step="1" 
-                    class="form-control" 
-                    [(ngModel)]="newCollection.litersMilk"
-                    [disabled]="!newCollection.supplierId"
-                    [class.is-invalid]="newCollection.litersMilk < 0"
-                >
-                <div *ngIf="newCollection.litersMilk < 0" class="invalid-feedback">
-                    Por favor ingrese una cantidad válida
+@if (showNewCollectionModal) {
+    <div class="modal-backdrop">
+        <div class="modal">
+            <h3>Nueva Recolección</h3>
+            <div class="modal-content">
+                <div class="form-group">
+                    <label for="collection-date">Fecha:</label>
+                    <input type="date" id="collection-date" [(ngModel)]="newCollection.date" class="form-control"
+                        [disabled]="true">
                 </div>
-            </div>
 
-            <div *ngIf="error" class="message" [ngClass]="{'error': thereErrorMessage, 'success': !thereErrorMessage}">
-                {{ error }}
-            </div>
+                <div class="form-group">
+                    <label for="supplier-select">Proveedor:</label>
+                    <select id="supplier-select" class="form-control" [(ngModel)]="newCollection.supplierId"
+                        (change)="onSupplierSelect()">
+                        <option [ngValue]="null" disabled>Seleccione un proveedor</option>
+                        @for (supplier of suppliers; track $index) {
+                            <option [ngValue]="supplier.id">
+                                {{ supplier.name }}
+                            </option>
+                        }
+                    </select>
+                </div>
 
-            <div class="modal-actions">
-                <button 
-                    class="btn btn-primary" 
-                    (click)="submitNewCollection()" 
-                    [disabled]="!newCollection.supplierId || newCollection.litersMilk < 0 || loading"
-                >
-                    <i class="fas fa-save"></i>
-                    <span *ngIf="!loading">Guardar</span>
-                    <span *ngIf="loading">Guardando...</span>
-                </button>
-                <button 
-                    class="btn btn-secondary" 
-                    (click)="closeNewCollectionModal()"
-                    [disabled]="loading"
-                >
-                    <i class="fas fa-times"></i> Cancelar
-                </button>
+                <div class="form-group">
+                    <label for="new-liters">Litros de leche:</label>
+                    <input id="new-liters" type="number" min="0" step="1" class="form-control"
+                        [(ngModel)]="newCollection.litersMilk" [disabled]="!newCollection.supplierId"
+                        [class.is-invalid]="newCollection.litersMilk < 0">
+                    @if (newCollection.litersMilk < 0) {
+                        <div class="invalid-feedback">
+                            Por favor ingrese una cantidad válida
+                        </div>
+                    }    
+
+                </div>
+
+                @if (error) {
+                <div class="message" [ngClass]="{'error': thereErrorMessage, 'success': !thereErrorMessage}">
+                    {{ error }}
+                </div>
+                }
+
+
+                <div class="modal-actions">
+                    <button class="btn btn-primary" (click)="submitNewCollection()"
+                        [disabled]="!newCollection.supplierId || newCollection.litersMilk < 0 || loading">
+                        <i class="fas fa-save"></i>
+                        @if (loading) {
+                            <span>Guardando...</span>
+                        }@else {
+                            <span >Guardar</span>
+                        }
+                    </button>
+                    <button class="btn btn-secondary" (click)="closeNewCollectionModal()" [disabled]="loading">
+                        <i class="fas fa-times"></i> Cancelar
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
+}
+
   
