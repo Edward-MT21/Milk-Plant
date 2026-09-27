@@ -2,6 +2,7 @@ package com.persons.Persons.services.impl;
 
 import com.module.Common.dtos.PersonOutDto;
 import com.module.Common.dtos.ResponseDto;
+import com.persons.Persons.annotations.LoggerAnnotation;
 import com.persons.Persons.exception.ResourceNotFoundException;
 import com.persons.Persons.model.dtos.PersonInDto;
 import com.persons.Persons.model.entities.Person;
@@ -34,8 +35,8 @@ public class PersonServiceImpl implements IPersonService {
 
     @Override
     @Transactional
+    @LoggerAnnotation
     public void createPerson(PersonInDto personInDto) {
-        logger.debug("Start createPerson");
 
         Person person = new Person();
         person.setNames(personInDto.getNames());
@@ -48,7 +49,6 @@ public class PersonServiceImpl implements IPersonService {
 
         iPersonRepository.save(person);
 
-        logger.debug("End createPerson");
     }
 
     /**
@@ -57,8 +57,8 @@ public class PersonServiceImpl implements IPersonService {
      */
     @Override
     @Transactional
+    @LoggerAnnotation
     public void editPerson( PersonInDto personInDto) {
-        logger.debug("Start editPerson");
 
         iPersonRepository.findById(personInDto.getIdPerson()).orElseThrow(() -> new RuntimeException("Person not found"));
         var person = Person.builder().
@@ -73,7 +73,6 @@ public class PersonServiceImpl implements IPersonService {
                 .build();
         iPersonRepository.save(person);
 
-        logger.debug("End editPerson");
     }
 
     /**
@@ -81,17 +80,13 @@ public class PersonServiceImpl implements IPersonService {
      * @return a list of data transfer objects containing the details of each person
      */
     @Override
+    @LoggerAnnotation
     public List<PersonOutDto> getAllPersons() {
-        logger.debug("Start getAllPersons");
-
-        logger.debug("End getAllPersons");
         return iPersonRepository.findAll().stream().map(this::mapPersonToPersonOutDto).toList();
     }
 
+    @LoggerAnnotation
     private PersonOutDto mapPersonToPersonOutDto(Person person) {
-        logger.debug("Start mapPersonToPersonOutDto");
-
-        logger.debug("End mapPersonToPersonOutDto");
         return PersonOutDto.builder().
                 idPerson(person.getPersonId()).
                 names(person.getNames()).
@@ -105,21 +100,21 @@ public class PersonServiceImpl implements IPersonService {
     }
 
     @Override
+    @LoggerAnnotation
     public PersonOutDto fetchPersonById(Long personId) {
-        logger.debug("Start fetchPersonById");
 
         Person person = iPersonRepository.findById(personId).orElseThrow(
                 () -> new ResourceNotFoundException("Person", "personId", personId.toString())
         );
 
-        logger.debug("End fetchPersonById");
         return mapPersonToPersonOutDto(person);
     }
 
     @Override
     @Transactional
+    @LoggerAnnotation
     public boolean deletePersonById(Long personId) {
-        logger.debug("Start deletePersonById");
+
 
         if (!iPersonRepository.existsById(personId)) {
             log.warn("Person not found with ID: {}", personId);
@@ -138,7 +133,7 @@ public class PersonServiceImpl implements IPersonService {
 
         iPersonRepository.deleteById(personId);
 
-        logger.debug("End deletePersonById");
+
         return true;
     }
 

@@ -32,17 +32,13 @@ public class MilkCollectionServiceImpl implements IMilkCollectionService {
 
     @Override
     public List<MilkCollectionDto> fetchAllMilkCollection() {
-        logger.debug("Start fetchAllMilkCollection");
 
-        logger.debug("End fetchAllMilkCollection");
         return iMilkCollectionRepository.findAll().stream().map(MilkCollectionMapper::mapToMilkCollectionDto).toList();
     }
 
     @Override
     public List<MilkCollectionDetailsDto> fetchAllMilkCollectionDetails() {
-        logger.debug("Start fetchAllMilkCollectionDetails");
 
-        logger.debug("End fetchAllMilkCollectionDetails");
         return iMilkCollectionRepository.findAll().stream().map(
                 milkCollection -> {
                     MilkCollectionDetailsDto milkCollectionDetailsDto = getMilkCollectionDetailsDto(milkCollection);
@@ -52,7 +48,6 @@ public class MilkCollectionServiceImpl implements IMilkCollectionService {
     }
 
     private MilkCollectionDetailsDto getMilkCollectionDetailsDto(MilkCollection milkCollection) {
-        logger.debug("Start getMilkCollectionDetailsDto");
 
         MilkCollectionDetailsDto milkCollectionDetailsDto = new MilkCollectionDetailsDto();
         milkCollectionDetailsDto.setMilkCollectionId(milkCollection.getMilkCollectionId());
@@ -60,14 +55,12 @@ public class MilkCollectionServiceImpl implements IMilkCollectionService {
         milkCollectionDetailsDto.setMilkSupplierDetailsDto(milkSupplierDetailsDto);
         milkCollectionDetailsDto.setLitersMilk(milkCollection.getLitersMilk());
 
-        logger.debug("End getMilkCollectionDetailsDto");
         return milkCollectionDetailsDto;
     }
 
     @Override
     @Transactional
     public void createMilkCollection(MilkCollectionDto milkCollectionDto) {
-        logger.debug("Start createMilkCollection");
 
         MilkCollection milkCollection = MilkCollectionMapper.mapToMilkCollection(milkCollectionDto);
 
@@ -80,13 +73,11 @@ public class MilkCollectionServiceImpl implements IMilkCollectionService {
 
         iMilkCollectionRepository.saveAndFlush(milkCollection);
 
-        logger.debug("End createMilkCollection");
     }
 
     @Override
     @Transactional
     public void updateMilkCollection(MilkCollectionDto milkCollectionDto) {
-        logger.debug("Start updateMilkCollection");
 
         iMilkCollectionRepository.findById(milkCollectionDto.getMilkCollectionId())
                 .ifPresentOrElse(
@@ -97,14 +88,10 @@ public class MilkCollectionServiceImpl implements IMilkCollectionService {
                         () -> { throw new ResourceNotFoundException("MilkCollection", "MilkCollectionId", milkCollectionDto.getMilkCollectionId().toString()); }
                 );
 
-        logger.debug("End updateMilkCollection");
     }
 
     @Override
     public List<MilkCollectionDetailsDto> fetchAllMilkCollectionDetailsByCollectionDate(LocalDate date) {
-        logger.debug("Start fetchAllMilkCollectionDetailsByCollectionDate");
-
-        logger.debug("End fetchAllMilkCollectionDetailsByCollectionDate");
         return iMilkCollectionRepository.findAllByCollectionDate(date)
                 .stream()
                 .map(this::getMilkCollectionDetailsDto)
@@ -113,7 +100,6 @@ public class MilkCollectionServiceImpl implements IMilkCollectionService {
 
     @Override
     public List<MilkSupplierCollectionDTO> fetchMilkSupplierCollectionByCollectionDateRange(LocalDate startDate, LocalDate endDate) {
-        logger.debug("Start fetchMilkSupplierCollectionByCollectionDateRange");
 
         List<MilkCollection> collections = iMilkCollectionRepository.findAllByCollectionDateBetween(startDate, endDate);
 
@@ -150,16 +136,12 @@ public class MilkCollectionServiceImpl implements IMilkCollectionService {
                     .build());
         }
 
-        logger.debug("End fetchMilkSupplierCollectionByCollectionDateRange");
         return result;
     }
 
     @Override
     @Transactional
     public boolean deleteMilkCollectionById(Long milkCollectionId) {
-        logger.debug("Start deleteMilkCollectionById");
-
-        logger.debug("End deleteMilkCollectionById");
         iMilkCollectionRepository.deleteById(milkCollectionId);
         return true;
     }
