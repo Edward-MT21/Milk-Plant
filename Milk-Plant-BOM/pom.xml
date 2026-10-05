@@ -22,7 +22,7 @@
 		<otel.version>2.11.0</otel.version>
 		<micrometer.version>1.14.2</micrometer.version>
 		<jib.version>3.4.5</jib.version>
-		<image.tag>s20</image.tag>
+		<image.tag>l01</image.tag>
 	</properties>
 	<modules>
 		<module>Common</module>

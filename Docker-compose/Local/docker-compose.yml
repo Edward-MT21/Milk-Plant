@@ -1,0 +1,255 @@
+services:
+
+  #Interfaz grafica para kafka
+  akhq:
+    image: tchiotludo/akhq:latest
+    ports:
+      - "9090:8080"
+    environment:
+      MICRONAUT_SECURITY_TOKEN_JWT_SIGNATURES_SECRET_GENERATOR_SECRET: "clave_secreta_local_para_desarrollo_123456"
+      AKHQ_CONFIGURATION: |
+        akhq:
+          connections:
+            docker-kafka:
+              properties:
+                bootstrap.servers: "kafka:9092"
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
+  kafka:
+    image: apache/kafka:3.9.0
+    ports:
+      - "9092:9092"
+      - "9094:9094"
+    volumes:
+      - "kafka_data:/var/lib/kafka/data"
+    environment:
+      # Identificación y Roles del Nodo
+      KAFKA_NODE_ID: 0
+      # Le dices al nodo que funcionará como Broker Y Controller al mismo tiempo (Combined Mode)
+      KAFKA_PROCESS_ROLES: controller,broker
+      # Define quiénes forman el quórum de control (Node ID @ Host:Puerto)
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 0@localhost:9093
+
+      # Configuración de múltiples puertos (Interno y Externo)
+      KAFKA_LISTENERS: INTERNAL://:9092,EXTERNAL://:9094,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9092,EXTERNAL://localhost:9094
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+
+      # Mapeo de protocolos de seguridad
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+
+      # Requerido para inicializar el clúster KRaft
+      CLUSTER_ID: "4L62YDgNSGe9UbdvKwy39A"
+
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 35s
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+
+
+
+  milk-collection-db:
+    container_name: milk-collection-db
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_DATABASE: milk-collection-db
+    extends:
+      file: common-config.yml
+      service: microservice-db-config
+
+  persons-db:
+    container_name: persons-db
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_DATABASE: persons-db
+    extends:
+      file: common-config.yml
+      service: microservice-db-config
+
+  financial-management-db:
+    container_name: financial-management-db
+    ports:
+      - 3308:3306
+    environment:
+      MYSQL_DATABASE: financial-management-db
+    extends:
+      file: common-config.yml
+      service: microservice-db-config
+
+  # 1. Config Server
+  config-server-s:
+    image: "${DOCKER_HUB_USER}/config-server:${DOCKER_HUB_TAG}"
+    pull_policy: never
+    container_name: config-server-ms
+    ports:
+      - "8071:8071"
+    extends:
+      file: common-config.yml
+      service: microservice-base-config
+    healthcheck:
+      test: "curl --fail --silent localhost:8071/actuator/health/readiness | grep UP || exit 1"
+      interval: 20s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    environment:
+      OTEL_SERVICE_NAME: "config-server-s"
+
+  # 2. Eureka Server (Depende de Config Server)
+  eureka-server-s:
+    image: "${DOCKER_HUB_USER}/eureka-server:${DOCKER_HUB_TAG}"
+    pull_policy: never
+    container_name: eureka-server-ms
+    ports:
+      - "8070:8070"
+    extends:
+      file: common-config.yml
+      service: microservice-configserver-config
+    healthcheck:
+      test: "curl --fail --silent localhost:8070/actuator/health/readiness | grep UP || exit 1"
+      interval: 20s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    depends_on:
+      config-server-s:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "Eureka-Server"
+      OTEL_SERVICE_NAME: "eureka-server-s"
+
+  # 3. Milk Collection (Depende de DB, Config y Eureka)
+  milk-collection-s:
+    image: "${DOCKER_HUB_USER}/milk-collection:${DOCKER_HUB_TAG}"
+    pull_policy: never
+    container_name: milk-collection-ms
+    healthcheck:
+      test: "curl --fail --silent localhost:8080/actuator/health/readiness | grep UP || exit 1"
+      interval: 20s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    extends:
+      file: common-config.yml
+      service: microservice-eureka-config
+    environment:
+      SPRING_APPLICATION_NAME: "Milk-Collection"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://milk-collection-db:3306/milk-collection-db"
+      OTEL_SERVICE_NAME: "milk-collection-s"
+      SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: "kafka:9092"
+    depends_on:
+      milk-collection-db:
+        condition: service_healthy
+      config-server-s:
+        condition: service_healthy
+      eureka-server-s:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+
+  # 4. Persons (Depende de DB, Config y Eureka)
+  persons-s:
+    image: "${DOCKER_HUB_USER}/persons:${DOCKER_HUB_TAG}"
+    pull_policy: never
+    container_name: persons-ms
+    healthcheck:
+      test: "curl --fail --silent localhost:8180/actuator/health/readiness | grep UP || exit 1"
+      interval: 20s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    extends:
+      file: common-config.yml
+      service: microservice-eureka-config
+    environment:
+      SPRING_APPLICATION_NAME: "Persons"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://persons-db:3306/persons-db"
+      OTEL_SERVICE_NAME: "persons-s"
+    depends_on:
+      persons-db:
+        condition: service_healthy
+      config-server-s:
+        condition: service_healthy
+      eureka-server-s:
+        condition: service_healthy
+
+  # 5. Financial Management (Depende de DB, Config y Eureka)
+  financial-management-s:
+    image: "${DOCKER_HUB_USER}/financial-management:${DOCKER_HUB_TAG}"
+    pull_policy: never
+    container_name: financial-management-ms
+    healthcheck:
+      test: "curl --fail --silent localhost:8280/actuator/health/readiness | grep UP || exit 1"
+      interval: 20s
+      timeout: 5s
+      retries: 20
+      start_period: 10s
+    extends:
+      file: common-config.yml
+      service: microservice-eureka-config
+    environment:
+      SPRING_APPLICATION_NAME: "Financial-Management"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://financial-management-db:3306/financial-management-db"
+      OTEL_SERVICE_NAME: "financial-management-s"
+    depends_on:
+      financial-management-db:
+        condition: service_healthy
+      config-server-s:
+        condition: service_healthy
+      eureka-server-s:
+        condition: service_healthy
+
+  # 6. Messages
+  messages:
+    image: "${DOCKER_HUB_USER}/messages:${DOCKER_HUB_TAG}"
+    pull_policy: never
+    container_name: messages-ms
+    environment:
+      SPRING_APPLICATION_NAME: "Messages"
+      SPRING_CLOUD_STREAM_KAFKA_BINDER_BROKERS: "kafka:9092"
+    extends:
+      file: common-config.yml
+      service: network-deploy-service
+    depends_on:
+      kafka:
+        condition: service_healthy
+
+  # 7. Gateway Server (Depende de que los microservicios estén Healthy)
+  gateway-server-s:
+    image: "${DOCKER_HUB_USER}/gateway-server:${DOCKER_HUB_TAG}"
+    pull_policy: never
+    container_name: gateway-server-ms
+    ports:
+      - "8072:8072"
+    extends:
+      file: common-config.yml
+      service: microservice-eureka-config
+    environment:
+      SPRING_APPLICATION_NAME: "Gateway-Server"
+      OTEL_SERVICE_NAME: "gateway-server-s"
+      SPRING_SECURITY_OAUTH2_RESOURCESERVER_JWT_JWK-SET-URI: "http://keycloak:8080/realms/master/protocol/openid-connect/certs"
+    depends_on:
+      milk-collection-s:
+        condition: service_healthy
+      persons-s:
+        condition: service_healthy
+      financial-management-s:
+        condition: service_healthy
+
+networks:
+  milk-plant-network:
+    driver: "bridge"
+
+volumes:
+  kafka_data:
+    driver: local
