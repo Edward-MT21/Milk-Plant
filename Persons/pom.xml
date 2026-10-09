@@ -111,6 +111,26 @@
 			<artifactId>spring-boot-starter-aop</artifactId>
 		</dependency>
 
+		<!-- 1. Módulo base de integración con JUnit 5 (Aporta @Testcontainers y @Container) -->
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>junit-jupiter</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- 2. Módulo específico de la BD (ejemplo para PostgreSQL) -->
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>test</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope> <!-- o scope test si solo la usas ahí -->
+		</dependency>
+
 	</dependencies>
 
 	<dependencyManagement>

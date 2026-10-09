@@ -7,4 +7,7 @@ import java.util.Optional;
 
 public interface IPersonRepository extends JpaRepository<Person, Long> {
 
+    Optional<Person> findByIdentificationNumber(String identificationNumber);
+
+
 }
