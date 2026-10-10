@@ -123,5 +123,13 @@ public class PersonController {
 
     }
 
+    @GetMapping("/fetchPersonByIdentificationNumber")
+    public ResponseEntity<PersonOutDto> fetchPersonByIdentificationNumber(@RequestParam("identificationNumber") String identificationNumber) {
+
+        PersonOutDto personOutDto = iPersonService.fetchPersonByIdentificationNumber(identificationNumber);
+
+        return ResponseEntity.status(HttpStatus.OK).body(personOutDto);
+    }
+
 
 }

@@ -131,6 +131,12 @@
 			<scope>runtime</scope> <!-- o scope test si solo la usas ahí -->
 		</dependency>
 
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
 	</dependencies>
 
 	<dependencyManagement>

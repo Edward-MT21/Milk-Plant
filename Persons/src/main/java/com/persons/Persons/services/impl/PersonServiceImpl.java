@@ -7,6 +7,7 @@ import com.persons.Persons.exception.ResourceNotFoundException;
 import com.persons.Persons.model.dtos.PersonInDto;
 import com.persons.Persons.model.entities.Person;
 import com.persons.Persons.repositories.IPersonRepository;
+import com.persons.Persons.repositories.PersonJdbcRepository;
 import com.persons.Persons.services.IPersonService;
 import com.persons.Persons.services.client.IMilkCollectionFeignClient;
 import lombok.extern.slf4j.Slf4j;
@@ -26,11 +27,13 @@ public class PersonServiceImpl implements IPersonService {
     private static final Logger logger = LoggerFactory.getLogger(PersonServiceImpl.class);
     IPersonRepository iPersonRepository;
     IMilkCollectionFeignClient iMilkCollectionFeignClient;
+    private final PersonJdbcRepository personJdbcRepository;
 
-    public PersonServiceImpl(IPersonRepository iPersonRepository, IMilkCollectionFeignClient iMilkCollectionFeignClient) {
+    public PersonServiceImpl(IPersonRepository iPersonRepository, IMilkCollectionFeignClient iMilkCollectionFeignClient, PersonJdbcRepository personJdbcRepository) {
 
         this.iPersonRepository = iPersonRepository;
         this.iMilkCollectionFeignClient = iMilkCollectionFeignClient;
+        this.personJdbcRepository = personJdbcRepository;
     }
 
     @Override
@@ -135,6 +138,13 @@ public class PersonServiceImpl implements IPersonService {
 
 
         return true;
+    }
+
+
+    @LoggerAnnotation
+    public PersonOutDto fetchPersonByIdentificationNumber(String identificationNumber) {
+        return personJdbcRepository.fetchPersonByIdentificationNumber(identificationNumber)
+                .orElseThrow(() -> new RuntimeException("Persona no encontrada con esa cédula"));
     }
 
 

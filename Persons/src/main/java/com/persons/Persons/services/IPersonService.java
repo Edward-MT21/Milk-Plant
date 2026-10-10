@@ -16,4 +16,6 @@ public interface IPersonService {
     PersonOutDto fetchPersonById(Long personId);
 
     boolean deletePersonById(Long personId);
+
+    PersonOutDto fetchPersonByIdentificationNumber(String identificationNumber);
 }
