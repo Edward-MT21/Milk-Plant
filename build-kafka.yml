@@ -1,0 +1,57 @@
+services:
+
+  #Interfaz grafica para kafka
+  akhq:
+    image: tchiotludo/akhq:latest
+    ports:
+      - "9090:8080"
+    environment:
+      MICRONAUT_SECURITY_TOKEN_JWT_SIGNATURES_SECRET_GENERATOR_SECRET: "clave_secreta_local_para_desarrollo_123456"
+      AKHQ_CONFIGURATION: |
+        akhq:
+          connections:
+            docker-kafka:
+              properties:
+                bootstrap.servers: "kafka:9094"
+
+  kafka:
+    image: apache/kafka:3.9.0
+    ports:
+      - "9092:9092"
+      - "9094:9094"
+    volumes:
+      - "kafka_data:/var/lib/kafka/data"
+    environment:
+      # Identificación y Roles del Nodo
+      KAFKA_NODE_ID: 0
+      # Le dices al nodo que funcionará como Broker Y Controller al mismo tiempo (Combined Mode)
+      KAFKA_PROCESS_ROLES: controller,broker
+      # Define quiénes forman el quórum de control (Node ID @ Host:Puerto)
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 0@localhost:9093
+
+      # Configuración de múltiples puertos (Interno y Externo)
+      KAFKA_LISTENERS: INTERNAL://:9094,EXTERNAL://:9092,CONTROLLER://:9093
+      KAFKA_ADVERTISED_LISTENERS: INTERNAL://kafka:9094,EXTERNAL://localhost:9092
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+
+      # Mapeo de protocolos de seguridad
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: INTERNAL:PLAINTEXT,EXTERNAL:PLAINTEXT,CONTROLLER:PLAINTEXT
+      KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
+
+      # Requerido para inicializar el clúster KRaft
+      CLUSTER_ID: "4L62YDgNSGe9UbdvKwy39A"
+
+      KAFKA_OPTS: "-Dkafka.logging.level=WARN"
+      KAFKA_AUTO_CREATE_TOPICS_ENABLE: "true"
+      KAFKA_LOG_DIRS: /var/lib/kafka/data
+
+    healthcheck:
+      test: ["CMD-SHELL", "/opt/kafka/bin/kafka-broker-api-versions.sh --bootstrap-server localhost:9092 || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 35s
+
+volumes:
+  kafka_data:
+    driver: local

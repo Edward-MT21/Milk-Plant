@@ -18,5 +18,6 @@ public class MilkSupplierDetailsDto {
     private PersonOutDto personOutDto;
     private String greetingFinancialManagement;
     private BigDecimal pricePerLiter;
+    private String status;
 
 }

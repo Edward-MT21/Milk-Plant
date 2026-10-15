@@ -21,6 +21,20 @@ spring:
 #      discovery:
 #        all-namespaces: true
 
+  cloud:
+    function:
+      definition: supplierDeleted
+    stream:
+      bindings:
+        # Nombre del canal de entrada que usaremos en el código
+        supplierDeleted-in-0:
+          destination: supplier-deleted-topic # Nombre del tópico en Kafka
+          group: ${spring.application.name}
+      kafka:
+        binder:
+          brokers:
+            - localhost:9092
+
 management:
   endpoints:
     web:

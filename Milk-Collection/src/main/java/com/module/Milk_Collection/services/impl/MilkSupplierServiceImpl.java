@@ -163,6 +163,29 @@ public class MilkSupplierServiceImpl implements IMilkSupplierService {
     }
 
 
+    @Transactional
+    public void inactivateMilkSupplierByPersonId(Long personId) {
+        MilkSupplier milkSupplier = iMilkSupplierRepository.findByPersonId(personId)
+                .orElse(null);
+
+        if (milkSupplier == null) {
+            return; // O un log de advertencia si no se encuentra
+        }
+
+        Long milkSupplierId = milkSupplier.getMilkSupplierId();
+
+        // 1. Borrado lógico de los registros asociados en milk-collection
+        iMilkCollectionRepository.updateStatusByMilkSupplierId(milkSupplierId, "INACTIVE");
+
+        milkSupplier.setStatus("INACTIVE");
+        iMilkSupplierRepository.save(milkSupplier);
+
+        // 2. Publicar un nuevo evento para el siguiente módulo (financial-management)
+        Long supplierEvent = milkSupplierId;
+        streamBridge.send("supplierDeleted-out-0", supplierEvent);
+    }
+
+
 
 
 }

@@ -19,4 +19,5 @@ public class MilkSupplierInDto {
     private Long milkSupplierId;
     private Long personId;
     private BigDecimal pricePerLiter;
+    private String status;
 }

@@ -17,5 +17,6 @@ public class MilkCollectionDto {
     private Long milkSupplierId;
     private Integer litersMilk;
     private LocalDate collectionDate;
+    private String status;
 
 }

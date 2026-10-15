@@ -29,6 +29,9 @@ public class MilkSupplier extends BaseEntity {
     @Column(name = "price_per_liter")
     private BigDecimal pricePerLiter;
 
+    @Column(name = "status")
+    private String status;
+
 
 
 }

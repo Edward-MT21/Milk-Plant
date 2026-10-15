@@ -6,21 +6,21 @@ spring:
   profiles:
     active: "qa"
   datasource:
-#    jdbc:mysql://localhost:3307/persons-db
-#    username: root
-#    password: root
-      url: jdbc:h2:mem:testdb #h2
-      driver-class-name: org.h2.Driver #h2
-      username: sa #h2
-      password: "" #h2
+    url: jdbc:mysql://localhost:3307/persons-db
+    username: root
+    password: root
+#      url: jdbc:h2:mem:testdb #h2
+#      driver-class-name: org.h2.Driver #h2
+#      username: sa #h2
+#      password: "" #h2
   jpa:
     show-sql: true
-    database-platform: org.hibernate.dialect.H2Dialect #h2
-    hibernate: #h2
-      ddl-auto: update #h2
-    h2: #h2
-      console: #h2
-        enabled: true #h2
+#    database-platform: org.hibernate.dialect.H2Dialect #h2
+#    hibernate: #h2
+#      ddl-auto: update #h2
+#    h2: #h2
+#      console: #h2
+#        enabled: true #h2
   sql:
     init:
       mode: always
@@ -30,6 +30,16 @@ spring:
 #    kubernetes:
 #      discovery:
 #        all-namespaces: true
+  cloud:
+    stream:
+      bindings:
+        # Nombre del canal de salida que usaremos en el código
+        personDeleted-out-0:
+          destination: person-deleted-topic # Nombre del tópico en Kafka
+      kafka:
+        binder:
+          brokers:
+            - localhost:9092
 
 management:
   endpoints:
@@ -58,10 +68,10 @@ eureka:
   instance:
     preferIpAddress: true
   client:
-#    fetchRegistry: true
-#    registerWithEureka: true
-    fetchRegistry: false #h2
-    registerWithEureka: false #h2
+    fetchRegistry: true
+    registerWithEureka: true
+#    fetchRegistry: false #h2
+#    registerWithEureka: false #h2
     serviceUrl:
       defaultZone: http://localhost:8070/eureka/
 

@@ -32,4 +32,6 @@ public interface IMilkSupplierService {
 
     List<MilkSupplierDetailsDto> fetchAllMilkSupplierDetails();
 
+    void inactivateMilkSupplierByPersonId(Long personId);
+
 }

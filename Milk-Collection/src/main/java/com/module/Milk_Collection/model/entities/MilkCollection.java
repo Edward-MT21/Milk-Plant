@@ -28,5 +28,8 @@ public class MilkCollection extends BaseEntity {
     @Column(name = "collection_date")
     private LocalDate collectionDate;
 
+    @Column(name = "status")
+    private String status;
+
 }
     

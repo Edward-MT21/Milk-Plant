@@ -32,4 +32,6 @@ public class Person extends BaseEntity {
 
     private String mobileNumber;
 
+    private String status;
+
 }

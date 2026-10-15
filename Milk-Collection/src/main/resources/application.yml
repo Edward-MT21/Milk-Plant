@@ -26,7 +26,7 @@ spring:
         #activa el Patrón de Disyuntor (Circuit Breaker) específicamente para tus clientes de OpenFeign
         enabled: true
     function:
-      definition: updateCommunication
+      definition: updateCommunication;personDeleted
     stream:
       bindings:
         sendCommunication-out-0:
@@ -34,6 +34,11 @@ spring:
         updateCommunication-in-0:
           destination: communication-sent
           group: ${spring.application.name}
+        personDeleted-in-0:
+          destination: person-deleted-topic
+          group: ${spring.application.name}
+        supplierDeleted-out-0:
+          destination: supplier-deleted-topic
       kafka:
         binder:
           brokers:

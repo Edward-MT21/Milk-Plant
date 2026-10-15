@@ -82,13 +82,13 @@ export interface MilkSupplierInDto {
 export class MilkCollectionService {
 
   private milkCollectionBaseUrl = 'http://localhost:8080';
-  private personBaseUrl = 'http://localhost:8180';
+  private personsBaseUrl = 'http://localhost:8180';
   private financialManagementBaseUrl = 'http://localhost:8280';
 
   private fetchAllMilkCollectionUrl = `${this.milkCollectionBaseUrl}/MilkCollectionController/fetchAllMilkCollection`;
   private fetchAllMilkCollectionDetailsUrl = `${this.milkCollectionBaseUrl}/MilkCollectionController/fetchAllMilkCollectionDetails`;
-  private createPersonUrl = `${this.personBaseUrl}/PersonController/createPerson`;
-  private getAllPersonsUrl = `${this.personBaseUrl}/PersonController/getAllPersons`;
+  private createPersonUrl = `${this.personsBaseUrl}/PersonController/createPerson`;
+  private getAllPersonsUrl = `${this.personsBaseUrl}/PersonController/getAllPersons`;
   private createMilkSupplierUrl = `${this.milkCollectionBaseUrl}/MilkSupplierController/createMilkSupplier`;
   private fetchAllMilkSupplierDetailsUrl = `${this.milkCollectionBaseUrl}/MilkSupplierController/fetchAllMilkSupplierDetails`;
   private fetchMilkSupplierCollectionByDateRangeUrl = `${this.milkCollectionBaseUrl}/MilkCollectionController/fetchMilkSupplierCollectionByDateRange`;
@@ -98,8 +98,8 @@ export class MilkCollectionService {
   private fetchAllMilkCollectionDetailsByCollectionDateUrl = `${this.milkCollectionBaseUrl}/MilkCollectionController/fetchAllMilkCollectionDetailsByCollectionDate`;
   private fetchMilkSupplierCollectionByCollectionDateRangeUrl = `${this.milkCollectionBaseUrl}/MilkCollectionController/fetchMilkSupplierCollectionByCollectionDateRange`;
   private deleteMilkSupplierByIdUrl = `${this.milkCollectionBaseUrl}/MilkSupplierController/deleteMilkSupplierById`;
-  private deletePersonByIdUrl = `${this.personBaseUrl}/PersonController/deletePersonById`;
-  private editPersonUrl = `${this.personBaseUrl}/PersonController/editPerson`;
+  private deletePersonByIdUrl = `${this.personsBaseUrl}/PersonController/deletePersonById`;
+  private editPersonUrl = `${this.personsBaseUrl}/PersonController/editPerson`;
 
   /**
    * Constructor

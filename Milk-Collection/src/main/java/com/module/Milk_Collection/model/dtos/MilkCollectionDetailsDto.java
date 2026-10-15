@@ -13,4 +13,5 @@ public class MilkCollectionDetailsDto {
     private Long milkCollectionId;
     private MilkSupplierDetailsDto milkSupplierDetailsDto;
     private Integer litersMilk;
+    private String status;
 }

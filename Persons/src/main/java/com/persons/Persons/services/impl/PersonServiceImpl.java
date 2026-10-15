@@ -13,6 +13,7 @@ import com.persons.Persons.services.client.IMilkCollectionFeignClient;
 import lombok.extern.slf4j.Slf4j;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cloud.stream.function.StreamBridge;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -28,12 +29,17 @@ public class PersonServiceImpl implements IPersonService {
     IPersonRepository iPersonRepository;
     IMilkCollectionFeignClient iMilkCollectionFeignClient;
     private final PersonJdbcRepository personJdbcRepository;
+    private final StreamBridge streamBridge;
 
-    public PersonServiceImpl(IPersonRepository iPersonRepository, IMilkCollectionFeignClient iMilkCollectionFeignClient, PersonJdbcRepository personJdbcRepository) {
+    public PersonServiceImpl(IPersonRepository iPersonRepository,
+                             IMilkCollectionFeignClient iMilkCollectionFeignClient,
+                             PersonJdbcRepository personJdbcRepository,
+                             StreamBridge streamBridge) {
 
         this.iPersonRepository = iPersonRepository;
         this.iMilkCollectionFeignClient = iMilkCollectionFeignClient;
         this.personJdbcRepository = personJdbcRepository;
+        this.streamBridge = streamBridge;
     }
 
     @Override
@@ -125,19 +131,28 @@ public class PersonServiceImpl implements IPersonService {
             return false;
         }
 
-        ResponseEntity<ResponseDto> feignResponse = iMilkCollectionFeignClient.deleteMilkSupplierByPersonId(personId);
+        // 2. Aplicar borrado lógico
+        Person person = iPersonRepository.findById(personId).orElseThrow(
+                () -> new ResourceNotFoundException("Person", "personId", personId.toString())
+        );
+        person.setStatus("INACTIVE");
+        iPersonRepository.save(person);
 
-        boolean feignSuccess = feignResponse.getStatusCode() == HttpStatus.OK &&
-                "200".equals(feignResponse.getBody().getStatusCode());
+        // 3. Crear el objeto DTO o evento que se enviará por Kafka
+        Long event = personId;
 
-        if (!feignSuccess) {
+        // 4. Publicar el evento a través del binding configurado (personDeleted-out-0)
+        boolean sent = streamBridge.send("personDeleted-out-0", event);
+
+        if (!sent) {
+            log.error("Failed to send PersonDeletedEvent for ID: {}", personId);
+            // Aquí puedes decidir si lanzas una excepción para hacer rollback de la BD o lo manejas
             return false;
         }
 
-        iPersonRepository.deleteById(personId);
-
-
+        log.info("Person successfully inactivated and event published for ID: {}", personId);
         return true;
+
     }
 
 
